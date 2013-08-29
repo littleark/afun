@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>particles</title>
+	<script src="js/Vector2.js"></script>
+	<script src="js/Particle.js"></script>
+	<script src="js/fun.js"></script>
+</head>
+<body>
+	<canvas id="particles"></canvas>
+	<script>
+
+		var	WIDTH=800,
+		   	HEIGHT=400;
+
+		var	canvas=document.getElementById("particles"),
+		   	ctx=canvas.getContext("2d");
+
+		canvas.width=WIDTH;
+		canvas.height=HEIGHT;
+
+		ctx.fillStyle="rgba(255,255,255,1)";
+
+		var particles=[];
+		var fixed_particles=[];
+
+		var gravity=new Vector2(0,0.04);
+		var TO_RADIANS = Math.PI / 180;
+
+		var data=[];
+
+		var CELL=40;
+
+		
+
+		var qs_callback=null;
+
+		function addParticle2(x,y,r,d) {
+
+			var p=new Particle(x,y,r);
+			
+			p.target=new Vector2(x+d,y);
+
+			var vel=new Vector2(1,0);
+			//p.vel=new Vector2(0 ,0);
+
+			vel.rotate(-45,false);
+
+			//vel.multiplyEq(Math.sqrt(200*gravity.magnitude()/Math.sin(2*(-45*TO_RADIANS))));
+
+			var m=Math.sqrt(d*gravity.magnitude()/Math.sin(2*(45*TO_RADIANS)));
+
+			console.log(vel,m)
+
+			p.vel=vel.multiplyEq(m);
+
+
+
+			particles.push(p);
+
+			fixed_particles.push(new Particle(x+d,y,2));
+
+		}
+
+		function addData() {
+			data.push({
+				index:data.length,
+				p:addParticle(data.length)
+			})
+		}
+
+		function addParticles() {
+			for(var i=0;i<data.length;i++) {
+				data[i].p=addParticle(i);
+			}
+		}
+
+		
+
+		function addParticle(index) {
+
+			var p=new Particle(index*CELL,300,index+1);
+			p.index=index;
+			
+			p.target=p.pos;
+
+			var vel=new Vector2(1,0);
+
+			vel.rotate(-45,false);
+
+			//var m=Math.sqrt(d*gravity.magnitude()/Math.sin(2*(45*TO_RADIANS)));
+
+			//console.log(vel,m)
+
+			//p.vel=vel.multiplyEq(m);
+
+			p.gravity2=gravity;
+			
+			particles.push(p);
+
+			return p;
+
+			//fixed_particles.push(new Particle(x+d,y,2));
+		}
+
+		function update2(){
+			
+			for(var i=0;i<particles.length;i++) {
+
+				var p=particles[i];
+				
+
+				var distance=p.target.minusNew(p.pos);
+				distance=distance.magnitude();
+
+				
+
+				if(distance<4) {
+					p.vel=new Vector2(0,0);
+					p.pos=p.target;
+				} else {
+					console.log(distance,p.pos)
+					p.vel.plusEq(p.gravity2);	
+				}
+				
+				p.update(ctx);
+
+			}
+
+		}
+
+		function update(){
+			
+			for(var i=0;i<data.length;i++) {
+
+				var p=data[i].p;
+				
+				
+
+				var distance=p.target.minusNew(p.pos);
+				distance=distance.magnitude();
+
+				
+
+				if(distance<5) {
+					p.vel=new Vector2(0,0);
+					p.pos=p.target;
+				} else {
+					//console.log(distance)
+					//console.log(distance,p.pos)
+					
+					p.vel.plusEq(p.gravity2);
+				}
+				
+				p.update(ctx);
+
+			}
+			var all_set=true;
+			for(var i=0;i<data.length;i++) {
+				var p=data[i].p;
+				if(p.pos!=p.target) {
+					all_set=false;
+				}
+			}
+			
+			if(all_set) {
+				if(qs_callback) {
+					console.log("ALL SET!")
+					qs_callback();
+					//qs_callback=null;
+				}
+					
+			}
+
+		}
+		
+		function updateData(callback) {
+			
+			qs_callback=callback;
+			for(var i=0;i<data.length;i++) {
+
+				var p=data[i].p;
+
+				if(i!=p.index) {
+					
+					
+					var d=(i-p.index)*CELL;
+
+					//console.log("move",p.index,"to",i,"distance:",d)
+					
+					p.target=new Vector2(p.index*CELL+d,p.pos.y);
+
+					p.index=i;
+
+					var vel=new Vector2(d>0?1:-1,0);
+					vel.rotate(d/CELL?-45:-135,false);
+
+					var m=Math.sqrt(Math.abs(d)*gravity.magnitude()/Math.sin(2*(45*TO_RADIANS)));
+
+
+					//console.log("v:",vel,"m:",m,"d:",d)
+
+					p.gravity2=gravity.multiplyNew(d>0?1:-1);
+
+					p.vel=vel.multiplyEq(m);
+					
+				}
+				
+			}
+
+		}
+
+		for(var i=0;i<5;i++) {
+			addData();	
+		}
+		
+		
+		//addData();
+		//addData();
+
+		function shuffleData(){
+			//shuffle(data);
+			//updateData();
+		}
+
+		function draw() {
+			ctx.fillRect(0,0,WIDTH,HEIGHT);
+
+
+
+			for(var i=0;i<particles.length;i++) {
+
+				var p=particles[i];
+
+				p.draw(ctx);
+
+			}
+
+			for(var i=0;i<fixed_particles.length;i++) {
+				var p=fixed_particles[i];
+
+				p.draw(ctx);
+			}
+
+		}
+
+		function loop() {
+			
+			requestAnimationFrame(loop);
+
+			update();
+			draw();
+
+
+		}
+
+
+
+		loop();
+
+		function shuffle(o){ //v1.0
+			console.log("shuffling")
+			for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+			return o;
+		};
+
+		function Partition(A,p,q,callback) {
+		    var x=A[p].index,
+		        i=p,
+		        tmp;
+			
+			var j=p+1;
+		    function partition_loop(){
+				if(j<=q) {
+
+					if(A[j].index<=x) {
+			            i=i+1;
+			            tmp=A[j];
+			            A[j]=A[i];
+			            A[i]=tmp;
+			            //console.log(A);
+			            if(i!=j) {
+							steps.push({
+								from:j,
+								to:i
+							})
+							steps.push({
+								from:i,
+								to:j
+							})
+			            }
+			            
+					}
+
+					j++;
+
+					//console.log("j",j);
+
+					//updateData(function(){
+						//console.log("call partition_loop")
+						partition_loop();	
+					//})
+					
+
+					//partition_loop();
+
+				} else {
+					tmp=A[p];
+					A[p]=A[i];
+					A[i]=tmp;
+					if(p!=i) {
+						steps.push({
+							from:p,
+							to:i
+						});
+						steps.push({
+						   	from:i,
+						   	to:p
+						});	
+					}
+					
+
+					//console.log("i",i)
+
+					//updateData(function(i){
+						//partition_loop();
+						//console.log("call callback",i)
+						callback(i)
+					//}(i))
+
+					//callback(i)
+
+					//return i;
+				}
+		    }
+
+		    partition_loop();
+
+		    //return partition_loop();
+			/*
+		    for(var j=p+1;j<=q;j++) {
+		        if(A[j].index<=x) {
+		            i=i+1;
+		            tmp=A[j];
+		            A[j]=A[i];
+		            A[i]=tmp;
+		            //console.log(A);
+		        }
+		    }
+		    tmp=A[p];
+		    A[p]=A[i];
+		    A[i]=tmp;
+		    */
+		    //console.log(A);
+		    //drawElements(A);
+
+		    //return i;
+		}
+
+		var steps=[];
+
+		function Quicksort(A,p,q) {
+		    if(p<q) {
+
+				console.log("quicksort",p,q)
+
+				Partition(A,p,q,function(r){
+
+					console.log("r:",p,r-1,r,r+1,q)
+					//console.log("q:",q)
+
+					Quicksort(A,p,r-1);
+					Quicksort(A,r+1,q);
+				});
+
+
+				//alert(r)
+				//updateData(function(){
+					//Quicksort(A,p,r-1);
+					//Quicksort(A,r+1,q);
+				//});
+		        
+		    } else {
+				console.log("done",p,q)
+				return;
+		    }
+		}
+
+		shuffle(data);
+
+		//updateData();
+
+		//Quicksort(data,0,data.length-1);
+
+		//updateData();
+
+	</script>
+</body>
+</html>

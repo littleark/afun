@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>quicksort</title>
+	<style>
+		#alg {
+			border: 1px solid #000;
+			position: absolute;
+			font-size: 8px;
+			font-family: Arial;
+			color:#333;
+		}
+		#alg span {
+			position: absolute;
+			width:18px;
+			height: 18px;
+		}
+	</style>
+	<script src="js/Vector2.js"></script>
+</head>
+<body>
+	
+	<div id="alg"></div>
+	
+
+	<script>
+
+		var	WIDTH=3,
+		   	HEIGHT=3;
+
+		var cell=18;
+
+
+
+		var	canvas=document.getElementById("alg");
+
+		canvas.style.width=WIDTH*cell+"px";
+		canvas.style.height=HEIGHT*cell+"px";
+
+		
+
+		var data=[];
+
+		for(var i=0;i<WIDTH*HEIGHT;i++) {
+			data[i]={
+				index:i,
+				color:(i==Math.floor(WIDTH*HEIGHT/2))?"#ff6600":"#333333",
+				length:(""+i).length*8,
+				
+			}
+		}
+
+		data=shuffle(data);
+		
+
+		function drawElements(data) {
+			for(var i=0;i<data.length;i++) {
+				data[i].x=i%WIDTH;
+				data[i].y=Math.floor(i/WIDTH);
+			}
+		}
+
+		function drawElements2(data) {
+			ctx.clearRect(0,0,canvas.width,canvas.height)
+
+			
+
+			for(var i=0;i<data.length;i++) {
+
+				if(!data[i].location) {
+					data[i].location=new Vector2(i%WIDTH*cell+cell/2-data[i].length/2,Math.floor(i/WIDTH)*cell+cell/2);
+				}
+
+				data[i].new_location=new Vector2(i%WIDTH*cell+cell/2-data[i].length/2,Math.floor(i/WIDTH)*cell+cell/2);
+
+				data[i].force=data[i].new_location.minusNew(data[i].location);
+				data[i].distance=data[i].force.magnitude();
+
+				data[i].force.normalise();
+				if(data[i].distance>0) {
+					data[i].force.multiplyEq(1/(data[i].distance*data[i].distance));
+				} else {
+					data[i].force.multiplyEq(0);
+				}
+				
+
+				//dir.norm();
+				//		dir.mult(1- 1/mag);
+				//		acceleration=dir;
+
+				/*
+				if(!data[i].position) {
+					data[i].position=new Vector2(i%WIDTH*cell+cell/2-data[i].length/2,Math.floor(i/WIDTH)*cell+cell/2);
+					data[i].new_position=new Vector2(i%WIDTH*cell+cell/2-data[i].length/2,Math.floor(i/WIDTH)*cell+cell/2);
+				} else {
+					data[i].new_position=new Vector2(i%WIDTH*cell+cell/2-data[i].length/2,Math.floor(i/WIDTH)*cell+cell/2);
+				}
+				
+
+				data[i].force=data[i].position.minusNew(data[i].new_position);
+				data[i].distance=data[i].force.magnitude();
+
+				data[i].x=i%WIDTH;
+				data[i].y=Math.floor(i/WIDTH);
+				*/
+				var d=data[i];
+
+				ctx.save();
+				ctx.fillStyle=d.color;
+				//ctx.fillText(d.index,d.x*cell+cell/2-d.length/2,d.y*cell+cell/2)
+				ctx.fillText(d.index,d.new_location.x,d.new_location.y)
+				ctx.restore();
+				
+				if(data[i].index==4) {
+					console.log(data[i].force,data[i].distance);
+				}
+			}
+		}
+		
+		//drawElements(data);
+		//console.log(data)
+
+
+
+		function shuffle(o){ //v1.0
+			console.log("shuffling")
+			for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+			return o;
+		};
+
+		function Partition(A,p,q) {
+		    var x=A[p].index,
+		        i=p,
+		        tmp;
+		    
+		    for(var j=p+1;j<=q;j++) {
+		        if(A[j].index<=x) {
+		            i=i+1;
+		            tmp=A[j];
+		            A[j]=A[i];
+		            A[i]=tmp;
+		            //console.log(A);
+		        }
+		    }
+		    tmp=A[p];
+		    A[p]=A[i];
+		    A[i]=tmp;
+		    //console.log(A);
+		    drawElements(A);
+		    return i;
+		}
+
+		function Quicksort(A,p,q) {
+		    if(p<q) {
+		        var r=Partition(A,p,q);
+		        setTimeout(function(){
+					Quicksort(A,p,r-1);
+					Quicksort(A,r+1,q);
+		        },250)
+		        
+		    }
+		}
+
+		Quicksort(data,0,data.length-1);
+
+
+	</script>
+</body>
+</html>

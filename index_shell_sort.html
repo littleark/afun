@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Shell Sort</title>
+	<script src="js/Vector2.js"></script>
+	<script src="js/Particle.js"></script>
+	<script src="js/fun.js"></script>
+	<style>
+		html,body {
+			margin:0;
+			padding:10px;
+			background: #000;
+			font-family: Arial;
+		}
+		#counter {
+			position: absolute;
+			top: 20px;
+			left: 20px;
+			color:#fff;
+			font-size: 20px
+		}
+	</style>
+</head>
+<body>
+	<canvas id="particles"></canvas>
+	<span id="counter"></span>
+	<script>
+
+		var	WIDTH=1200,
+		   	HEIGHT=800;
+
+		var	canvas=document.getElementById("particles"),
+		   	ctx=canvas.getContext("2d");
+
+		canvas.width=WIDTH;
+		canvas.height=HEIGHT;
+
+		ctx.fillStyle="rgba(0,0,0,1)";
+
+		var particles=[];
+		var fixed_particles=[];
+
+		var gravity=new Vector2(0,0.01);
+		var TO_RADIANS = Math.PI / 180;
+
+		var data=[];
+		var data2=[];
+
+		var NUMBERS=100;
+
+		var CELL=WIDTH/NUMBERS;
+
+		var RADIUS=2;
+
+		var qs_callback=null;
+
+		function addData(data) {
+			data.push({
+				index:data.length,
+				p:addParticle(data.length)
+			})
+		}
+		
+
+		function addParticle(index) {
+
+			var p=new Particle(index*CELL,HEIGHT/2,RADIUS);//index+1);
+			
+			p.compositeOperation="lighter";
+
+			p.strokeStyle="hsl("+Math.floor(255-index*(255/100)+1)+", 100%, 50%)";
+			p.fillStyle="hsl("+Math.floor(255-index*(255/100)+1)+", 100%, 50%)";
+			//p.strokeStyle="rgba(0,174,255,0.3)"
+			console.log(index,"hsl("+Math.floor(255-index*(255/100)+1)+", 100%, 50%)")
+			//p.strokeStyle="hsl(199,100%,"+Math.floor(100-(index/2))+"%)";
+			//p.fillStyle="hsl(199,100%,"+Math.floor(100-(index/2))+"%)";
+
+
+			p.index=index;
+			p.alpha=1;
+			p.target=p.pos;
+
+			//var vel=new Vector2(0,0);
+
+			//vel.rotate(-45,false);
+
+			//var m=Math.sqrt(d*gravity.magnitude()/Math.sin(2*(45*TO_RADIANS)));
+
+			//console.log(vel,m)
+
+			//p.vel=vel.multiplyEq(m);
+
+			p.gravity2=gravity;
+			
+			particles.push(p);
+
+			return p;
+
+			//fixed_particles.push(new Particle(x+d,y,2));
+		}
+
+
+		function update(data){
+			
+			for(var i=0;i<data.length;i++) {
+
+				var p=data[i].p;
+				
+				
+
+				var distance=p.target.minusNew(p.pos);
+				distance=distance.magnitude();
+
+				p.update(ctx);
+
+				if(distance<3) {
+					p.vel=new Vector2(0,0);
+					p.pos=p.target;
+					//p.radius=RADIUS;
+				} else {
+					//console.log(distance)
+					//console.log(distance,p.pos)
+					//p.radius=0;
+					p.vel.plusEq(p.gravity2);
+				}
+				
+				
+
+			}
+			var all_set=true;
+			for(var i=0;i<data.length;i++) {
+				var p=data[i].p;
+				if(p.pos!=p.target) {
+					all_set=false;
+				}
+			}
+			
+			if(all_set) {
+				if(qs_callback) {
+					//console.log("ALL SET!")
+					qs_callback();
+					//qs_callback=null;
+				}
+					
+			}
+
+		}
+		
+		function updateData(callback) {
+			
+			qs_callback=callback;
+			for(var i=0;i<data.length;i++) {
+
+				var p=data[i].p;
+
+				if(i!=p.index) {
+					
+					
+					var d=(i-p.index)*CELL;
+
+					console.log("move",p.index,"to",i,"distance:",d)
+					
+					p.target=new Vector2(p.index*CELL+d,p.pos.y);
+
+					p.index=i;
+
+					var vel=new Vector2(d>0?1:-1,0);
+					vel.rotate(d/CELL?-45:-135,false);
+
+					var m=Math.sqrt(Math.abs(d)*gravity.magnitude()/Math.sin(2*(45*TO_RADIANS)));
+
+
+					//console.log("v:",vel,"m:",m,"d:",d)
+
+					p.gravity2=gravity.multiplyNew(d>0?1:-1);
+
+					p.vel=vel.multiplyEq(m);
+					
+				}
+				
+			}
+
+		}
+
+		
+		
+		
+		//addData();
+		//addData();
+
+		function shuffleData(){
+			//shuffle(data);
+			//updateData();
+		}
+
+		function draw() {
+			ctx.fillRect(0,(HEIGHT/2)-RADIUS,WIDTH,RADIUS*2);
+			//ctx.fillRect(0,0,WIDTH,HEIGHT);
+
+
+
+			for(var i=0;i<particles.length;i++) {
+
+				var p=particles[i];
+
+				p.draw(ctx);
+
+			}
+
+			for(var i=0;i<fixed_particles.length;i++) {
+				var p=fixed_particles[i];
+
+				p.draw(ctx);
+			}
+
+		}
+
+		function loop() {
+			
+			requestAnimationFrame(loop);
+
+			update(data);
+			draw();
+
+
+		}
+
+
+
+		loop();
+
+		function shuffle(o){ //v1.0
+			console.log("shuffling")
+			for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+			return o;
+		};
+
+		var steps=[];
+
+		function Partition(A,p,q) {
+		    var x=A[Math.floor((q-p)/2)].index,
+		        i=p,
+		        tmp;
+		    
+		    for(var j=p+1;j<=q;j++) {
+		        if(A[j].index<=x) {
+		            i=i+1;
+		            tmp=A[j];
+		            A[j]=A[i];
+		            A[i]=tmp;
+		            
+		            if(i!=j) {
+						steps.push({
+							from:j,
+							to:i
+						})
+						//steps.push({
+						//	from:i,
+						//	to:j
+						//})
+		            }
+
+		        }
+		    }
+		    tmp=A[p];
+		    A[p]=A[i];
+		    A[i]=tmp;
+		    
+		    if(p!=i) {
+				steps.push({
+					from:p,
+					to:i
+				});
+				//steps.push({
+				//   	from:i,
+				//   	to:p
+				//});	
+			}
+
+		    return i;
+		}
+
+		
+
+		
+
+		function cloneArray(array){
+			return array.slice(0);
+		}
+
+		var super_steps=[];
+		function Shellsort2(nums) {
+
+		    var tempoSS = new Date();
+		    var n = nums.length;
+		    //console.log("n = ",n);
+
+		    // HERE:
+		    var h = Math.floor(n / 2);
+
+
+
+		    //console.log("h = ",h);
+		    var c, j;
+
+		    //gaps => Math.floor(n/(2**k)) --> original gaps by Shell 1959
+		    //h=n/2, then gaps are h/2,h/4,h/8,h/16
+		    //n=100 => 50,25,12,6,3,1,0
+
+		    while (h > 0)
+		    {
+		        for (var i = h; i < n; i++)
+		        {
+		            c = nums[i];
+		            j = i;
+		            while (j >= h && nums[j - h].index > c.index)
+		            {
+		                nums[j] = nums[j - h];
+		    //console.log("nums["+j+"] = ",nums[j]);
+		                j = j - h;
+		    //console.log("j = ",j);
+		            }
+		            nums[j] = c;
+		    //console.log("nums["+j+"] = ",nums[j]);
+		            super_steps.push(cloneArray(nums));
+		        }
+
+		        // AND HERE:
+		        h = Math.floor(h / 2);
+		    //console.log("h = ",h);
+		    }
+		}
+		
+		function Shellsort(nums) {
+
+		    var tempoSS = new Date();
+		    var n = nums.length;
+		    //console.log("n = ",n);
+
+		    // HERE:
+		    var h = Math.floor(n / 2);
+
+		    
+
+		    //console.log("h = ",h);
+		    var c, j;
+
+		    //gaps => Math.floor(n/(2**k)) --> original gaps by Shell 1959
+		    //h=n/2, then gaps are h/2,h/4,h/8,h/16
+		    //n=100 => 50,25,12,6,3,1,0
+
+		    var gaps=[701, 301, 132, 57, 23, 10, 4, 1];
+
+		    while (gaps.length) {
+		        for (var i = h; i < n; i++) {
+		            c = nums[i];
+		            j = i;
+		            while (j >= h && nums[j - h].index > c.index) {
+		                nums[j] = nums[j - h];
+		    //console.log("nums["+j+"] = ",nums[j]);
+		                j = j - h;
+		    //console.log("j = ",j);
+		            }
+		            nums[j] = c;
+		    //console.log("nums["+j+"] = ",nums[j]);
+		            super_steps.push(cloneArray(nums));
+		        }
+
+		        // AND HERE:
+		        //h = Math.floor(h / 2);
+		        h=gaps.pop();
+		    //console.log("h = ",h);
+		    }
+		}
+
+		for(var i=0;i<NUMBERS;i++) {
+		 	addData(data2);
+		}		
+
+		shuffle(data2);
+		//data2.reverse();
+
+		for(var i=0;i<data2.length;i++) {
+			data[i]=data2[i];
+		}
+
+		Shellsort(data2);
+
+		
+		updateData(function(){
+			ctx.save();
+			ctx.fillStyle="#000000";
+			ctx.fillRect(0,0,WIDTH,HEIGHT);
+			ctx.restore();
+			//stepThrough();
+			superStepThrough();
+		});
+		
+		var counter=document.getElementById("counter");
+
+		function stepThrough(data) {
+			if(steps.length) {
+				var step=steps.shift();
+				var tmp=data[step.from];
+				data[step.from]=data[step.to];
+				data[step.to]=tmp;
+
+				updateData(function(){
+					counter.innerHTML=steps.length;
+					stepThrough(data);
+				});
+			}
+			
+			
+		}
+		function superStepThrough() {
+			if(super_steps.length) {
+				var step=super_steps.shift();
+				data=step;
+				updateData(function(){
+					counter.innerHTML=super_steps.length;
+					superStepThrough();
+				});
+			}
+			
+			
+		}
+
+		//updateData();
+
+		//Quicksort(data,0,data.length-1);
+
+		//updateData();
+
+	</script>
+</body>
+</html>

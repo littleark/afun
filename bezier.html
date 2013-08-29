@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>particles</title>
+	<script src="js/Vector2.js"></script>
+	<script src="js/Particle.js"></script>
+	<script src="js/fun.js"></script>
+</head>
+<body>
+	<canvas id="particles"></canvas>
+	<script>
+
+		var	WIDTH=400,
+		   	HEIGHT=400;
+
+		var	canvas=document.getElementById("particles"),
+		   	ctx=canvas.getContext("2d");
+
+		canvas.width=WIDTH;
+		canvas.height=HEIGHT;
+
+		ctx.fillStyle="#000000";
+
+		var particles=[];
+
+		var gravity=new Vector2(0,0.1);
+
+		function addParticle(x,y,r) {
+
+			var p=new Particle(x,y,r);
+			p.vel=new Vector2(0 ,0);
+			particles.push(p);
+
+		}
+
+		var	p0={x:0,y:300},
+		   	p1={x:50,y:150},
+		   	p2={x:250,y:150},
+		   	p3={x:300,y:300};
+
+		var p={
+			p0:p0,
+			p1:p1,
+			p2:p2,
+			p3:p3
+		};
+
+		var ball={x:0,y:0,speed:0.01,t:0};
+
+		var points=[];
+
+		function updateBezier(p,t) {
+			
+			var t=ball.t;
+
+			var	p0=p.p0,
+			   	p1=p.p1,
+			   	p2=p.p2,
+			   	p3=p.p3;
+
+			var cx=3*(p1.x - p0.x);
+			var bx=3*(p2.x - p1.x) - cx;
+			var ax=p3.x - p0.x - cx - bx;
+			var cy=3*(p1.y - p0.y);
+			var by=3*(p2.y-p1.y) - cy;
+			var ay=p3.y - p0.y -cy -by;
+
+			var xt=ax*(t*t*t) + bx*(t*t) + cx*t + p0.x;
+			var yt=ay*(t*t*t)+by*(t*t)+cy*t+p0.y;
+
+			ball.t += ball.speed;
+			//ball.speed += 0.001;
+			if(ball.t>1) {
+				ball.t=1;
+			}
+
+			ball.xt=xt;
+			ball.yt=yt;
+		}
+
+		function draw() {
+			ctx.fillRect(0,0,WIDTH,HEIGHT);
+			console.log("draw")
+			var t=ball.t;
+
+			/*
+			cx = 3 (x1 - x0)
+			bx = 3 (x2 - x1) - cx
+			ax = x3 - x0 - cx - bx
+			cy = 3 (y1 - y0)
+			by = 3 (y2 - y1) - cy
+			ay = y3 - y0 - cy - by
+			*/
+
+			var cx=3*(p1.x - p0.x);
+			var bx=3*(p2.x - p1.x) - cx;
+			var ax=p3.x - p0.x - cx - bx;
+			var cy=3*(p1.y - p0.y);
+			var by=3*(p2.y-p1.y) - cy;
+			var ay=p3.y - p0.y -cy -by;
+
+			var xt=ax*(t*t*t) + bx*(t*t) + cx*t + p0.x;
+			var yt=ay*(t*t*t)+by*(t*t)+cy*t+p0.y;
+
+			ball.t += ball.speed;
+			//ball.speed += 0.001;
+			if(ball.t>1) {
+				ball.t=1;
+			}
+
+			//points.push({x:xt,y:yt});
+
+			ctx.save();
+			ctx.fillStyle="#ff0000";
+			/*
+			for(var i=0;i<points.length;i++) {
+				
+				ctx.fillRect(points[i].x,points[i].y,2,2);
+
+			}
+
+			ctx.fillRect(p0.x,p0.y,5,5);
+			ctx.fillRect(p1.x,p1.y,5,5);
+			ctx.fillRect(p2.x,p2.y,5,5);
+			ctx.fillRect(p3.x,p3.y,5,5);
+			*/
+			ctx.beginPath();
+			ctx.arc(xt,yt,2,0,Math.PI*2,false);
+			ctx.closePath();
+			//ctx.fillRect(xt,yt,5,5)
+			ctx.fill();
+			ctx.restore();
+
+
+		}
+
+		function loop() {
+			
+			requestAnimationFrame(loop);
+
+			updateBezier();
+			drawBezier();
+
+		}
+
+		loop();
+
+		
+
+
+	</script>
+</body>
+</html>
