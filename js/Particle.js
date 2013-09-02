@@ -112,12 +112,12 @@ function Particle(x,y,radius) {
 		ctx.closePath();
 		ctx.stroke();
 		c.restore();
-		if(this.vel.magnitude()==0) {
+		//if(this.vel.magnitude()==0) {
 			ctx.beginPath();
 			ctx.arc(0,0,this.radius, 0, MATH_PI2, true);
 			ctx.closePath();
 			ctx.fill();	
-		}
+		//}
 		
 		
 		// and restore the canvas state

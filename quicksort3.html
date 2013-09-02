@@ -32,6 +32,7 @@
 			stroke-opacity:0.3;
 			stroke-width:1;
 			fill:none;
+			stroke:#ffffff;
 		}
 		path.highlight {
 			stroke-opacity:1;
@@ -65,7 +66,7 @@
 		var data=[];
 		var data2=[];
 
-		var NUMBERS=30;
+		var NUMBERS=20;
 
 		var CELL=Math.floor(WIDTH/(NUMBERS-1));
 
@@ -85,7 +86,7 @@
 
 		function addParticle(index) {
 
-			var p=new Particle(xscale(index),HEIGHT/2,RADIUS);//index+1);
+			var p=new Particle(xscale(index),HEIGHT/2,(RADIUS*index+1));//index+1);
 			console.log("putting particle at",p.pos.x)
 			p.compositeOperation="lighter";
 
@@ -130,14 +131,14 @@
 
 				
 
-				if(distance<3) {
+				if(distance<5) {
 					p.vel=new Vector2(0,0);
 					p.pos=p.target;
-					p.radius=RADIUS;
+					//p.radius=RADIUS;
 				} else {
 					//console.log(distance)
 					//console.log(distance,p.pos)
-					p.radius=0;
+					//p.radius=0;
 					p.vel.plusEq(p.gravity2);
 				}
 				
@@ -212,7 +213,7 @@
 
 		function draw() {
 			ctx.fillRect(0,(HEIGHT/2)-RADIUS,WIDTH,RADIUS*2);
-			//ctx.fillRect(0,0,WIDTH,HEIGHT);
+			ctx.fillRect(0,0,WIDTH,HEIGHT);
 			
 
 			for(var i=0;i<particles.length;i++) {
@@ -266,15 +267,14 @@
 		            A[i]=tmp;
 		            
 		            if(i!=j) {
-						/*
 						steps.push({
-							p1:A[i].p,
-							p2:A[j].p,
+							p:A[i].p,
 							from:j,
 							to:i
 						})
-						*/
 						steps.push({
+							back:1,
+							p:A[j].p,
 							from:i,
 							to:j
 						})
@@ -287,11 +287,22 @@
 		    A[i]=tmp;
 		    
 		    if(p!=i) {
+		    	
 				steps.push({
-				   	from:i,
-				   	to:p
+					p:A[i].p,
+					from:p,
+					to:i
+				});
+				
+				
+				steps.push({
+					back:1,
+					p:A[p].p,
+					from:i,
+					to:p
 				});	
 			}
+
 		    return i;
 		}
 
@@ -336,6 +347,15 @@
 		function stepThrough(data) {
 			if(steps.length) {
 				var step=steps.shift();
+
+				if(step.back)
+					step=steps.shift();
+
+				if(!step)
+					return;
+
+				console.log("doing step",step)
+
 				var tmp=data[step.from];
 				data[step.from]=data[step.to];
 				data[step.to]=tmp;
@@ -354,8 +374,10 @@
 			width:WIDTH,
 			height:HEIGHT,
 			steps:steps,
-			grouping:2
+			grouping:1
 		});
+
+		qs_view.show();
 
 		/*
 
