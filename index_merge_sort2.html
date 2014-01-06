@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Heap Sort</title>
+	<title>Merge Sort</title>
 	<script src="js/Vector2.js"></script>
 	<script src="js/Particle.js"></script>
 	<script src="js/fun.js"></script>
@@ -128,177 +128,170 @@
 			//console.log(true)
 			return true;
 		}
-
+		function cloneArray(A) {
+			var B=[];
+			for(var i=0;i<A.length;i++) {
+				B.push(A[i]);
+			}
+			return B;
+		}
 		function getOrder(A) {
 			var B=[];
 			for(var i=0;i<A.length;i++) {
-				B.push(A[i]?A[i].index:null);
+				B.push(A[i].index);
 			}
 			return B;
 		}
 		
 		var steps=[];
 
-		function Heapsort(n, ra) {
-		    var l, j, ir, i;
-		    var rra;
+		var Mergesort = (function() {
+ 
+		  /**
+		   * Sorts the array by breaking it down
+		   * into smaller chunks.
+		   *
+		   * @param {Array} array The array to sort
+		   */
+		   var tmp_result;
 
-		    l = (n >> 1) + 1;
-		    ir = n;
-		    for (;;) {
-		    	var current_ra=getOrder(ra);
-		    	steps.push([]);
-
-		        if (l > 1) {
-		            rra = ra[--l];
-		        } else {
-		            rra = ra[ir];
-		            steps[steps.length-1].push({
-		            	index:ra[1].index,
-		            	from:1-1,
-		            	to:ir-1
-		            });
-		            ra[ir] = ra[1];
-		            if (--ir == 1) {
-		               
-		                steps[steps.length-1].push({
-			            	index:rra.index,
-			            	from:current_ra.indexOf(rra.index)-1,
-			            	to:1-1,
-			            	p:0
-			            });
-			            ra[1] = rra;
-		                return ra;
-		            }
-		        }
-		        i = l;
-		        j = l << 1;
-		        while (j <= ir) {
-		            if (j < ir && ra[j].index < ra[j+1].index) { ++j; }
-		            if (rra.index < ra[j].index) {
-		            	var c=ra[j],
-		            		cc=ra[i];
-		                steps[steps.length-1].push({
-			            	index:c.index,
-			            	from:j-1,
-			            	to:i-1,
-			            	p:1
-			            });
-			            /*
-			            steps[steps.length-1].push({
-			            	index:cc.index,
-			            	from:i-1,
-			            	to:j-1
-			            });
-						*/
-			            ra[i] = ra[j];
-		                j += (i = j);
-		            } else {
-		                j = ir + 1;
-		            }
-		        }
-
-		        steps[steps.length-1].push({
-	            	index:rra.index,
-	            	from:current_ra.indexOf(rra.index)-1,
-	            	to:i-1,
-	            	p:2
-	            });
-
-		        ra[i] = rra;
-		        
-		        var new_items=getOrder(ra);
-	    		if(items.length>0 && compareArray(items[items.length-1],new_items)) {
-	    			steps.pop();
-	    		} else {
-	    			items.push(new_items);
-	    		}
-				
-		        //items.push(getOrder(ra));
-		        //console.log(ra)
+		  function sort(array) {
+		 
+		    var length = array.length,
+		        mid    = Math.floor(length * 0.5),
+		        left   = array.slice(0, mid),
+		        right  = array.slice(mid, length);
+		 
+		    if(length === 1) {
+		      return array;
 		    }
-		    return ra;
-		}
+			if(!tmp_result) {
+				tmp_result=getOrder(array);
+			}
+			console.log("merging",left,right)
+			var a=merge(sort(left), sort(right),tmp_result);
+			//console.log(a)
+			//items.push(getOrder(a));
+		    return a;//merge(sort(left), sort(right));
+		 
+		  }
+		 
+		  /**
+		   * Merges two sublists back together.
+		   * Shift either left or right onto
+		   * the result depending on which is
+		   * lower (assuming both exist), and simply
+		   * pushes on a list if the other doesn't
+		   * exist.
+		   *
+		   * @param {Array} left The left hand sublist
+		   * @param {Array} right The right hand sublist
+		   */
+		  function merge(left, right,tmp_result) {
+		 
+		    var result = [];
 
-		
+		 	//steps.push([]);
+
+		    while(left.length || right.length) {
+		 
+		      if(left.length && right.length) {
+		 
+		        if(left[0].index < right[0].index) {
+
+		          	var	l=tmp_result.indexOf(left[0].index),
+		          		r=tmp_result.indexOf(right[0].index);
+		          	tmp_result[l]=right[0].index;
+		          	tmp_result[r]=left[0].index;
+		          	items.push(cloneArray(tmp_result));
+
+		          result.push(left.shift());
+		        } else {
+		          
+		        	
+
+		          	items.push(tmp_result);
+		          	result.push(right.shift());
+		        }
+		 
+		      } else if (left.length) {
+		        result.push(left.shift());
+		        /*
+		        steps[steps.length-1].push({
+	            	index:a[i+1].index,
+	            	from:i+1,
+	            	to:i
+	            });
+	           	*/
+		      } else {
+		        result.push(right.shift());
+		      }
+		 		
+		      //items.push(getOrder(result));
+		     // items.push(getOrder(left));
+		     // items.push(getOrder(right));
+
+
+		    }
+			//console.log("result",result);
+			
+		    return result;
+		 
+		  }
+		 
+		  return {
+		    sort: sort
+		  };
+		 
+		})();
+
+
+		for(var i=0;i<NUMBERS;i++) {
+			addData(data2);
+		}
 
 		shuffle(data2);
 		//data2.reverse();
 
 		data2=[{"index":6},{"index":0},{"index":8},{"index":11},{"index":4},{"index":17},{"index":15},{"index":7},{"index":1},{"index":16},{"index":3},{"index":12},{"index":9},{"index":5},{"index":19},{"index":14},{"index":2},{"index":10},{"index":18},{"index":13}];
 
-		data=Array(data2.length+1);
-
-		for(var i=1;i<=data2.length;i++) {
-		    data[i]=data2[i-1];
+		for(var i=0;i<data2.length;i++) {
+			data[i]=data2[i];
 		}
+
 
 		var items=[];
-		items.push(getOrder(data));
+		items.push(getOrder(data2));
 
 		//console.log(items)
-		var ra=Heapsort(data.length-1,data);
+
 		
-		items.push(getOrder(ra));
+		//data2=Mergesort.sort(data2)
 
-		/*
-		var steps=[];
-		var already=[];
-		for(var i=1;i<items.length;i++) {
-			var prev=items[i-1],
-				curr=items[i];
-			steps[i-1]=[];
-			already[i-1]=[];
-			for(var j=0;j<prev.length;j++) {
-				var curr_j=curr.indexOf(prev[j]);
-				if(curr_j!=j) {
-					if(already[i-1].indexOf(prev[j]+"-"+curr[j])==-1 && already[i-1].indexOf(curr[j]+"-"+prev[j])==-1) {
-						steps[i-1].push({
-							to:curr_j,
-							to:j,
-							fromE:prev[j],
-							toE:curr[j]
-						});
-					}
-					already[i-1].push(prev[j]+"-"+curr[j]);
-				}
-			}
-		}
-		*/
-
-
+		items.push(getOrder(Mergesort.sort(data2)));
 		
 		items.forEach(function(d,i){
-			d.shift();
 			if(i>0)
 				console.log(steps[i-1])
 			console.log(d);
 			
 		});
 		
-		
 
-		
+		/*
 		var qs_view=new AlgorithmView({
 			container:"#traces",
 			width:WIDTH,
 			height:HEIGHT,
-			steps:steps.filter(function(d){
-				return d.length>0;
-			}),
+			steps:steps,
 			items:items,
-			grouping:1,
-			callback:function(){
-				d3.select("#stepper span")
-					.text(qs_view.getStepsLength() - qs_view.getCurrentStep())
-			}
+			grouping:1
 		});
+		*/
 		
 		//qs_view.show(0);
 
-		d3.select("#stepper span").text(steps.filter(function(d){
-			return d.length>0;
-		}).length);
+		d3.select("#stepper span").text(steps.length-2)
 
 		d3.selectAll("#stepper a")
 			.on("click",function(d,i){
@@ -308,8 +301,8 @@
 				if(i<1)
 					qs_view.stepPrev();
 
-				//d3.select("#stepper span")
-				//	.text(qs_view.getStepsLength() - qs_view.getCurrentStep())
+				d3.select("#stepper span")
+					.text(qs_view.getStepsLength() - qs_view.getCurrentStep())
 
 			})
 

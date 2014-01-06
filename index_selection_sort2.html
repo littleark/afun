@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Heap Sort</title>
+	<title>Selection Sort</title>
 	<script src="js/Vector2.js"></script>
 	<script src="js/Particle.js"></script>
 	<script src="js/fun.js"></script>
@@ -132,114 +132,173 @@
 		function getOrder(A) {
 			var B=[];
 			for(var i=0;i<A.length;i++) {
-				B.push(A[i]?A[i].index:null);
+				B.push(A[i].index);
 			}
 			return B;
 		}
 		
 		var steps=[];
 
-		function Heapsort(n, ra) {
-		    var l, j, ir, i;
-		    var rra;
+		function Shellsort(nums) {
 
-		    l = (n >> 1) + 1;
-		    ir = n;
-		    for (;;) {
-		    	var current_ra=getOrder(ra);
-		    	steps.push([]);
+		    var tempoSS = new Date();
+		    var n = nums.length;
+		    //console.log("n = ",n);
 
-		        if (l > 1) {
-		            rra = ra[--l];
-		        } else {
-		            rra = ra[ir];
-		            steps[steps.length-1].push({
-		            	index:ra[1].index,
-		            	from:1-1,
-		            	to:ir-1
+		    // HERE:
+		    var h = Math.floor(n / 2);
+
+		    
+
+		    //console.log("h = ",h);
+		    var c, j;
+
+		    //gaps => Math.floor(n/(2**k)) --> original gaps by Shell 1959
+		    //h=n/2, then gaps are h/2,h/4,h/8,h/16
+		    //n=100 => 50,25,12,6,3,1,0
+
+		    var gaps=[701, 301, 132, 57, 23, 10, 4, 1];
+
+		    while (gaps.length) {
+		        for (var i = h; i < n; i++) {
+
+		        	steps.push([]);
+
+		            c = nums[i];
+		            j = i;
+		            while (j >= h && nums[j - h].index > c.index) {
+
+		            	steps[steps.length-1].push({
+			            	index:nums[j - h].index,
+			            	from:j - h,
+			            	to:j
+			            });
+
+		                nums[j] = nums[j - h];
+		                j = j - h;
+		    			
+		            }
+		            nums[j] = c;
+
+		    		steps[steps.length-1].push({
+		            	index:c.index,
+		            	from:i,
+		            	to:j
 		            });
-		            ra[ir] = ra[1];
-		            if (--ir == 1) {
-		               
-		                steps[steps.length-1].push({
-			            	index:rra.index,
-			            	from:current_ra.indexOf(rra.index)-1,
-			            	to:1-1,
-			            	p:0
-			            });
-			            ra[1] = rra;
-		                return ra;
-		            }
-		        }
-		        i = l;
-		        j = l << 1;
-		        while (j <= ir) {
-		            if (j < ir && ra[j].index < ra[j+1].index) { ++j; }
-		            if (rra.index < ra[j].index) {
-		            	var c=ra[j],
-		            		cc=ra[i];
-		                steps[steps.length-1].push({
-			            	index:c.index,
-			            	from:j-1,
-			            	to:i-1,
-			            	p:1
-			            });
-			            /*
-			            steps[steps.length-1].push({
-			            	index:cc.index,
-			            	from:i-1,
-			            	to:j-1
-			            });
-						*/
-			            ra[i] = ra[j];
-		                j += (i = j);
-		            } else {
-		                j = ir + 1;
-		            }
+		    		
+		    		var new_items=getOrder(nums);
+		    		if(items.length>0 && compareArray(items[items.length-1],new_items)) {
+		    			steps.pop();
+		    		} else {
+		    			items.push(new_items);
+		    		}
+		            
 		        }
 
-		        steps[steps.length-1].push({
-	            	index:rra.index,
-	            	from:current_ra.indexOf(rra.index)-1,
-	            	to:i-1,
-	            	p:2
-	            });
-
-		        ra[i] = rra;
-		        
-		        var new_items=getOrder(ra);
-	    		if(items.length>0 && compareArray(items[items.length-1],new_items)) {
-	    			steps.pop();
-	    		} else {
-	    			items.push(new_items);
-	    		}
-				
-		        //items.push(getOrder(ra));
-		        //console.log(ra)
+		        // AND HERE:
+		        //h = Math.floor(h / 2);
+		        h=gaps.pop();
+		    //console.log("h = ",h);
 		    }
-		    return ra;
 		}
 
+		/*
 		
+		int i,j;
+		int iMin;
+		 
+		
+		for (j = 0; j < n-1; j++) {
+		    
+		 
+		    
+		    iMin = j;
+		    
+		    for ( i = j+1; i < n; i++) {
+		        
+		        if (a[i] < a[iMin]) {
+		            
+		            iMin = i;
+		        }
+		    }
+		 
+		    
+		    if ( iMin != j ) {
+		        swap(a[j], a[iMin]);
+		    }
+		}
+		*/
+
+		function Selectionsort(nums) {
+			var i;
+			var iMin;
+			/* advance the position through the entire array */
+			/*   (could do j < n-1 because single element is also min element) */
+			for(var j=0;j<nums.length-1;j++) {
+
+				
+
+				/* find the min element in the unsorted a[j .. n-1] */
+				/* assume the min is the first element */
+				iMin=j;
+				/* test against elements after j to find the smallest */
+				for(var i=j+1;i<nums.length;i++) {
+					/* if this element is less, then it is the new minimum */
+					if(nums[i].index < nums[iMin].index) {
+						/* found new minimum; remember its index */
+						iMin=i;
+					}
+				}
+				/* iMin is the index of the minimum element. Swap it with the current position */
+				if(iMin != j) {
+					steps.push([]);
+
+					var tmp1={index:nums[j].index},
+						tmp2={index:nums[iMin].index};
+
+					steps[steps.length-1].push({
+		            	index:tmp1.index,
+		            	from:j,
+		            	to:iMin
+		            });
+		            steps[steps.length-1].push({
+		            	index:tmp2.index,
+		            	from:iMin,
+		            	to:j
+		            });
+
+					nums[j]=tmp2;
+					nums[iMin]=tmp1;
+
+					var new_items=getOrder(nums);
+					items.push(new_items);
+
+				}
+			}
+		}
+
+		for(var i=0;i<NUMBERS;i++) {
+			addData(data2);
+		}
 
 		shuffle(data2);
 		//data2.reverse();
 
 		data2=[{"index":6},{"index":0},{"index":8},{"index":11},{"index":4},{"index":17},{"index":15},{"index":7},{"index":1},{"index":16},{"index":3},{"index":12},{"index":9},{"index":5},{"index":19},{"index":14},{"index":2},{"index":10},{"index":18},{"index":13}];
-
-		data=Array(data2.length+1);
-
-		for(var i=1;i<=data2.length;i++) {
-		    data[i]=data2[i-1];
+		
+		for(var i=0;i<data2.length;i++) {
+			data[i]=data2[i];
 		}
 
+
 		var items=[];
-		items.push(getOrder(data));
+		items.push(getOrder(data2));
 
 		//console.log(items)
-		var ra=Heapsort(data.length-1,data);
-		
-		items.push(getOrder(ra));
+
+		Selectionsort(data2);
+
+		//items.push(getOrder(data2));
 
 		/*
 		var steps=[];
@@ -269,7 +328,6 @@
 
 		
 		items.forEach(function(d,i){
-			d.shift();
 			if(i>0)
 				console.log(steps[i-1])
 			console.log(d);

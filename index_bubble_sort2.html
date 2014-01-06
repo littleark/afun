@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Smooth Sort</title>
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<script src="js/AlgorithmView2.js"></script>
+	<style>
+		html,body {
+			margin:0;
+			padding:10px;
+			background: #000;
+			font-family: Arial;
+			position: relative;
+		}
+		#counter {
+			position: absolute;
+			top: 20px;
+			left: 20px;
+			color:#fff;
+			font-size: 20px
+		}
+		#traces {
+			position: absolute;
+			top:10px;
+			left:10px;
+		}
+		#stepper {
+			position: absolute;
+			top:300px;
+			left:10px;
+			color:#fff;
+			width: 80px;
+		}
+		#stepper span {
+			min-width: 30px;
+			display: block;
+			float: left;
+			text-align: center;
+		}
+		#stepper a {
+			color:#fff;
+			text-decoration: none;
+			float: left;
+			display: block;
+		}
+		#stepper a:hover {
+			color:#ffff00;
+		}
+		svg path {
+			stroke-opacity:0;
+			stroke-width:1;
+			fill:none;
+			stroke:#ffffff;
+		}
+		svg .visible path {
+			stroke-opacity:0.6;
+		}
+		path.highlight {
+			stroke-opacity:1;
+			stroke-width:2;
+		}
+		svg circle {
+			fill:#fff;
+			fill-opacity:0.6;
+		}
+		svg .circle text {
+			fill:#22abef;
+			font-size: 10px;
+			font-family: Arial;
+		}
+	</style>
+</head>
+<body>
+	<div id="traces"></div>
+	<div id="stepper">
+		<a href="#">&lt;</a>
+		&nbsp;
+		<span>0</span>
+		&nbsp;
+		<a href="#">&gt;</a>
+	</div>
+	<script>
+			
+			var	WIDTH=1000,
+		   		HEIGHT=800;
+
+			var items=[];
+			var steps=[];
+
+			function getOrder(A) {
+				var B=[];
+				for(var i=0;i<A.length;i++) {
+					B.push(A[i].index);
+				}
+				return B;
+			}
+			function cloneArray(A) {
+				var B=[];
+				for(var i=0;i<A.length;i++) {
+					B.push(A[i]);
+				}
+				return B;
+			}
+
+			function addStep(index,from,to) {
+				if(from==to)
+					return;
+				steps[steps.length-1].push({
+	            	index:index,
+	            	from:from,
+	            	to:to
+	            });
+			}
+
+		
+		function bubbleSort(a) {
+		    var swapped;
+		    do {
+		        swapped = false;
+		        for (var i=0; i < a.length-1; i++) {
+		        	steps.push([]);
+		            if (a[i] > a[i+1]) {
+		                var temp = a[i];
+
+		                addStep(a[i + 1],i+1,i);
+		                addStep(temp,i,i+1);
+
+		                a[i] = a[i+1];
+		                a[i+1] = temp;
+		                swapped = true;
+		            }
+		        }
+		    } while (swapped);
+		}
+
+		var data2=[{"index":6},{"index":0},{"index":8},{"index":11},{"index":4},{"index":17},{"index":15},{"index":7},{"index":1},{"index":16},{"index":3},{"index":12},{"index":9},{"index":5},{"index":19},{"index":14},{"index":2},{"index":10},{"index":18},{"index":13}];
+
+		var A=getOrder(data2);
+
+		items.push(cloneArray(A));
+		console.log(cloneArray(A),"START")
+		console.log(bubbleSort(A),"END");
+		
+
+		items.forEach(function(d,i){
+			//if(i>0)
+			//	console.log(steps[i-1])
+			//console.log(d);
+
+		});
+
+
+		
+		var qs_view=new AlgorithmView({
+			container:"#traces",
+			width:WIDTH,
+			height:HEIGHT,
+			steps:steps.filter(function(d){
+				return d.length>0;
+			}),
+			items:items,
+			grouping:1,
+			callback:function(){
+				d3.select("#stepper span")
+					.text(qs_view.getStepsLength() - qs_view.getCurrentStep())
+			}
+		});
+		
+		//qs_view.show(0);
+
+		d3.select("#stepper span").text(steps.filter(function(d){
+			return d.length>0;
+		}).length);
+
+		d3.selectAll("#stepper a")
+			.on("click",function(d,i){
+				d3.event.preventDefault();
+				if(i>0)
+					qs_view.stepNext();
+				if(i<1)
+					qs_view.stepPrev();
+
+				//d3.select("#stepper span")
+				//	.text(qs_view.getStepsLength() - qs_view.getCurrentStep())
+
+			})
+
+
+	</script>
+</body>
+</html>

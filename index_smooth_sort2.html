@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Smooth Sort</title>
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<script src="js/AlgorithmView2.js"></script>
+	<style>
+		html,body {
+			margin:0;
+			padding:10px;
+			background: #000;
+			font-family: Arial;
+			position: relative;
+		}
+		#counter {
+			position: absolute;
+			top: 20px;
+			left: 20px;
+			color:#fff;
+			font-size: 20px
+		}
+		#traces {
+			position: absolute;
+			top:10px;
+			left:10px;
+		}
+		#stepper {
+			position: absolute;
+			top:300px;
+			left:10px;
+			color:#fff;
+			width: 80px;
+		}
+		#stepper span {
+			min-width: 30px;
+			display: block;
+			float: left;
+			text-align: center;
+		}
+		#stepper a {
+			color:#fff;
+			text-decoration: none;
+			float: left;
+			display: block;
+		}
+		#stepper a:hover {
+			color:#ffff00;
+		}
+		svg path {
+			stroke-opacity:0;
+			stroke-width:1;
+			fill:none;
+			stroke:#ffffff;
+		}
+		svg .visible path {
+			stroke-opacity:0.6;
+		}
+		path.highlight {
+			stroke-opacity:1;
+			stroke-width:2;
+		}
+		svg circle {
+			fill:#fff;
+			fill-opacity:0.6;
+		}
+		svg .circle text {
+			fill:#22abef;
+			font-size: 10px;
+			font-family: Arial;
+		}
+	</style>
+</head>
+<body>
+	<div id="traces"></div>
+	<div id="stepper">
+		<a href="#">&lt;</a>
+		&nbsp;
+		<span>0</span>
+		&nbsp;
+		<a href="#">&gt;</a>
+	</div>
+	<script>
+			
+			var	WIDTH=1000,
+		   		HEIGHT=800;
+
+			var items=[];
+			var steps=[];
+
+			function getOrder(A) {
+				var B=[];
+				for(var i=0;i<A.length;i++) {
+					B.push(A[i].index);
+				}
+				return B;
+			}
+			function cloneArray(A) {
+				var B=[];
+				for(var i=0;i<A.length;i++) {
+					B.push(A[i]);
+				}
+				return B;
+			}
+
+			function addStep(index,from,to) {
+				if(from==to)
+					return;
+				steps[steps.length-1].push({
+	            	index:index,
+	            	from:from,
+	            	to:to
+	            });
+			}
+
+
+			//BASED ON JASON DAVIES SMOOTHSORT.JS
+				
+			// Based on implementation in http://en.wikipedia.org/wiki/Smoothsort
+			
+			  // Leonardo numbers.
+			  var LP = [
+			    1, 1, 3, 5, 9, 15, 25, 41, 67, 109, 177, 287, 465, 753, 
+			    1219, 1973, 3193, 5167, 8361, 13529, 21891, 35421, 57313, 92735,
+			    150049, 242785, 392835, 635621, 1028457, 1664079, 2692537, 
+			    4356617, 7049155, 11405773, 18454929, 29860703, 48315633, 78176337,
+			    126491971, 204668309, 331160281, 535828591, 866988873
+			  ];
+
+			  var smoothsort = function() {
+			    var compare = ascending;
+
+			    function sort(m, lo, hi) {
+
+			      if (arguments.length === 1) {
+			        lo = 0;
+			        hi = m.length - 1;
+			      }
+			      if (hi > LP[32]) {
+			        throw {error: "Maximum length exceeded for smoothsort implementation."};
+			      }
+			      var head = lo,
+			          p = 1,
+			          pshift = 1,
+			          trail;
+
+			      while (head < hi) {
+			        if ((p & 3) === 3) {
+			          sift(m, pshift, head);
+			          p >>>= 2;
+			          pshift += 2;
+			        } else {
+			          if (LP[pshift - 1] >= hi - head) trinkle(m, p, pshift, head, false);
+			          else sift(m, pshift, head);
+			          if (pshift === 1) {
+			            p <<= 1;
+			            pshift--;
+			          } else {
+			            p <<= (pshift - 1);
+			            pshift = 1;
+			          }
+			        }
+			        p |= 1;
+			        head++;
+			        //items.push(cloneArray(m));
+			      }
+			      trinkle(m, p, pshift, head, false);
+
+			      while (pshift !== 1 || p !== 1) {
+			        if (pshift <= 1) {
+			          trail = trailingzeroes(p & ~1);
+			          p >>>= trail;
+			          pshift += trail;
+			        } else {
+			          p <<= 2;
+			          p ^= 7;
+			          pshift -= 2;
+
+			          trinkle(m, p >>> 1, pshift + 1, head - LP[pshift] - 1, true);
+			          trinkle(m, p, pshift, head - 1, true);
+			        }
+
+			        head--;
+			        //items.push(cloneArray(m));
+			      }
+			      
+			    }
+
+			    function trinkle(m, p, pshift, head, trusty) {
+			      var val = m[head],
+			          stepson,
+			          mstepson,
+			          rt,
+			          lf,
+			          trail;
+			      var val_old_pos=m.indexOf(val);
+			      steps.push([]);
+			      while (p !== 1) {
+			        stepson = head - LP[pshift];
+
+			        if (compare(mstepson = m[stepson], val) <= 0) break;
+
+			        if (!trusty && pshift > 1) {
+			          rt = head - 1;
+			          lf = head - 1 - LP[pshift - 2];
+			          if (compare(m[rt], mstepson) >= 0 || compare(m[lf], mstepson) >= 0) {
+			            break;
+			          }
+			        }
+			        console.log("t1",cloneArray(m),mstepson,m.indexOf(mstepson),"->",head,"::",steps.length-1)
+			        addStep(mstepson,m.indexOf(mstepson),head);
+			        /*
+			        steps[steps.length-1].push({
+		            	index:mstepson,
+		            	from:m.indexOf(mstepson),
+		            	to:head
+		            });
+					*/
+			        m[head] = mstepson;
+			        items.push(cloneArray(m));
+			        
+
+			        head = stepson;
+			        trail = trailingzeroes(p & ~1);
+			        p >>>= trail;
+			        pshift += trail;
+			        trusty = false;
+			        
+			      }
+			      if (!trusty) {
+			        console.log("t2",cloneArray(m),val,val_old_pos,"->",head,"::",steps.length-1)
+			        addStep(val,val_old_pos,head);
+			        /*
+			        steps[steps.length-1].push({
+		            	index:val,
+		            	from:val_old_pos,
+		            	to:head
+		            });*/
+			        m[head] = val;
+			        items.push(cloneArray(m));
+			        
+			        sift(m, pshift, head);
+			      }
+			      //items.push(cloneArray(m));
+			    }
+
+			    function sift(m, pshift, head) {
+			      var rt,
+			          lf,
+			          mrt,
+			          mlf,
+			          val = m[head];
+			      var val_old_pos=m.indexOf(val);
+			      steps.push([]);
+			      while (pshift > 1) {
+			      	
+			        rt = head - 1;
+			        lf = head - 1 - LP[pshift - 2];
+			        mrt = m[rt];
+			        mlf = m[lf];
+
+			        if (compare(val, mlf) >= 0 && compare(val, mrt) >= 0) break;
+
+			        if (compare(mlf, mrt) >= 0) {
+			          console.log("s",cloneArray(m),mlf,m.indexOf(mlf),"->",head,"::",steps.length-1)
+			          addStep(mlf,m.indexOf(mlf),head);
+			          
+			          m[head] = mlf;
+			          
+			          head = lf;
+			          pshift--;
+			        } else {
+			          console.log("s",cloneArray(m),mrt,m.indexOf(mrt),"->",head,"::",steps.length-1)
+			          addStep(mrt,m.indexOf(mrt),head);
+			          
+			          m[head] = mrt;
+			          
+			          head = rt;
+			          pshift -= 2;
+			        }
+			        //items.push(cloneArray(m));
+			        items.push(cloneArray(m));
+			      	//console.log("s1",cloneArray(m))
+			      }
+			      console.log("s2",cloneArray(m),val,val_old_pos,"->",head,"::",steps.length-1)
+			      addStep(val,val_old_pos,head);
+			      /*
+			      steps[steps.length-1].push({
+	            	index:val,
+	            	from:val_old_pos,
+	            	to:head
+	              });
+					*/
+			      m[head] = val;
+			      items.push(cloneArray(m));
+			      
+			    }
+
+			    sort.compare = function(x) {
+			      if (!arguments.length) return compare;
+			      compare = x;
+			      return sort;
+			    };
+
+			    return sort;
+			  };
+
+			  // Solution for determining number of trailing zeroes of a number's binary representation.
+			  // Taken from http://www.0xe3.com/text/ntz/ComputingTrailingZerosHOWTO.html
+			  var MultiplyDeBruijnBitPosition = [
+			     0,  1, 28,  2, 29, 14, 24, 3,
+			    30, 22, 20, 15, 25, 17,  4, 8,
+			    31, 27, 13, 23, 21, 19, 16, 7,
+			    26, 12, 18,  6, 11,  5, 10, 9];
+
+			  function trailingzeroes(v) {
+			    return MultiplyDeBruijnBitPosition[(((v & -v) * 0x077CB531) >> 27) & 0x1f];
+			  }
+
+			  function ascending(a, b) {
+			    return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+			  }
+
+			
+			  var data2=[{"index":6},{"index":0},{"index":8},{"index":11},{"index":4},{"index":17},{"index":15},{"index":7},{"index":1},{"index":16},{"index":3},{"index":12},{"index":9},{"index":5},{"index":19},{"index":14},{"index":2},{"index":10},{"index":18},{"index":13}];
+
+			  var A=getOrder(data2);
+			  items.push(cloneArray(A));
+			  console.log(cloneArray(A),"START")
+			  var s=new smoothsort();
+			  s(A)
+
+			  items.forEach(function(d,i){
+				//if(i>0)
+				//	console.log(steps[i-1])
+				//console.log(d);
+				
+			});
+
+
+
+		var qs_view=new AlgorithmView({
+			container:"#traces",
+			width:WIDTH,
+			height:HEIGHT,
+			steps:steps.filter(function(d){
+				return d.length>0;
+			}),
+			items:items,
+			grouping:1,
+			callback:function(){
+				d3.select("#stepper span")
+					.text(qs_view.getStepsLength() - qs_view.getCurrentStep())
+			}
+		});
+		
+		//qs_view.show(0);
+
+		d3.select("#stepper span").text(steps.filter(function(d){
+			return d.length>0;
+		}).length);
+
+		d3.selectAll("#stepper a")
+			.on("click",function(d,i){
+				d3.event.preventDefault();
+				if(i>0)
+					qs_view.stepNext();
+				if(i<1)
+					qs_view.stepPrev();
+
+				//d3.select("#stepper span")
+				//	.text(qs_view.getStepsLength() - qs_view.getCurrentStep())
+
+			})
+
+
+	</script>
+</body>
+</html>

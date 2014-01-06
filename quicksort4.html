@@ -238,14 +238,22 @@
 			container:"#traces",
 			width:WIDTH,
 			height:HEIGHT,
-			steps:steps,
+			steps:steps.filter(function(d){
+				return d.length>0;
+			}),
 			items:items,
-			grouping:1
+			grouping:1,
+			callback:function(){
+				d3.select("#stepper span")
+					.text(qs_view.getStepsLength() - qs_view.getCurrentStep())
+			}
 		});
-
+		
 		//qs_view.show(0);
 
-		d3.select("#stepper span").text(steps.length-2)
+		d3.select("#stepper span").text(steps.filter(function(d){
+			return d.length>0;
+		}).length);
 
 		d3.selectAll("#stepper a")
 			.on("click",function(d,i){
@@ -255,8 +263,8 @@
 				if(i<1)
 					qs_view.stepPrev();
 
-				d3.select("#stepper span")
-					.text(qs_view.getStepsLength() - qs_view.getCurrentStep())
+				//d3.select("#stepper span")
+				//	.text(qs_view.getStepsLength() - qs_view.getCurrentStep())
 
 			})
 

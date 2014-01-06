@@ -15,6 +15,8 @@ function AlgorithmView(options){
 		current_steps=0,
 		current_step=-1;//steps.length-1;
 
+	var callback=options.callback || function(){};
+
 	var items=options.items || [];
 
 	console.log("ITEMS",items.length,"STEPS",steps.length);
@@ -206,7 +208,7 @@ function AlgorithmView(options){
 			return;
 		}
 
-		animating=true;
+		
 		var n=(typeof n == "undefined")?steps.length-1:n;
 
 		var back=0;
@@ -219,12 +221,16 @@ function AlgorithmView(options){
 			return;
 		}
 
-		
+
+
+		animating=true;
 
 		
 
 		current_step=n;
 		
+		callback();
+
 		//console.log(steps[n].fromE,steps[n].toE,traces[0][current_step])
 
 		traces
@@ -454,6 +460,7 @@ function AlgorithmView(options){
 		if(animating) {
 			return;
 		}
+		
 		this.show(current_step-grouping);
 		
 	}
