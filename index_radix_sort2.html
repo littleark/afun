@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Quicksort</title>
+	<title>Radix Sort</title>
 	<script src="js/Vector2.js"></script>
 	<script src="js/Particle.js"></script>
 	<script src="js/fun.js"></script>
 	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-	<script src="js/AlgorithmView.js"></script>
+	<script src="js/AlgorithmView2.js"></script>
 	<style>
 		html,body {
 			margin:0;
@@ -56,7 +56,7 @@
 			fill:none;
 			stroke:#ffffff;
 		}
-		svg path.visible {
+		svg .visible path {
 			stroke-opacity:0.6;
 		}
 		path.highlight {
@@ -87,7 +87,7 @@
 	<span id="counter"></span>
 	<script>
 
-		var	WIDTH=1000,
+		var	WIDTH=1200,
 		   	HEIGHT=800;
 
 		var	canvas=document.getElementById("particles"),
@@ -99,7 +99,7 @@
 		var data=[];
 		var data2=[];
 
-		var NUMBERS=20;
+		var NUMBERS=6;
 
 		var qs_callback=null;
 
@@ -117,7 +117,7 @@
 			return o;
 		};
 
-		var steps=[];
+		
 
 		function getOrder(A) {
 			var B=[];
@@ -126,85 +126,60 @@
 			}
 			return B;
 		}
+		
+		var steps=[];
+		function RadixSort(nums) {
+			// Figure out the number of binary digits we're dealing with
+			var k = Math.max.apply(null, nums.map(function(i) {
+			    return Math.ceil(Math.log(i.index)/Math.log(2));
+			}));
 
-		function Partition(A,p,q) {
-		    var x=A[p].index,//A[Math.floor((q-p)/2)].index,
-		        i=p,
-		        tmp,
-		        tmp2;
-		    
-		    for(var j=p+1;j<=q;j++) {
-		        if(A[j].index<=x) {
-		            i=i+1;
-		            tmp=A[j];
-		            tmp2=A[i]; //for tracing purposes, not quicksort
-		            A[j]=A[i];
-		            A[i]=tmp;
-		            
-		            if(i!=j) {
-		            	items.push(getOrder(A));
-						steps.push({
-							from:j,
-							to:i,
-							fromE:tmp.index,
-							toE:tmp2.index,
-							items:getOrder(A)
-						})
-						/*
-						steps.push({
-							back:1,
-							p:A[j].p,
-							from:i,
-							to:j,
-							fromE:tmp.index,
-							toE:tmp2.index,
-							items:getOrder(A)
-						})
-						*/
-		            }
+			for (var d = 0; d < k; ++d) {
+			    for (var i = 0, p = 0, b = 1 << d, n = nums.length; i < n; ++i) {
+			        var o = nums[i].index;
+			        //console.log(o,"&",b)
+			        if ((o & b) == 0) {
+			            // this number is a 0 for this digit
+			            // move it to the front of the list
+			            steps.push([]);
+			            steps[steps.length-1].push({
+			            	index:nums[i].index,
+			            	from:i,
+			            	to:p
+			            	
+			            });
 
-		        }
-		    }
-		    tmp=A[p];
-		    tmp2=A[i]; //for tracing purposes, not quicksort
-		    A[p]=A[i];
-		    A[i]=tmp;
-		    
-		    if(p!=i) {
-		    	items.push(getOrder(A));
+			            for(var __i=i-1;__i>=p;__i--) {
+			            	steps[steps.length-1].push({
+				            	index:nums[__i].index,
+				            	from:__i,
+				            	to:__i+1
+				            });
+			            }
+			            
 
-				steps.push({
-					from:p,
-					to:i,
-					fromE:tmp.index,
-					toE:tmp2.index,
-					items:getOrder(A)
-				});
-				
-				/*
-				steps.push({
-					back:1,
-					p:A[p].p,
-					from:i,
-					to:p,
-					fromE:tmp.index,
-					toE:tmp2.index,
-					items:getOrder(A)
-				});
-				*/	
+			            nums.splice(p++, 0, nums.splice(i, 1)[0]);
+			            //console.log(p,i,nums)
+			            
+			            items.push(getOrder(nums));
+
+			            
+			            
+
+			            /*
+			            for(var __i=p-1;p>=0;p--) {
+			            	steps.push({
+				            	index:nums[__i+1].index,
+				            	from:__i+1,
+				            	to:__i
+				            });
+			            }
+			            */
+						
+			        }
+			    }
+			    //super_steps.push(cloneArray(nums));
 			}
-
-		    return i;
-		}
-
-		function Quicksort(A,p,q) {
-		    if(p<q) {
-		        var r=Partition(A,p,q);
-		        //setTimeout(function(){
-					Quicksort(A,p,r-1);
-					Quicksort(A,r+1,q);
-		        //},250);
-		    }
 		}
 
 		for(var i=0;i<NUMBERS;i++) {
@@ -220,19 +195,48 @@
 			data[i]=data2[i];
 		}
 
-		steps.push({
-			from:0,
-			to:0,
-			fromE:data2[0].index,
-			toE:data2[0].index,
-			items:getOrder(data2)
-		})
-
 
 		var items=[];
 		items.push(getOrder(data2));
 
-		Quicksort(data2,0,data2.length-1);
+		//console.log(items)
+
+		RadixSort(data2);
+
+		/*
+		var steps=[];
+		var already=[];
+		for(var i=1;i<items.length;i++) {
+			var prev=items[i-1],
+				curr=items[i];
+			steps[i-1]=[];
+			already[i-1]=[];
+			for(var j=0;j<prev.length;j++) {
+				var curr_j=curr.indexOf(prev[j]);
+				if(curr_j!=j) {
+					if(already[i-1].indexOf(prev[j]+"-"+curr[j])==-1 && already[i-1].indexOf(curr[j]+"-"+prev[j])==-1) {
+						steps[i-1].push({
+							to:curr_j,
+							to:j,
+							fromE:prev[j],
+							toE:curr[j]
+						});
+					}
+					already[i-1].push(prev[j]+"-"+curr[j]);
+				}
+			}
+		}
+		*/
+
+
+		
+		items.forEach(function(d,i){
+			if(i>0)
+				console.log(steps[i-1])
+			console.log(d);
+			
+		});
+		
 
 		
 		var qs_view=new AlgorithmView({
@@ -243,7 +247,7 @@
 			items:items,
 			grouping:1
 		});
-
+		
 		//qs_view.show(0);
 
 		d3.select("#stepper span").text(steps.length-2)

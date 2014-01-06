@@ -13,22 +13,12 @@ function AlgorithmView(options){
 	var steps=options.steps || [],
 		grouping=options.grouping || 1,
 		current_steps=0,
-		current_step=0;//steps.length-1;
+		current_step=-1;//steps.length-1;
 
 	var items=options.items || [];
 
 	console.log("ITEMS",items.length,"STEPS",steps.length);
 
-	/*
-	options.steps.forEach(function(d){
-		steps.push(d);
-		steps.push({
-			from:d.to,
-			to:d.from,
-			p:d.p2
-		});
-	});
-	*/
 	var xscale=d3.scale.linear().domain([0,items[0].length-1]).range([0,WIDTH-margins.left-margins.right]);
 	
 	var	code=options.code,
@@ -59,7 +49,7 @@ function AlgorithmView(options){
 						var x=xscale(i),
 							y=HEIGHT/2;
 
-						console.log(i,x,xscale.range(),xscale.domain())
+						//console.log(i,x,xscale.range(),xscale.domain())
 
 						return "translate("+x+","+y+")";
 					});
@@ -94,52 +84,6 @@ function AlgorithmView(options){
 				.text(function(d){
 					return d;
 				})
-	
-	var circles2=svg.append("g")
-						.attr("id","circles2")
-						.attr("transform","translate("+margins.left+","+margins.top+")")
-						.style("display","none")
-
-	circles2=circles2.selectAll("g.circle")
-				.data(items[0])
-				.enter()
-				.append("g")
-					.attr("id",function(d){
-						return "pp"+d;
-					})
-					.attr("class","circle")
-					.attr("transform",function(d,i){
-						var x=xscale(i),
-							y=HEIGHT/2;
-
-						return "translate("+x+","+y+")";
-					});
-
-	circles2.append("circle")
-				.attr("cx",0)
-				.attr("cy",-30)
-				.attr("r",function(d){
-					return 1+d;
-				})
-
-	circles2.append("text")
-				.attr("x",0)
-				.attr("y",function(d){
-					return -30-1-d-10;
-				})
-				.attr("text-anchor","middle")
-				.text(function(d){
-					return d;
-				})
-
-	var line = d3.svg.line()
-				.x(function(d) {
-					return d.x;
-				})
-				.y(function(d){
-					return d.y
-				})
-				//.interpolate("basis");
 
 	//myData.sort().filter(function(el,i,a){if(i==a.indexOf(el))return 1;return 0})
 	var traces=svg.append("g")
@@ -149,7 +93,46 @@ function AlgorithmView(options){
 	var traces_opposite=svg.append("g")
 					.attr("id","traces_opposite")
 					.attr("transform","translate("+margins.left+","+margins.top+")");
+	traces=traces.selectAll("g.step")
+				.data(steps)
+				.enter()
+					.append("g")
+					.attr("class","step")
+					.attr("rel",function(d,i){
+						return "step_"+i;
+					});
+	
+	traces.selectAll("path")
+			.data(function(d){
+				return d;
+			})
+			.enter()
+				.append("path")
+				.attr("d",function(d,i){
+					//console.log("adding",i,d);
+				
+					var	x1=xscale(d.from),
+					   	x2=xscale(d.to),
+					   	y=HEIGHT/2,
+					   	c1x=x1+(x2-x1)/2,
+					   	c1y=HEIGHT/2-(x2-x1)/2;
+					//console.log(i,d)
+					return "M"+x1+","+y+"Q"+c1x+","+c1y+","+x2+","+y;
+					
+				})
+				.style("stroke",function(d){
+					return color(d.index);
+				})
 
+	traces
+		.selectAll("path")
+			.attr("stroke-dashoffset",0)
+			.attr("stroke-dasharray",function(d){
+				var len=d3.select(this).node().getTotalLength();
+				return len+" "+len;
+			});
+
+	/*
 	traces=traces.selectAll("path.trace")
 				.data(steps)
 				.enter()
@@ -174,6 +157,7 @@ function AlgorithmView(options){
 							return color(d.fromE)
 							return d.p.strokeStyle;
 						})
+	
 	traces
 		.attr("stroke-dashoffset",0)
 		.attr("stroke-dasharray",function(d){
@@ -212,14 +196,16 @@ function AlgorithmView(options){
 			var len=d3.select(this).node().getTotalLength();
 			return len+" "+len;
 		});
-
+	*/
 	var self=this;
 	var DURATION=500;
 	var animating=false;
+
 	this.show=function(n,animate){
 		if(animating) {
 			return;
 		}
+
 		animating=true;
 		var n=(typeof n == "undefined")?steps.length-1:n;
 
@@ -227,32 +213,32 @@ function AlgorithmView(options){
 			return;
 		}
 
-		var back=0;
-		if(current_step>n) {
-			back=1;
-		}
-
 		current_step=n;
+		
+		//console.log(steps[n].fromE,steps[n].toE,traces[0][current_step])
 
-		console.log(steps[n].fromE,steps[n].toE,traces[0][current_step])
-
-		traces.classed("visible",false).classed("visible",function(d,i){
-			return i<=current_step;
-		});
 		traces
+			.classed("visible",false).classed("visible",function(d,i){
+				return i<=current_step;
+			});
+
+		var this_traces=traces
 			.filter(function(d,i){
 				return i==current_step;
-			})
-			.transition()
-			//.ease("linear")
-			.duration(DURATION)
-			.attrTween("stroke-dashoffset",function(d,i){
-				var len = this.getTotalLength();
-				return function(t) {
-					return len*(1-t);
-				}
-			})
+			});
 
+		this_traces
+			.selectAll("path")
+				.transition()
+				//.ease("linear")
+				.duration(DURATION)
+				.attrTween("stroke-dashoffset",function(d,i){
+					var len = this.getTotalLength();
+					return function(t) {
+						return len*(1-t);
+					}
+				})
+		/*
 		traces_opposite.classed("visible",false).classed("visible",function(d,i){
 			return i<=current_step;
 		});
@@ -270,7 +256,53 @@ function AlgorithmView(options){
 					return len*(1-t);
 				}
 			})
+		*/
+		circles
+			.data(steps[current_step].map(function(d){
+				d.back=false;
+				if(d.from>d.to) {
+					d.back=true;
+				}
+				return d.index;
+			}),function(d){
+				return d;
+			})
+			.transition()
+			//.ease("linear")
+			.duration(DURATION)
+				.attrTween("transform",function(d){
+					return function(t){
+						//console.log(d);
+						
+						var path=this_traces
+							.selectAll("path")
+							.filter(function(p){
+								//console.log(p)
+								return p.index==d;
+							})
+							.node();
 
+						//console.log("path",path)
+
+
+						
+						var len = path.getTotalLength();
+						var p = path.getPointAtLength(d.back?(len-len*t):(len*t));
+
+						//console.log("getPointAt",d.index,steps[n].fromE+"-"+steps[n].toE,t,"*",len,"=",len*t,p)
+						return "translate("+[(p.x),d.back?(HEIGHT/2 + (HEIGHT/2 - p.y)):p.y]+")"
+						
+					}
+				})
+				.each("end",function(d,i){
+					console.log("END",d,i)
+					animating=false;
+					if(i==steps[current_step].length-1 && animate) {
+						self.stepNext(animate);
+					}
+				})
+
+		/*
 		circles
 			.data(
 				(	back
@@ -302,7 +334,7 @@ function AlgorithmView(options){
 					if(i && animate) {
 						self.stepNext(animate);
 					}
-				})
+				})*/
 
 	}			
 	this.goTo=function(n) {
@@ -399,24 +431,7 @@ function AlgorithmView(options){
 				}
 			})*/
 			
-		circles2
-			.data(items[current_step],function(d,i){
-				d.i=i;
-				return d;
-			})/*
-			.filter(function(d,i){
-				//console.log(d.index)
-				//console.log((d.index==steps[n].fromE || d.index==steps[n].toE),(d.index+"=="+steps[n].fromE+" || "+d.index+"=="+steps[n].toE))
-				return (d.index==steps[__n].fromE || d.index==steps[__n].toE);
-			})*/
-			.transition()
-			.duration(DURATION)
-			.attr("transform",function(d,i){
-				var x=xscale(i),
-					y=HEIGHT/2;
 
-				return "translate("+x+","+y+")";
-			});	
 			
 			
 	}
@@ -425,21 +440,16 @@ function AlgorithmView(options){
 			return;
 		}
 		this.show(current_step+grouping,animate);
-		this.show2(current_step);
+		
 	}
 	this.stepPrev=function() {
 		if(animating) {
 			return;
 		}
 		this.show(current_step-grouping);
-		this.show2(current_step);
+		
 	}
-	this.jumpTo=function(n){
-		if(animating) {
-			return;
-		}
-		this.show2(n);
-	}
+
 	this.getCurrentStep=function() {
 		return current_step;
 	}

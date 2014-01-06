@@ -7,7 +7,7 @@
 	<script src="js/Particle.js"></script>
 	<script src="js/fun.js"></script>
 	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-	<script src="js/AlgorithmView.js"></script>
+	<script src="js/AlgorithmView2.js"></script>
 	<style>
 		html,body {
 			margin:0;
@@ -56,7 +56,7 @@
 			fill:none;
 			stroke:#ffffff;
 		}
-		svg path.visible {
+		svg .visible path {
 			stroke-opacity:0.6;
 		}
 		path.highlight {
@@ -143,12 +143,16 @@
 		            
 		            if(i!=j) {
 		            	items.push(getOrder(A));
-						steps.push({
+		            	steps.push([]);
+						steps[steps.length-1].push({
 							from:j,
 							to:i,
-							fromE:tmp.index,
-							toE:tmp2.index,
-							items:getOrder(A)
+							index:tmp.index
+						})
+						steps[steps.length-1].push({
+							from:i,
+							to:j,
+							index:tmp2.index
 						})
 						/*
 						steps.push({
@@ -173,14 +177,17 @@
 		    if(p!=i) {
 		    	items.push(getOrder(A));
 
-				steps.push({
+				steps.push([]);
+				steps[steps.length-1].push({
 					from:p,
 					to:i,
-					fromE:tmp.index,
-					toE:tmp2.index,
-					items:getOrder(A)
+					index:tmp.index
 				});
-				
+				steps[steps.length-1].push({
+					from:i,
+					to:p,
+					index:tmp2.index
+				})
 				/*
 				steps.push({
 					back:1,
@@ -215,19 +222,11 @@
 		//data2.reverse();
 
 		data2=[{"index":6},{"index":0},{"index":8},{"index":11},{"index":4},{"index":17},{"index":15},{"index":7},{"index":1},{"index":16},{"index":3},{"index":12},{"index":9},{"index":5},{"index":19},{"index":14},{"index":2},{"index":10},{"index":18},{"index":13}];
-		
+
+		//console.log(JSON.stringify(data2))
 		for(var i=0;i<data2.length;i++) {
 			data[i]=data2[i];
 		}
-
-		steps.push({
-			from:0,
-			to:0,
-			fromE:data2[0].index,
-			toE:data2[0].index,
-			items:getOrder(data2)
-		})
-
 
 		var items=[];
 		items.push(getOrder(data2));
