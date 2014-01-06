@@ -132,91 +132,183 @@
 		function getOrder(A) {
 			var B=[];
 			for(var i=0;i<A.length;i++) {
-				B.push(A[i].index);
+				B.push(A[i]?A[i].index:null);
 			}
 			return B;
 		}
 		
 		var steps=[];
-		function RadixSort(nums) {
-			// Figure out the number of binary digits we're dealing with
-			var k = Math.max.apply(null, nums.map(function(i) {
-			    return Math.ceil(Math.log(i.index)/Math.log(2));
-			}));
 
-			for (var d = 0; d < k; ++d) {
-			    for (var i = 0, p = 0, b = 1 << d, n = nums.length; i < n; ++i) {
-			        var o = nums[i].index;
-			        //console.log(o,"&",b)
-			        if ((o & b) == 0) {
-			            // this number is a 0 for this digit
-			            // move it to the front of the list
-			            steps.push([]);
-			            steps[steps.length-1].push({
-			            	index:nums[i].index,
-			            	from:i,
-			            	to:p
-			            	
+		function Shellsort(nums) {
+
+		    var tempoSS = new Date();
+		    var n = nums.length;
+		    //console.log("n = ",n);
+
+		    // HERE:
+		    var h = Math.floor(n / 2);
+
+		    
+
+		    //console.log("h = ",h);
+		    var c, j;
+
+		    //gaps => Math.floor(n/(2**k)) --> original gaps by Shell 1959
+		    //h=n/2, then gaps are h/2,h/4,h/8,h/16
+		    //n=100 => 50,25,12,6,3,1,0
+
+		    var gaps=[701, 301, 132, 57, 23, 10, 4, 1];
+
+		    while (gaps.length) {
+		        for (var i = h; i < n; i++) {
+
+		        	steps.push([]);
+
+		            c = nums[i];
+		            j = i;
+		            while (j >= h && nums[j - h].index > c.index) {
+
+		            	steps[steps.length-1].push({
+			            	index:nums[j - h].index,
+			            	from:j - h,
+			            	to:j
 			            });
 
-			            for(var __i=i-1;__i>=p;__i--) {
-			            	steps[steps.length-1].push({
-				            	index:nums[__i].index,
-				            	from:__i,
-				            	to:__i+1
-				            });
-			            }
-			            
+		                nums[j] = nums[j - h];
+		                j = j - h;
+		    			
+		            }
+		            nums[j] = c;
 
-			            nums.splice(p++, 0, nums.splice(i, 1)[0]);
-			            //console.log(p,i,nums)
-			            
-			           var new_items=getOrder(nums);
-			    		if(items.length>0 && compareArray(items[items.length-1],new_items)) {
-			    			steps.pop();
-			    		} else {
-			    			items.push(new_items);
-			    		}
+		    		steps[steps.length-1].push({
+		            	index:c.index,
+		            	from:i,
+		            	to:j
+		            });
+		    		
+		    		var new_items=getOrder(nums);
+		    		if(items.length>0 && compareArray(items[items.length-1],new_items)) {
+		    			steps.pop();
+		    		} else {
+		    			items.push(new_items);
+		    		}
+		            
+		        }
 
-			            
-			            
+		        // AND HERE:
+		        //h = Math.floor(h / 2);
+		        h=gaps.pop();
+		    //console.log("h = ",h);
+		    }
+		}
 
+		function Heapsort(n, ra) {
+		    var l, j, ir, i;
+		    var rra;
+
+		    l = (n >> 1) + 1;
+		    ir = n;
+		    for (;;) {
+		    	var pos;
+		    	steps.push([]);
+
+		        if (l > 1) {
+		            rra = ra[--l];
+		            pos=l-1;
+		        } else {
+		            rra = ra[ir];
+		            pos=ir;
+		            steps[steps.length-1].push({
+		            	index:ra[1].index,
+		            	from:1-1,
+		            	to:ir-1
+		            });
+		            ra[ir] = ra[1];
+		            if (--ir == 1) {
+		               
+		                steps[steps.length-1].push({
+			            	index:rra.index,
+			            	from:pos-1,
+			            	to:1-1
+			            });
 			            /*
-			            for(var __i=p-1;p>=0;p--) {
-			            	steps.push({
-				            	index:nums[__i+1].index,
-				            	from:__i+1,
-				            	to:__i
-				            });
-			            }
-			            */
-						
-			        }
-			    }
-			    //super_steps.push(cloneArray(nums));
-			}
+			            steps[steps.length-1].push({
+			            	index:ra[1].index,
+			            	from:1-1,
+			            	to:pos-1
+			            });
+						*/
+			            ra[1] = rra;
+		                return ra;
+		            }
+		        }
+		        i = l;
+		        j = l << 1;
+		        while (j <= ir) {
+		            if (j < ir && ra[j].index < ra[j+1].index) { ++j; }
+		            if (rra.index < ra[j].index) {
+		            	var c=ra[j],
+		            		cc=ra[i];
+		                steps[steps.length-1].push({
+			            	index:c.index,
+			            	from:j-1,
+			            	to:i-1
+			            });
+			            /*
+			            steps[steps.length-1].push({
+			            	index:cc.index,
+			            	from:i-1,
+			            	to:j-1
+			            });
+						*/
+			            ra[i] = ra[j];
+		                j += (i = j);
+		            } else {
+		                j = ir + 1;
+		            }
+		        }
+
+		        steps[steps.length-1].push({
+	            	index:rra.index,
+	            	from:l-1,
+	            	to:i-1
+	            });
+
+		        ra[i] = rra;
+		        
+		        var new_items=getOrder(ra);
+	    		if(items.length>0 && compareArray(items[items.length-1],new_items)) {
+	    			steps.pop();
+	    		} else {
+	    			items.push(new_items);
+	    		}
+				
+		        //items.push(getOrder(ra));
+		        //console.log(ra)
+		    }
+		    return ra;
 		}
 
-		for(var i=0;i<NUMBERS;i++) {
-			addData(data2);
-		}
+		
 
 		shuffle(data2);
 		//data2.reverse();
 
 		data2=[{"index":6},{"index":0},{"index":8},{"index":11},{"index":4},{"index":17},{"index":15},{"index":7},{"index":1},{"index":16},{"index":3},{"index":12},{"index":9},{"index":5},{"index":19},{"index":14},{"index":2},{"index":10},{"index":18},{"index":13}];
 
-		for(var i=0;i<data2.length;i++) {
-			data[i]=data2[i];
+		data=Array(data2.length+1);
+
+		for(var i=1;i<=data2.length;i++) {
+		    data[i]=data2[i-1];
 		}
 
-
 		var items=[];
-		items.push(getOrder(data2));
+		items.push(getOrder(data));
 
 		//console.log(items)
-
-		RadixSort(data2);
+		var ra=Heapsort(data.length-1,data);
+		
+		items.push(getOrder(ra));
 
 		/*
 		var steps=[];
@@ -246,11 +338,13 @@
 
 		
 		items.forEach(function(d,i){
+			d.shift();
 			if(i>0)
 				console.log(steps[i-1])
 			console.log(d);
 			
 		});
+		
 		
 
 		

@@ -209,9 +209,19 @@ function AlgorithmView(options){
 		animating=true;
 		var n=(typeof n == "undefined")?steps.length-1:n;
 
-		if(n<0 || n>steps.length-1){
+		var back=0;
+		if(current_step>n) {
+			back=1;
+		}
+
+		
+		if(n+back<0 || n>steps.length-1){
 			return;
 		}
+
+		
+
+		
 
 		current_step=n;
 		
@@ -219,12 +229,12 @@ function AlgorithmView(options){
 
 		traces
 			.classed("visible",false).classed("visible",function(d,i){
-				return i<=current_step;
+				return i<=current_step+back;
 			});
 
 		var this_traces=traces
 			.filter(function(d,i){
-				return i==current_step;
+				return i==current_step+back;
 			});
 
 		this_traces
@@ -235,7 +245,7 @@ function AlgorithmView(options){
 				.attrTween("stroke-dashoffset",function(d,i){
 					var len = this.getTotalLength();
 					return function(t) {
-						return len*(1-t);
+						return back?(len-len*(1-t)):len*(1-t);
 					}
 				})
 		/*
@@ -257,12 +267,9 @@ function AlgorithmView(options){
 				}
 			})
 		*/
+		console.log("BACK IS ",back)
 		circles
-			.data(steps[current_step].map(function(d){
-				d.back=false;
-				if(d.from>d.to) {
-					d.back=true;
-				}
+			.data(steps[current_step+back].map(function(d){
 				return d.index;
 			}),function(d){
 				return d;
@@ -287,17 +294,17 @@ function AlgorithmView(options){
 
 						
 						var len = path.getTotalLength();
-						var p = path.getPointAtLength(d.back?(len-len*t):(len*t));
+						var p = path.getPointAtLength((back)?(len-len*t):(len*t));
 
 						//console.log("getPointAt",d.index,steps[n].fromE+"-"+steps[n].toE,t,"*",len,"=",len*t,p)
-						return "translate("+[(p.x),d.back?(HEIGHT/2 + (HEIGHT/2 - p.y)):p.y]+")"
+						return "translate("+[(p.x),(back)?(HEIGHT/2 - (HEIGHT/2 - p.y)):p.y]+")"
 						
 					}
 				})
 				.each("end",function(d,i){
-					console.log("END",d,i,"==",(steps[current_step].length-1))
+					console.log("END",d,i,"==",(steps[current_step+back].length-1))
 					animating=false;
-					if(i==steps[current_step].length-1 && animate) {
+					if(i==steps[current_step+back].length-1 && animate) {
 						console.log("----")
 						self.stepNext(animate);
 					}
