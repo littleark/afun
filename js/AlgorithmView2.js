@@ -295,9 +295,10 @@ function AlgorithmView(options){
 					}
 				})
 				.each("end",function(d,i){
-					console.log("END",d,i)
+					console.log("END",d,i,"==",(steps[current_step].length-1))
 					animating=false;
 					if(i==steps[current_step].length-1 && animate) {
+						console.log("----")
 						self.stepNext(animate);
 					}
 				})
