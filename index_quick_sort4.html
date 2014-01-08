@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Quicksort</title>
+	<title>Quick Sort</title>
 	<script src="js/Vector2.js"></script>
 	<script src="js/Particle.js"></script>
 	<script src="js/fun.js"></script>
@@ -35,7 +35,7 @@
 		var data=[];
 		var data2=[];
 
-		var NUMBERS=50;
+		var NUMBERS=6;
 
 		var qs_callback=null;
 
@@ -53,101 +53,160 @@
 			return o;
 		};
 
-		var steps=[];
+		function compareArray(a,b) {
+			//console.log(a,b)
+			for(var i=0;i<a.length;i++) {
+				if(a[i]!=b[i]) {
+					//console.log(false)
+					return false;
+				}
+			}
+			//console.log(true)
+			return true;
+		}
 
 		function getOrder(A) {
 			var B=[];
 			for(var i=0;i<A.length;i++) {
-				B.push(A[i].index);
+				B.push(A[i]?A[i].index:null);
 			}
 			return B;
 		}
 
-		function Partition(A,p,q) {
-		    var x=A[p].index,//A[Math.floor((q+p)/2)].index,//A[p].index,
-		        i=p,
-		        tmp,
-		        tmp2;
-		    
-		    for(var j=p+1;j<=q;j++) {
-		    	steps.push([]);	
-		        if(A[j].index<=x) {
-		            i=i+1;
-		            tmp=A[j];
-		            tmp2=A[i]; //for tracing purposes, not quicksort
-		            A[j]=A[i];
-		            A[i]=tmp;
-		            
-		            if(i!=j) {
-		            	items.push(getOrder(A));
-		            	
-						steps[steps.length-1].push({
-							from:j,
-							to:i,
-							index:tmp.index
-						})
-						steps[steps.length-1].push({
-							from:i,
-							to:j,
-							index:tmp2.index
-						})
-		            }
+		function cloneArray(A) {
+			var B=[];
+			for(var i=0;i<A.length;i++) {
+				B.push(A[i]);
+			}
+			return B;
+		}
 
+		function addStep(index,from,to) {
+			//console.log(index,from,"->",to)
+			if(from==to)
+				return;
+			steps[steps.length-1].push({
+            	index:index,
+            	from:from,
+            	to:to
+            });
+		}
+
+
+		
+		var steps=[];
+
+		function QuickSort(a,left,right) {
+		    var i = left;
+		    var j = right;
+		    var pivotValue = Math.floor((left + right) / 2);
+		    var x = a[pivotValue];
+
+		    while (i <= j) {
+		    	while (a[i] < x) {
+		            i++;
+		        }
+		        while (x < a[j]) {
+		            j--;
+		        }
+		        if (i <= j) {
+		        	steps.push([]);
+		            var temp = a[i];
+
+		            addStep(a[j],j,i);
+		            addStep(temp,i,j);
+
+		            a[i] = a[j];
+		            //RedrawItem(i);
+		            i++;
+		            a[j] = temp;
+		            //RedrawItem(j);
+		            j--;
+		            /*
+		            pnlSamples.Refresh();
+		            if (chkCreateAnimation.Checked)
+		                SavePicture();
+		            */
 		        }
 		    }
-		    tmp=A[p];
-		    tmp2=A[i]; //for tracing purposes, not quicksort
-		    A[p]=A[i];
-		    A[i]=tmp;
-		    
-		    if(p!=i) {
-		    	items.push(getOrder(A));
-
-				steps.push([]);
-				steps[steps.length-1].push({
-					from:p,
-					to:i,
-					index:tmp.index
-				});
-				steps[steps.length-1].push({
-					from:i,
-					to:p,
-					index:tmp2.index
-				})
-			}
-			
-
-		    return i;
-		}
-
-		function Quicksort(A,p,q) {
-		    if(p<q) {
-		        var r=Partition(A,p,q);
-		        //setTimeout(function(){
-					Quicksort(A,p,r-1);
-					Quicksort(A,r+1,q);
-		        //},250);
+		    if (left < j) {
+		        QuickSort(a, left, j);
 		    }
+		    if (i < right) {
+		        QuickSort(a, i, right);
+		    }
+		    return a;
 		}
 
-		for(var i=0;i<NUMBERS;i++) {
-			addData(data2);
+		function swap(list, a, b) {
+			steps.push([]);
+			addStep(list[a],a,b);
+			addStep(list[b],b,a);
+
+			var tmp=list[a];
+			list[a]=list[b];
+			list[b]=tmp;
 		}
+		function partition(array, begin, end, pivot) {
+			//steps.push([]);
+
+			var piv=array[pivot];
+
+			swap(array, pivot, end-1);
+			var store=begin;
+			var ix;
+			for(ix=begin; ix<end-1; ++ix) {
+				if(array[ix]<=piv) {
+
+					swap(array,store, ix);
+					++store;
+				}
+			}
+			swap(array,end-1, store);
+
+			return store;
+		}
+		function qsort(array, begin, end) {
+			if(end-1>begin) {
+				var pivot=begin+Math.floor(Math.random()*(end-begin));
+
+				pivot=partition(array, begin, end, pivot);
+
+				qsort(array, begin, pivot);
+				qsort(array, pivot+1, end);
+			}
+		}
+
 
 		shuffle(data2);
 		//data2.reverse();
 
 		data2=[{"index":6},{"index":0},{"index":8},{"index":11},{"index":4},{"index":17},{"index":15},{"index":7},{"index":1},{"index":16},{"index":3},{"index":12},{"index":9},{"index":5},{"index":19},{"index":14},{"index":2},{"index":10},{"index":18},{"index":13}];
 		//data2=[{"index":74},{"index":33},{"index":83},{"index":38},{"index":67},{"index":60},{"index":15},{"index":29},{"index":71},{"index":42},{"index":85},{"index":70},{"index":16},{"index":82},{"index":20},{"index":62},{"index":91},{"index":94},{"index":43},{"index":10},{"index":11},{"index":35},{"index":26},{"index":88},{"index":51},{"index":31},{"index":6},{"index":90},{"index":22},{"index":19},{"index":23},{"index":39},{"index":9},{"index":77},{"index":36},{"index":46},{"index":80},{"index":14},{"index":95},{"index":86},{"index":58},{"index":89},{"index":27},{"index":12},{"index":32},{"index":50},{"index":17},{"index":97},{"index":84},{"index":57},{"index":76},{"index":65},{"index":93},{"index":25},{"index":13},{"index":59},{"index":63},{"index":4},{"index":49},{"index":1},{"index":48},{"index":96},{"index":53},{"index":72},{"index":41},{"index":30},{"index":8},{"index":87},{"index":40},{"index":37},{"index":18},{"index":7},{"index":98},{"index":56},{"index":64},{"index":24},{"index":54},{"index":5},{"index":47},{"index":68},{"index":34},{"index":0},{"index":81},{"index":79},{"index":28},{"index":73},{"index":21},{"index":61},{"index":75},{"index":69},{"index":2},{"index":3},{"index":44},{"index":99},{"index":55},{"index":92},{"index":45},{"index":52},{"index":78},{"index":66}] ;
-		//console.log(JSON.stringify(data2))
-		for(var i=0;i<data2.length;i++) {
-			data[i]=data2[i];
-		}
+
+
 
 		var items=[];
 		items.push(getOrder(data2));
 
-		Quicksort(data2,0,data2.length-1);
+		//console.log(items)
+		//var ra=Heapsort(data.length-1,data);
+		var ra=qsort(getOrder(data2),0,data2.length-1);
+		
+		items.push((ra));
+
+
+
+
+		
+		items.forEach(function(d,i){
+			if(i>0)
+				console.log(steps[i-1])
+			console.log(d);
+			
+		});
+		
+		
 
 		
 		var qs_view=new AlgorithmView({

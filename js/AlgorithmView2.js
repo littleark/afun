@@ -128,7 +128,9 @@ function AlgorithmView(options){
 
 	traces
 		.selectAll("path")
-			.attr("stroke-dashoffset",0)
+			.attr("stroke-dashoffset",function(d){
+				return d3.select(this).node().getTotalLength();
+			})
 			.attr("stroke-dasharray",function(d){
 				var len=d3.select(this).node().getTotalLength();
 				return len+" "+len;
@@ -232,12 +234,12 @@ function AlgorithmView(options){
 		callback();
 
 		//console.log(steps[n].fromE,steps[n].toE,traces[0][current_step])
-
+		/*
 		traces
 			.classed("visible",false).classed("visible",function(d,i){
 				return i<=current_step+back;
-			});
-
+			})
+		*/
 		var this_traces=traces
 			.filter(function(d,i){
 				return i==current_step+back;
@@ -246,6 +248,7 @@ function AlgorithmView(options){
 		this_traces
 			.selectAll("path")
 				.transition()
+				.delay(250)
 				//.ease("linear")
 				.duration(DURATION)
 				.attrTween("stroke-dashoffset",function(d,i){
@@ -280,7 +283,9 @@ function AlgorithmView(options){
 			}),function(d){
 				return d;
 			})
+			.classed("swap",true)
 			.transition()
+			.delay(250)
 			//.ease("linear")
 			.duration(DURATION)
 				.attrTween("transform",function(d){
@@ -308,6 +313,7 @@ function AlgorithmView(options){
 					}
 				})
 				.each("end",function(d,i){
+					d3.select(this).classed("swap",false)
 					console.log("END",d,i,"==",(steps[current_step+back].length-1))
 					animating=false;
 					if(i==steps[current_step+back].length-1 && animate) {

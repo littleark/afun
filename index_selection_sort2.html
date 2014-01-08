@@ -8,71 +8,7 @@
 	<script src="js/fun.js"></script>
 	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 	<script src="js/AlgorithmView2.js"></script>
-	<style>
-		html,body {
-			margin:0;
-			padding:10px;
-			background: #000;
-			font-family: Arial;
-			position: relative;
-		}
-		#counter {
-			position: absolute;
-			top: 20px;
-			left: 20px;
-			color:#fff;
-			font-size: 20px
-		}
-		#traces {
-			position: absolute;
-			top:10px;
-			left:10px;
-		}
-		#stepper {
-			position: absolute;
-			top:300px;
-			left:10px;
-			color:#fff;
-			width: 80px;
-		}
-		#stepper span {
-			min-width: 30px;
-			display: block;
-			float: left;
-			text-align: center;
-		}
-		#stepper a {
-			color:#fff;
-			text-decoration: none;
-			float: left;
-			display: block;
-		}
-		#stepper a:hover {
-			color:#ffff00;
-		}
-		svg path {
-			stroke-opacity:0;
-			stroke-width:1;
-			fill:none;
-			stroke:#ffffff;
-		}
-		svg .visible path {
-			stroke-opacity:0.6;
-		}
-		path.highlight {
-			stroke-opacity:1;
-			stroke-width:2;
-		}
-		svg circle {
-			fill:#fff;
-			fill-opacity:0.6;
-		}
-		svg .circle text {
-			fill:#22abef;
-			font-size: 10px;
-			font-family: Arial;
-		}
-	</style>
+	<link rel="stylesheet" href="css/a.css">
 </head>
 <body>
 	<canvas id="particles"></canvas>
@@ -285,6 +221,8 @@
 		//data2.reverse();
 
 		data2=[{"index":6},{"index":0},{"index":8},{"index":11},{"index":4},{"index":17},{"index":15},{"index":7},{"index":1},{"index":16},{"index":3},{"index":12},{"index":9},{"index":5},{"index":19},{"index":14},{"index":2},{"index":10},{"index":18},{"index":13}];
+		
+data2=[{"index":74},{"index":33},{"index":83},{"index":38},{"index":67},{"index":60},{"index":15},{"index":29},{"index":71},{"index":42},{"index":85},{"index":70},{"index":16},{"index":82},{"index":20},{"index":62},{"index":91},{"index":94},{"index":43},{"index":10},{"index":11},{"index":35},{"index":26},{"index":88},{"index":51},{"index":31},{"index":6},{"index":90},{"index":22},{"index":19},{"index":23},{"index":39},{"index":9},{"index":77},{"index":36},{"index":46},{"index":80},{"index":14},{"index":95},{"index":86},{"index":58},{"index":89},{"index":27},{"index":12},{"index":32},{"index":50},{"index":17},{"index":97},{"index":84},{"index":57},{"index":76},{"index":65},{"index":93},{"index":25},{"index":13},{"index":59},{"index":63},{"index":4},{"index":49},{"index":1},{"index":48},{"index":96},{"index":53},{"index":72},{"index":41},{"index":30},{"index":8},{"index":87},{"index":40},{"index":37},{"index":18},{"index":7},{"index":98},{"index":56},{"index":64},{"index":24},{"index":54},{"index":5},{"index":47},{"index":68},{"index":34},{"index":0},{"index":81},{"index":79},{"index":28},{"index":73},{"index":21},{"index":61},{"index":75},{"index":69},{"index":2},{"index":3},{"index":44},{"index":99},{"index":55},{"index":92},{"index":45},{"index":52},{"index":78},{"index":66}] ;
 		
 		for(var i=0;i<data2.length;i++) {
 			data[i]=data2[i];
