@@ -231,15 +231,9 @@ function AlgorithmView(options){
 
 		current_step=n;
 		
-		callback();
+		//callback();
 
-		//console.log(steps[n].fromE,steps[n].toE,traces[0][current_step])
-		/*
-		traces
-			.classed("visible",false).classed("visible",function(d,i){
-				return i<=current_step+back;
-			})
-		*/
+
 		var this_traces=traces
 			.filter(function(d,i){
 				return i==current_step+back;
@@ -257,26 +251,9 @@ function AlgorithmView(options){
 						return back?(len-len*(1-t)):len*(1-t);
 					}
 				})
-		/*
-		traces_opposite.classed("visible",false).classed("visible",function(d,i){
-			return i<=current_step;
-		});
 
-		traces_opposite
-			.filter(function(d,i){
-				return i==current_step;
-			})
-			.transition()
-			//.ease("linear")
-			.duration(DURATION)
-			.attrTween("stroke-dashoffset",function(d,i){
-				var len = this.getTotalLength();
-				return function(t) {
-					return len*(1-t);
-				}
-			})
-		*/
-		console.log("BACK IS ",back)
+		console.log("BACK IS ",back,steps[current_step+back])
+
 		circles
 			.data(steps[current_step+back].map(function(d){
 				return d.index;
@@ -321,40 +298,6 @@ function AlgorithmView(options){
 						self.stepNext(animate);
 					}
 				})
-
-		/*
-		circles
-			.data(
-				(	back
-					?
-					[steps[current_step+1].toE,steps[current_step+1].fromE]
-					:
-					[steps[current_step].fromE,steps[current_step].toE]
-				)
-				,function(d){
-				return d;
-			})
-			.transition()
-			//.ease("linear")
-			.duration(DURATION)
-				.attrTween("transform",function(d,i){
-					return function(t){
-						//console.log(d);
-						
-						var len = traces[0][current_step+back].getTotalLength();
-						var p = traces[0][current_step+back].getPointAtLength(i?(len-len*t):(len*t));
-
-						//console.log("getPointAt",d.index,steps[n].fromE+"-"+steps[n].toE,t,"*",len,"=",len*t,p)
-						return "translate("+[(p.x),i?(HEIGHT/2 + (HEIGHT/2 - p.y)):p.y]+")"
-					}
-				})
-				.each("end",function(d,i){
-					console.log("END",d,i)
-					animating=false;
-					if(i && animate) {
-						self.stepNext(animate);
-					}
-				})*/
 
 	}			
 	this.goTo=function(n) {
