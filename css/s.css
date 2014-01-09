@@ -1,29 +1,139 @@
+.clearfix:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+ 
+.clearfix {
+	display: inline-block;
+}
+ 
+html[xmlns] .clearfix {
+	display: block;
+}
+ 
+* html .clearfix {
+	height: 1%;
+}
 html,body {
 	margin:0;
 	padding:10px;
 	background: #000;
+	color:#fff;
 	font-family: Arial;
 	position: relative;
 }
-
-
+#wrapper {
+	width: 960px;
+	margin:0 auto;
+	position: relative;
+}
+#header {
+	height: 50px;
+	border-bottom: 1px solid #333;
+}
+#header h1 {
+	color:#fff;
+	font-family: 'Alegreya Sans', sans-serif;
+	font-size: 30px;
+	font-weight: 100;
+	text-transform: uppercase;
+	text-align: center;
+	margin: 0;
+	padding: 0;
+	text-rendering: optimizelegibility;
+	text-shadow: 0px 0px 1px #fff;
+}
+#footer {
+	border-top: 1px solid #333;
+}
+#footer h5 {
+	color:#fff;
+	font-family: 'Alegreya Sans', sans-serif;
+	font-size: 17px;
+	font-weight: 100;
+	text-align: center;
+	text-transform: uppercase;
+	margin: 0;
+	padding: 0;
+	text-rendering: optimizelegibility;
+	text-shadow: 0px 0px 1px #fff;
+}
 #algorithms {
 	width:960px;
 }
-#algorithms div.algorithm {
-	width:100%;
-	height:400px;
-	border:1px solid #333;
+#algorithms div.add {
+	width: 100%;
 	position: relative;
+	float: left;
+}
+#add a.plus {
+	display: block;
+	width:30px;
+	height: 30px;
+	margin: 20px auto;
+	padding:10px;
+	border: 4px solid #ccc;
+	-webkit-border-radius: 30px;
+	border-radius: 30px;
+	color:#ccc;
+	font-size: 30px;
+	text-align: center;
+	line-height: 30px;
+	text-decoration: none;
+}
+#add a.plus:hover {
+	background: #333;
+	color:#000;
+}
+#add ul {
+	display: block;
+	width: 30%;
+	list-style: none;
+	margin: 0 auto;
+	padding: 10px 0;
+	border-top:1px solid #ddd;
+}
+#add ul li {
+	font-family: 'Alegreya Sans', sans-serif;
+	font-size: 24px;
+	font-weight: 100;
+	text-align: center;
+	text-transform: uppercase;
+	line-height: 24px;
+	margin: 10px 0;
+}
+#add ul li a {
+	color:#fff;
+	text-decoration: none;
+}
+#add ul li a:hover {
+	color:#ccc;
+	text-decoration: none;
+}
+#algorithms div.algorithm {
+	width:50%;
+	/*height:400px;*/
+	/*border:1px solid #333;*/
+	position: relative;
+	float: left;
 }
 #algorithms div.algorithm h2 {
-	position: absolute;
-	top:10px;
-	left: 10px;
+	/*position: absolute;*/
+	bottom:10px;
+	left: 0px;
+	width: 100%;
+	text-align:center;
 	text-transform: uppercase;
 	color: #fff;
-	font-size: 12px;
-	font-weight: normal;
+	font-family: 'Alegreya Sans', sans-serif;
+	font-size: 18px;
+	font-weight: 100;
+	text-rendering: optimizelegibility;
+	text-shadow: 0px 0px 1px #fff;
 	margin: 0;
 	padding: 0;
 }
@@ -74,9 +184,10 @@ svg .swap circle {
 	stroke-opacity:1;
 }
 svg .circle text {
-	fill:#22abef;
-	font-size: 10px;
+	fill:#ddd;
+	font-size: 9px;
 	font-family: Arial;
+	fill-opacity:0.5;
 }
 
 #stepper {

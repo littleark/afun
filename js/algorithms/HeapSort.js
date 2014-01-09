@@ -2,6 +2,8 @@ define(["../support"], function(support) {
 	swap=support.swap;
 	addStep=support.addStep;
 	return {
+		"name":"Heapsort",
+		"complexity":"O(n log n)",
 	    "code":function() {
 			var steps=[];
 

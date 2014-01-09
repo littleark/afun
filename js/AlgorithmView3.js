@@ -4,9 +4,11 @@ define(["./support"],function(support) {
 		var WIDTH=options.width,
 			HEIGHT=options.height;
 
+		var name=options.name;
+
 		var margins={
-			left:50,
-			right:50,
+			left:20,
+			right:20,
 			top:0,
 			bottom:0
 		};
@@ -14,7 +16,7 @@ define(["./support"],function(support) {
 		var self=this;
 		var DURATION=500;
 		var animating=false;
-		var pause=false;
+		var status=0;
 
 		var steps=options.steps || [],
 			current_steps=0,
@@ -39,6 +41,8 @@ define(["./support"],function(support) {
 
 		var xscale=d3.scale.linear().domain([0,items[0].length-1]).range([0,WIDTH-margins.left-margins.right]);
 		
+		
+
 		var	code=options.code,
 			container=options.container;
 
@@ -74,12 +78,14 @@ define(["./support"],function(support) {
 
 	    var color = d3.scale.linear()
 	    				.domain([0, items[0].length-1])
-						.range(["hsl(42,95%,54%)", "hsl(202,100%,41%)"])
+						//.range(["hsl(42,95%,54%)", "hsl(202,100%,41%)"])
+						.range(["hsl(0,0%,100%)", "hsl(202,100%,41%)"])
 						.interpolate(d3.interpolateLab);
 
+		var RADIUS=Math.ceil((WIDTH-margins.left-margins.right)/(items[0].length+1)/2);
 		var radius=d3.scale.sqrt()
 						.domain([0, items[0].length-1])
-						.range([1, 20])
+						.range([1, RADIUS])
 
 
 		circles.append("circle")
@@ -153,6 +159,7 @@ define(["./support"],function(support) {
 				});
 
 
+		
 
 
 		this.show=function(n,animate){
@@ -181,12 +188,10 @@ define(["./support"],function(support) {
 
 			current_step=n;
 
-			options.step_callback(current_step);
+			
 
 			
-			console.log("GOING TO",current_step)
-
-			//callback();
+			//console.log("GOING TO",current_step)
 
 
 			var this_traces=traces
@@ -207,7 +212,7 @@ define(["./support"],function(support) {
 						}
 					})
 
-			console.log("BACK IS ",back,steps[current_step+back])
+			//console.log("BACK IS ",back,steps[current_step+back])
 
 			circles
 				.data(steps[current_step+back].map(function(d){
@@ -245,18 +250,21 @@ define(["./support"],function(support) {
 					})
 					.each("end",function(d,i){
 						d3.select(this).classed("swap",false)
-						//console.log("END",d,i,"==",(steps[current_step+back].length-1))
+						
+						options.step_callback(current_step);
+
 						animating=false;
+
 						if(i==steps[current_step+back].length-1 && animate) {
-							console.log("----")
-							if(!pause) {
+							//console.log("----")
+							if(status) {
 								self.stepNext(animate);	
 							}
 						}
 					})
 
 		}			
-		this.goTo=function(n) {
+		this.goTo=function(n,callback) {
 			if(animating) {
 				return;
 			}
@@ -310,13 +318,20 @@ define(["./support"],function(support) {
 				})
 				.each("end",function(d,i){
 					animating=false;
+					if(callback) {
+						callback();
+					}
 				})
 		}
 
 		if(options.step>0) {
-			this.goTo(options.step);
+			this.goTo(options.step,options.callback);
+		} else {
+			if(options.callback) {
+				options.callback();
+			}
 		}
-		
+
 		this.stepNext=function(animate) {
 			if(animating) {
 				return;
@@ -342,11 +357,23 @@ define(["./support"],function(support) {
 		}
 
 		this.start=function() {
-			pause=false;
-			this.stepNext(true)
+			if(!status) {
+				status=1;
+				this.stepNext(true)	
+			} else {
+				console.log(name,"not starting because",status)
+			}
 		}
 		this.pause=function() {
-			pause=true;
+			if(status)
+				status=0;
+		}
+		this.getStatus=function() {
+			return status;
+		}
+
+		this.getName=function() {
+			return name;
 		}
 
 	}

@@ -1,8 +1,10 @@
 define(["AlgorithmView3"],function(AlgorithmView) {
 	function Sorting(options) {
 
-		var WIDTH=900,
-			HEIGHT=400;
+		var self=this;
+
+		var WIDTH=450,
+			HEIGHT=220;
 
 		var data=options.data || [],
 			container=options.container || "#algorithms",
@@ -16,6 +18,7 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 			step=0,
 			stepper={};
 		
+		var running=0;
 
 		var functions={
 			/*"quicksort":QuickSort(),
@@ -25,9 +28,8 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 		}
 
 
-		this.addAlgorithm=function(fn) {
+		this.addAlgorithm=function(fn,callback) {
 			require(["algorithms/"+fn,"support"], function(algorithm,support) {
-
 				
 				sorting.push(fn);
 				functions[fn]=algorithm["code"]();
@@ -40,6 +42,7 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 
 				var new_algorithms=algorithms.enter()
 							.append("div")
+							//.insert("div","div.add")
 							.attr("class","algorithm")
 							.attr("id",function(d,i){
 								return d+"_"+i;
@@ -62,7 +65,8 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 
 				console.log(fn,new_algorithms)
 
-
+				console.log("figa, running:",running)
+				self.pause(running?-1:0);
 				
 				new_algorithms.each(function(d,i){
 
@@ -72,6 +76,7 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 
 					algoviz.push(
 						new AlgorithmView({
+							name:d,
 							container:"#"+d3.select(this).attr("id"),
 							width:WIDTH,
 							height:HEIGHT,
@@ -81,11 +86,14 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 							step_callback:function(n) {
 								step=n;
 								stepper[d].text(steps[d].length - step);
-								console.log("STEP",d,step,steps[d].length-n)
+								//console.log("STEP",d,step,steps[d].length-n)
 							},
 							callback:function(){
-								//d3.select("#stepper span")
-								//	.text(qs_view.getStepsLength() - qs_view.getCurrentStep())
+								setTimeout(function(){
+									if(running<0) {
+										self.start();
+									}
+								},0)
 							}
 						})
 					)
@@ -97,11 +105,19 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 
 		/* PUBLIC FUNCTIONS */
 		this.start=function(){
-			algoviz.forEach(function(a){
+			console.log("------------->",running)
+			if(running>0)
+				return;
+			running=1;
+			console.log("start","setting running to",running)
+			algoviz.forEach(function(a,i){
+				console.log("starting",i,a.getName())
 				a.start();
 			})
 		}
-		this.pause=function(){
+		this.pause=function(status){
+			running= status || 0;
+			console.log("pause","setting running to",running,"status is",status)
 			algoviz.forEach(function(a){
 				a.pause();
 			})
