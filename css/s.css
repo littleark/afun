@@ -31,6 +31,18 @@ html,body {
 	color:#ddd;
 	text-transform: none;
 }
+#algorithms div.algorithm h3 {
+	position: absolute;
+	top:10px;
+	right: 10px;
+	text-align: right;
+	text-transform: uppercase;
+	color: #fff;
+	font-size: 12px;
+	font-weight: normal;
+	margin: 0;
+	padding: 0;
+}
 svg path {
 	stroke-opacity:0.6;
 	stroke-width:1;
@@ -65,4 +77,27 @@ svg .circle text {
 	fill:#22abef;
 	font-size: 10px;
 	font-family: Arial;
+}
+
+#stepper {
+	position: fixed;
+	top:10px;
+	left:990px;
+	color:#fff;
+	width: 80px;
+}
+#stepper span {
+	min-width: 30px;
+	display: block;
+	float: left;
+	text-align: center;
+}
+#stepper a {
+	color:#fff;
+	text-decoration: none;
+	float: left;
+	display: block;
+}
+#stepper a:hover {
+	color:#ffff00;
 }

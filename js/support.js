@@ -14,9 +14,11 @@ define(
 		}
 		
 		function swap(steps,list, a, b) {
-			steps.push([]);
-			addStep(steps,list[a],a,b);
-			addStep(steps,list[b],b,a);
+			if(steps) {
+				steps.push([]);
+				addStep(steps,list[a],a,b);
+				addStep(steps,list[b],b,a);
+			}
 
 			var tmp=list[a];
 			list[a]=list[b];
