@@ -22,6 +22,9 @@ define(["./support"],function(support) {
 			current_steps=0,
 			current_step=0;//steps.length-1;
 
+
+		console.log("~~~~~~~~~~~~~~~~~",steps)
+
 		var callback=options.callback || function(){};
 
 		var items=options.items || [];
@@ -30,7 +33,7 @@ define(["./support"],function(support) {
 			steps.forEach(function(substeps){
 				items.push(support.cloneArray(items[items.length-1]));
 				substeps.forEach(function(d){
-					items[items.length-1][d.to]=d.index;
+					items[items.length-1][d.to]=d;//.index;
 				})
 			})
 			steps=([[]]).concat(steps);
@@ -57,13 +60,14 @@ define(["./support"],function(support) {
 							.attr("transform","translate("+margins.left+","+margins.top+")");
 
 		circles=circles.selectAll("g.circle")
-					.data(items[0],function(d){
-						return d;
+					.data(items[0],function(d,i){
+						return d.id;
+						//return d;
 					})
 					.enter()
 					.append("g")
 						.attr("id",function(d){
-							return "p"+d;
+							return "p"+d.id;
 						})
 						.attr("class","circle")
 						.attr("transform",function(d,i){
@@ -83,30 +87,37 @@ define(["./support"],function(support) {
 						.interpolate(d3.interpolateLab);
 
 		var RADIUS=Math.ceil((WIDTH-margins.left-margins.right)/(items[0].length+1)/2);
+
+		var max_value=d3.max(items[0],function(d){
+			return d.value;
+		});
+
+
 		var radius=d3.scale.sqrt()
-						.domain([0, items[0].length-1])
-						.range([1, RADIUS])
+						//.domain([0, items[0].length-1])
+						.domain([0, max_value])
+						.range([1, 20])
 
 
 		circles.append("circle")
 					.attr("cx",0)
 					.attr("cy",0)
 					.attr("r",function(d){
-						return radius(d);
+						return radius(d.value);
 					})
 					.style("fill",function(d){
 						//return "hsl("+Math.floor(255-255/(items[0].length-1)*(d))+", 100%, 50%)"
-						return color(d);
+						return color(d.value);
 					})
 
 		circles.append("text")
 					.attr("x",0)
 					.attr("y",function(d){
-						return 0+1+ radius(d)+10;
+						return 0+1+ radius(d.value)+10;
 					})
 					.attr("text-anchor","middle")
 					.text(function(d){
-						return d;
+						return d.value;
 					})
 
 		
@@ -216,9 +227,10 @@ define(["./support"],function(support) {
 
 			circles
 				.data(steps[current_step+back].map(function(d){
-					return d.index;
-				}),function(d){
+					//return d.index;
 					return d;
+				}),function(d){
+					return d.id;
 				})
 				.classed("swap",true)
 				.transition()
@@ -227,13 +239,14 @@ define(["./support"],function(support) {
 				.duration(DURATION)
 					.attrTween("transform",function(d){
 						return function(t){
-							//console.log(d);
+							//console.log("---->",d);
 							
 							var path=this_traces
 								.selectAll("path")
 								.filter(function(p){
-									//console.log(p)
-									return p.index==d;
+									//console.log(";;;;;;",p)
+									//return p.index==d;
+									return p.id==d.id;
 								})
 								.node();
 

@@ -48,11 +48,11 @@ define(["../support"], function(support) {
 			    var j = i * 2 + 1;
 			    while (j <= m) {
 			        if (j < m) {
-			        	if(list[j] < list[j + 1]) {
+			        	if(list[j].value < list[j + 1].value) {
 			        		j = j + 1;
 			        	}
 			        }
-			        if(temp < list[j]) {
+			        if(temp.value < list[j].value) {
 			        	var tempj=list[j];
 			        	addStep(steps,tempj,j,i);
 			            list[i] = list[j];

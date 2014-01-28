@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Visualizing Algorithm</title>
+	<style>
+		html,body {
+			margin:0;
+			padding:10px;
+			background: #000;
+			font-family: Arial;
+			color:#fff;
+		}
+		a {
+			color:#fff;
+		}
+	</style>
+</head>
+<body>
+	<script>
+
+	var swapItems = function(array, a, b){
+	    array[a] = array.splice(b, 1, array[a])[0];
+	    return array;
+	}
+
+	function pivot_index(begin,end) { 
+	    return Math.floor(begin+(end-begin)/2);
+	}
+	function swap(array,a,b) {
+	    //((t)=(a),(a)=(b),(b)=(t))
+
+	    console.log("swapping",a,b)
+
+	    var tmp=array[a];
+	    
+	    array[a]=array[b];
+	    array[b]=tmp;
+	    
+	}
+
+	function sort(array, begin, end) {
+	   var pivot;
+	   var t;     /* temporary variable for swap */
+	   if (end > begin) {
+	      var l = begin + 1;
+	      var r = end;
+	      swapItems(array,begin,pivot_index(begin,end))
+	      var pivot = array[begin];
+	      while(l < r) {
+	         if (array[l] <= pivot) {
+	            l++;
+	         } else {
+	            while(l < --r && array[r] >= pivot);
+	            swapItems(array,l,r)
+	         }
+	      }
+	      l--;
+	      swapItems(array,begin,l)
+	      sort(array, begin, l);
+	      sort(array, r, end);
+	   }
+	}
+
+	var a=[1,2,5,4,3,0];
+	sort(a,0,a.length)
+	console.log(a)
+	//swap(a,1,2,3)
+	//console.log(a)
+	</script>
+</body>
+</html>

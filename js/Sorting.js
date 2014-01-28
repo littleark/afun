@@ -6,9 +6,11 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 		var WIDTH=450,
 			HEIGHT=220;
 
-		var data=options.data || [],
+		var data=setData(options.data) || [],
 			container=options.container || "#algorithms",
 			algorithms_container=d3.select(container);
+
+		console.log("DATAAAAAAAAA",data)
 
 		var sorting=options.sorting || [];
 
@@ -27,6 +29,16 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 			"heapsort":HeapSort()*/
 		}
 
+		function setData(data) {
+			
+			return data.map(function(d,i){
+				return {
+					value:d,
+					id:d+"_"+i
+				}
+			})
+
+		}
 
 		this.addAlgorithm=function(fn,callback) {
 			require(["algorithms/"+fn,"support"], function(algorithm,support) {
@@ -65,7 +77,7 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 
 				console.log(fn,new_algorithms)
 
-				console.log("figa, running:",running)
+				console.log("running:",running)
 				self.pause(running?-1:0);
 				
 				new_algorithms.each(function(d,i){

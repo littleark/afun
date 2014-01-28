@@ -23,7 +23,7 @@ define(["../support"], function(support) {
 					/* test against elements after j to find the smallest */
 					for(var i=j+1;i<nums.length;i++) {
 						/* if this element is less, then it is the new minimum */
-						if(nums[i] < nums[iMin]) {
+						if(nums[i].value < nums[iMin].value) {
 							/* found new minimum; remember its index */
 							iMin=i;
 						}

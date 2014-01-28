@@ -14,7 +14,7 @@ define(["../support"], function(support) {
 					var i=j-1;
 			        //console.log(j,key);
 			        //console.log(key+"<"+a[i].index+" && "+i+">0");
-					while(i>=0 && key<a[i]) {
+					while(i>=0 && key.value<a[i].value) {
 						
 
 						steps.push([]);

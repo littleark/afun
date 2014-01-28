@@ -14,14 +14,15 @@ define(["../support"], function(support) {
 			    if(start < end){
 			        var l=start+1, r=end, p = array[start];
 			        while(l<r){
-			            if(array[l] <= p)
+			            if(array[l].value <= p.value)
 			                l++;
-			            else if(array[r] >= p)
+			            else if(array[r].value >= p.value)
 			                r--;
-			            else
-			                swap(steps,array,l,r);
-			        }
-			        if(array[l] < p){
+			            else {
+			            	swap(steps,array,l,r);}
+			            	//swapItems(array,l,r)
+			        	}
+			        if(array[l].value < p.value){
 			            swap(steps,array,l,start);
 			            l--;
 			        }

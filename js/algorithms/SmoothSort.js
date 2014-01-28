@@ -80,7 +80,9 @@ define(["../support"], function(support) {
 		          rt,
 		          lf,
 		          trail;
-		      var val_old_pos=m.indexOf(val);
+		      //var val_old_pos=m.indexOf(val);
+		      var val_old_pos=head;
+		      console.log("------------->",val_old_pos)
 		      steps.push([]);
 		      while (p !== 1) {
 		        stepson = head - LP[pshift];
@@ -137,7 +139,8 @@ define(["../support"], function(support) {
 		          mrt,
 		          mlf,
 		          val = m[head];
-		      var val_old_pos=m.indexOf(val);
+		      //var val_old_pos=m.indexOf(val);
+		      var val_old_pos=head;
 		      steps.push([]);
 		      while (pshift > 1) {
 		      	
@@ -196,7 +199,7 @@ define(["../support"], function(support) {
 			}
 
 			function ascending(a, b) {
-				return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+				return a.value < b.value ? -1 : a.value > b.value ? 1 : a.value >= b.value ? 0 : NaN;
 			}
 
 			return function(array) {

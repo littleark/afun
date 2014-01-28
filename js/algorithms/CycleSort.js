@@ -3,7 +3,7 @@ define(["../support"], function(support) {
 	addStep=support.addStep;
 	return {
 		"name":"CycleSort",
-		"complexity":"O(n&sup2;)",
+		"complexity":"O(n) - O(n&sup2;)",
 	    "code":function() {
 			var steps=[];
 
@@ -19,12 +19,12 @@ define(["../support"], function(support) {
 		            var to = 0;
 		            for (var i = 0; i < arrayToSort.length; i++) {
 
-		                if (i != cycleStart && (arrayToSort[i]<item)) {
+		                if (i != cycleStart && (arrayToSort[i].value<item.value)) {
 		                    to++;
 		                }
 		            }
 		            if (pos != to) {
-		                while (pos != to && item==arrayToSort[to]) {
+		                while (pos != to && item.value==arrayToSort[to].value) {
 		                    to++;
 		                }
 

@@ -10,14 +10,14 @@ define(["../support"], function(support) {
 			function radixsort(nums) {
 				// Figure out the number of binary digits we're dealing with
 				var k = Math.max.apply(null, nums.map(function(i) {
-				    return Math.ceil(Math.log(i)/Math.log(2));
+				    return Math.ceil(Math.log(i.value)/Math.log(2));
 				}));
 
 				for (var d = 0; d < k; ++d) {
 				    for (var i = 0, p = 0, b = 1 << d, n = nums.length; i < n; ++i) {
 				        var o = nums[i];
 				        //console.log(o,"&",b)
-				        if ((o & b) == 0) {
+				        if ((o.value & b) == 0) {
 				            // this number is a 0 for this digit
 				            // move it to the front of the list
 				            steps.push([]);

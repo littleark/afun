@@ -16,7 +16,10 @@ require(["vendors/d3.v3.min","Sorting"], function(ignore,Sorting) {
 		//sorting:["quicksort","mergesort","smoothsort"],
 		sorting:[],
 		//data:([0,2,3,4,5,6,19,7,8,9,10,12,16,13,14,15,17,18,20,21,11,22,23,24,25,26,27,28,29,1,30])
-		data:shuffle(d3.range(10))
+		//data:shuffle([0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9])
+		//data:shuffle([0,1,2,3,3,4,5,1,1,1,1,1,1,1,2,2,2,2,3,3,3])
+		data:shuffle(d3.range(20))
+		//data:[0,1,2,3,4]
 	});
 
 	
@@ -25,15 +28,20 @@ require(["vendors/d3.v3.min","Sorting"], function(ignore,Sorting) {
 	//d3.select("#stepper span").text(sorting.getSteps());
 
 	var algorithms=[
-		"QuickSort",
-		"HeapSort",
-		"MergeSort",
-		"SmoothSort",
-		"RadixSort",
-		"ShellSort",
-		"CycleSort",
-		"SelectionSort",
-		"InsertionSort"
+		//"QuickSort",
+		//"QuickSort2",
+		//"HeapSort",
+		//"MergeSort",
+		//"SmoothSort",
+		//"RadixSort",
+		//"ShellSort",
+		//"CycleSort",
+		//"SelectionSort",
+		//"InsertionSort",
+		//"GnomeSort",
+		//"CombSort",
+		//"BubbleSort",
+		"CocktailSort"
 	];
 
 	algorithms.forEach(function(d){

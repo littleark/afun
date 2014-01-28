@@ -34,7 +34,7 @@ define(["../support"], function(support) {
 
 			            c = nums[i];
 			            j = i;
-			            while (j >= h && nums[j - h] > c) {
+			            while (j >= h && nums[j - h].value > c.value) {
 			            	addStep(steps,nums[j - h],j-h,j)
 			            	/*
 			            	steps[steps.length-1].push({

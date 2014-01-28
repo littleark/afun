@@ -33,7 +33,7 @@ define(["../support"], function(support) {
 			    var start_hi = mid + 1;
 			    while ((l <= end_lo) && (start_hi <= h)) {
 			    	steps.push([]);
-			        if (a[l]<a[start_hi]) {
+			        if (a[l].value<a[start_hi].value) {
 			            l++;
 			        } else {
 			            var temp = a[start_hi];
