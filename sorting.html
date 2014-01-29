@@ -6,6 +6,7 @@
 	<link href='http://fonts.googleapis.com/css?family=Alegreya+Sans:100,300' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="css/normalize.css">
 	<link rel="stylesheet" href="css/s.css">
+	<script src="js/vendors/html5slider.js"></script>
 	<script data-main="js/main" src="js/require.js"></script>
 </head>
 <body>
@@ -22,20 +23,23 @@
 			<h5>Visual Sorting</h5>
 		</div>
 	</div>
-	<div id="stepper">
-		<a href="#">&lt;</a>
-		&nbsp;
-		<span>0</span>
-		&nbsp;
-		<a href="#">&gt;</a>
-		&nbsp;
-		<a href="#">start</a>
-		&nbsp;
-		<a href="#">pause</a>
-		&nbsp;
-		<a href="#">show</a>
-		&nbsp;
-		<a href="#">hide</a>
+	<div id="controls">
+		<div>
+			<input type="range" min="0" step="1" id="mainrange" value="0" max="100">
+			<br/>
+			<a href="#">&lt;</a>
+			&nbsp;
+			<a href="#">&gt;</a>
+			&nbsp;
+			<a href="#">start</a>
+			&nbsp;
+			<a href="#">pause</a>
+			&nbsp;
+			<a href="#">show</a>
+			&nbsp;
+			<a href="#">hide</a>
+		</div>
 	</div>
+
 </body>
 </html>

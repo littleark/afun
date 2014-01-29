@@ -14,7 +14,7 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 
 		var sorting=options.sorting || [];
 
-		var algoviz=[];
+		var algoviz={};
 
 		var steps={},
 			step=0,
@@ -71,6 +71,10 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 					.append("span")
 						.html(" "+(algorithm.complexity || ""))
 
+				
+				
+
+
 				stepper[fn]=new_algorithms
 								.append("h3")
 								.text("0");
@@ -80,13 +84,17 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 				console.log("running:",running)
 				self.pause(running?-1:0);
 				
+				
+
 				new_algorithms.each(function(d,i){
 
 					steps[d]=functions[d](support.cloneArray(data));
 					var items=[];
 					items.push(support.cloneArray(data));
 
-					algoviz.push(
+					algoviz[d]=
+
+					//algoviz.push(
 						new AlgorithmView({
 							name:d,
 							container:"#"+d3.select(this).attr("id"),
@@ -98,7 +106,13 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 							step_callback:function(n) {
 								step=n;
 								stepper[d].text(steps[d].length - step);
-								//console.log("STEP",d,step,steps[d].length-n)
+								console.log("STEP",d,step,steps[d].length-n)
+								/*
+								if(d3.select("#range_"+d).node()) {
+									d3.select("#range_"+d).node().value=step;
+								}
+								*/
+
 							},
 							callback:function(){
 								setTimeout(function(){
@@ -106,11 +120,49 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 										self.start();
 									}
 								},0)
-							}
-						})
-					)
 
-				})
+								d3.select("#range_"+d)
+									
+							}
+						});
+
+
+					//)
+
+					
+
+				});
+
+				/*new_algorithms
+						.append("input")
+						.attr({
+							type:"range",
+							min:0,
+							step:1
+						})
+						.attr("id",function(d){
+							return "range_"+d;
+						})
+						.attr("value",function(d){
+							return algoviz[d].getCurrentStep();
+						})
+						.attr("max",function(d){
+							return algoviz[d].getStepsLength();
+						})
+						.on("change",function(d){
+							if(to[d]){
+								clearTimeout(to[d]);
+								to[d]=null;
+							}
+							(function(s){
+								to[d]=setTimeout(function(){
+									console.log(s,d);
+									algoviz[d].goTo(s);
+								},200);
+							}(+this.value));
+							
+						});*/
+				
 
 			});
 		}
@@ -122,7 +174,7 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 				return;
 			running=1;
 			console.log("start","setting running to",running)
-			algoviz.forEach(function(a,i){
+			d3.values(algoviz).forEach(function(a,i){
 				console.log("starting",i,a.getName())
 				a.start();
 			})
@@ -130,28 +182,28 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 		this.pause=function(status){
 			running= status || 0;
 			console.log("pause","setting running to",running,"status is",status)
-			algoviz.forEach(function(a){
+			d3.values(algoviz).forEach(function(a){
 				a.pause();
 			})
 		}
 		this.nextStep=function(){
-			algoviz.forEach(function(a){
+			d3.values(algoviz).forEach(function(a){
 				a.stepNext();
 			})
 		}
 		this.prevStep=function(){
-			algoviz.forEach(function(a){
+			d3.values(algoviz).forEach(function(a){
 				a.stepPrev();
 			})
 		}
 		this.goTo=function(n){
-			algoviz.forEach(function(a){
+			d3.values(algoviz).forEach(function(a){
 				a.goTo(n);
 			})
 		}
 		this.getSteps=function(){
 			var steps=0;
-			algoviz.forEach(function(a){
+			d3.values(algoviz).forEach(function(a){
 				console.log("!!!!!!!!!",a)
 				steps=Math.max(a.getStepsLength(),steps);
 			})

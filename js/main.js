@@ -28,26 +28,94 @@ require(["vendors/d3.v3.min","Sorting"], function(ignore,Sorting) {
 	//d3.select("#stepper span").text(sorting.getSteps());
 
 	var algorithms=[
-		//"QuickSort",
-		//"QuickSort2",
-		//"HeapSort",
-		//"MergeSort",
-		//"SmoothSort",
-		//"RadixSort",
-		//"ShellSort",
-		//"CycleSort",
-		//"SelectionSort",
-		//"InsertionSort",
-		//"GnomeSort",
-		//"CombSort",
-		//"BubbleSort",
-		"CocktailSort"
+		{
+			name:"QuickSort",
+			file:"QuickSort",
+			active:true
+		},
+		{
+			name:"QuickSort w/ Partition",
+			file:"QuickSort2",
+			active:false
+		},
+		{
+			name:"HeapSort",
+			file:"HeapSort",
+			active:false
+		},
+		{
+			name:"MergeSort",
+			file:"MergeSort",
+			active:false
+		},
+		{
+			name:"SmoothSort",
+			file:"SmoothSort",
+			active:false
+		},
+		{
+			name:"RadixSort",
+			file:"RadixSort",
+			active:false
+		},
+		{
+			name:"ShellSort",
+			file:"ShellSort",
+			active:false
+		},
+		{
+			name:"CycleSort",
+			file:"CycleSort",
+			active:false
+		},
+		{
+			name:"SelectionSort",
+			file:"SelectionSort",
+			active:false
+		},
+		{
+			name:"InsertionSort",
+			file:"InsertionSort",
+			active:false
+		},
+		{
+			name:"GnomeSort",
+			file:"GnomeSort",
+			active:false
+		},
+		{
+			name:"CombSort",
+			file:"CombSort",
+			active:false
+		},
+		{
+			name:"BubbleSort",
+			file:"BubbleSort",
+			active:false
+		},
+		{
+			name:"CocktailSort",
+			file:"CocktailSort",
+			active:false
+		},
+		{
+			name:"OddEvenSort",
+			file:"OddEvenSort",
+			active:false
+		}
 	];
 
 	algorithms.forEach(function(d){
-		sorting.addAlgorithm(d);	
+		if(d.active)
+			sorting.addAlgorithm(d.file);	
 	})
 	
+
+
+	d3.select("#add a.plus").on("click",function(){
+		d3.event.preventDefault();
+		d3.select("#add ul").classed("visible",!d3.select("#add ul").classed("visible"))
+	})	
 
 	d3.select("#add ul").selectAll("li")
 		.data(algorithms)
@@ -56,17 +124,17 @@ require(["vendors/d3.v3.min","Sorting"], function(ignore,Sorting) {
 			.append("a")
 				.attr("href","#")
 				.text(function(d){
-					return d;
+					return d.name;
 				})
 				.on("click",function(d,i){
 					d3.event.preventDefault();
 
 					console.log(d);
-					sorting.addAlgorithm(d)
+					sorting.addAlgorithm(d.file)
 
 				})	
 
-	d3.selectAll("#stepper a")
+	d3.selectAll("#controls a")
 		.on("click",function(d,i){
 			d3.event.preventDefault();
 			if(i===0)
@@ -85,5 +153,19 @@ require(["vendors/d3.v3.min","Sorting"], function(ignore,Sorting) {
 			//d3.select("#stepper span")
 			//	.text(qs_view.getStepsLength() - qs_view.getCurrentStep())
 
+		});
+	var to=null;
+	d3.select("#mainrange")
+		.on("change",function(d){
+			if(to){
+				clearTimeout(to);
+				to=null;
+			}
+			(function(s){
+				to=setTimeout(function(){
+					console.log(s,d);
+					sorting.goTo(s);
+				},200);
+			}(+this.value));
 		})
 });

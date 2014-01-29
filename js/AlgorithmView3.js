@@ -20,7 +20,7 @@ define(["./support"],function(support) {
 
 		var steps=options.steps || [],
 			current_steps=0,
-			current_step=0;//steps.length-1;
+			current_step=options.step || 0;//steps.length-1;
 
 
 		console.log("~~~~~~~~~~~~~~~~~",steps)
@@ -49,11 +49,73 @@ define(["./support"],function(support) {
 		var	code=options.code,
 			container=options.container;
 
-		var svg=d3.select(container)
-					.append("svg")
-						.attr("width",WIDTH)
-						.attr("height",HEIGHT)
-						.append("g");
+
+		/*new_algorithms
+						.append("input")
+						.attr({
+							type:"range",
+							min:0,
+							step:1
+						})
+						.attr("id",function(d){
+							return "range_"+d;
+						})
+						.attr("value",function(d){
+							return algoviz[d].getCurrentStep();
+						})
+						.attr("max",function(d){
+							return algoviz[d].getStepsLength();
+						})
+						.on("change",function(d){
+							if(to[d]){
+								clearTimeout(to[d]);
+								to[d]=null;
+							}
+							(function(s){
+								to[d]=setTimeout(function(){
+									console.log(s,d);
+									algoviz[d].goTo(s);
+								},200);
+							}(+this.value));
+							
+						});*/
+		var div=d3.select(container)
+					.append("div")
+						.style("width",WIDTH+"px");
+		var svg=div
+				.append("svg")
+					.attr("width",WIDTH)
+					.attr("height",HEIGHT)
+					.append("g");
+		var to=null;
+		var slider=div
+					.append("input")
+						.attr({
+							type:"range",
+							min:0,
+							step:1
+						})
+						.attr("id",function(d){
+							return "range_"+options.name;
+						})
+						.attr("value",function(d){
+							return current_step;
+						})
+						.attr("max",function(d){
+							return steps.length-1;
+						})
+						.on("change",function(d){
+							if(to){
+								clearTimeout(to);
+								to=null;
+							}
+							(function(s){
+								to=setTimeout(function(){
+									console.log(s,d);
+									self.goTo(s);
+								},200);
+							}(+this.value));
+						});
 		
 		var circles=svg.append("g")
 							.attr("id","circles")
@@ -174,10 +236,11 @@ define(["./support"],function(support) {
 
 
 		this.show=function(n,animate){
+			console.log("show",n,animate)
 			if(animating) {
+				console.log("already animating")
 				return;
 			}
-
 			
 			var n=(typeof n == "undefined")?steps.length-1:n;
 
@@ -266,6 +329,8 @@ define(["./support"],function(support) {
 						
 						options.step_callback(current_step);
 
+						slider.node().value=current_step;
+
 						animating=false;
 
 						if(i==steps[current_step+back].length-1 && animate) {
@@ -301,6 +366,9 @@ define(["./support"],function(support) {
 			current_step=n;
 
 			options.step_callback(current_step);
+			if(+slider.node().value!=current_step) {
+				slider.node().value=current_step;
+			}
 
 			traces
 				.selectAll("path")
@@ -316,10 +384,10 @@ define(["./support"],function(support) {
 					.attr("stroke-dashoffset",function(d){
 						return 0;//d3.select(this).node().getTotalLength();
 					})
-			
+			//console.log("!!!!!!!!!!!",items[current_step])
 			circles
 				.data(items[current_step],function(d,i){
-					return d;
+					return d.id;
 				})
 				.transition()
 				.duration(DURATION)
@@ -347,6 +415,7 @@ define(["./support"],function(support) {
 
 		this.stepNext=function(animate) {
 			if(animating) {
+				console.log("already animating")
 				return;
 			}
 			this.show(current_step+1,animate);
@@ -354,6 +423,7 @@ define(["./support"],function(support) {
 		}
 		this.stepPrev=function() {
 			if(animating) {
+				console.log("already animating")
 				return;
 			}
 			this.show(current_step-1);

@@ -1,3 +1,7 @@
+*:focus {
+    outline: 0;
+}
+
 .clearfix:after {
 	content: ".";
 	display: block;
@@ -20,11 +24,17 @@ html[xmlns] .clearfix {
 }
 html,body {
 	margin:0;
-	padding:10px;
+	padding:0px;
 	background: #000;
 	color:#fff;
 	font-family: Arial;
 	position: relative;
+}
+html {
+	height: 100%;
+}
+body {
+	min-height: 100%;
 }
 #wrapper {
 	width: 960px;
@@ -90,7 +100,7 @@ html,body {
 	color:#000;
 }
 #add ul {
-	display: block;
+	display: none;
 	width: 30%;
 	list-style: none;
 	margin: 0 auto;
@@ -113,6 +123,9 @@ html,body {
 #add ul li a:hover {
 	color:#ccc;
 	text-decoration: none;
+}
+#add ul.visible {
+	display: block;
 }
 #algorithms div.algorithm {
 	width:50%;
@@ -153,6 +166,9 @@ html,body {
 	margin: 0;
 	padding: 0;
 }
+.algorithm > div {
+	margin:0 auto;
+}
 svg path {
 	stroke-opacity:0.6;
 	stroke-width:1;
@@ -190,25 +206,59 @@ svg .circle text {
 	fill-opacity:0.5;
 }
 
-#stepper {
-	position: fixed;
-	top:10px;
-	left:990px;
-	color:#fff;
-	width: 80px;
+input[type="range"] {
+	-webkit-appearance: none;
+	background-color: #ccc;
+	height: 1px;
+	width:450px;
+	margin: 0 auto;
 }
-#stepper span {
-	min-width: 30px;
-	display: block;
-	float: left;
+
+input[type="range"]::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	position: relative;
+	top: 0px;
+	z-index: 1;
+	width: 11px;
+	height: 11px;
+	cursor: e-resize;
+	
+	-webkit-border-radius: 40px;
+	-moz-border-radius: 40px;
+	border-radius: 40px;
+	background-color:#aaa;
+	/*background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ebf1f6), color-stop(50%,#abd3ee), color-stop(51%,#89c3eb), color-stop(100%,#d5ebfb));
+	-webkit-box-shadow: 0px 6px 5px 0px rgba(0,0,0,0.6);
+	-moz-box-shadow: 0px 6px 5px 0px rgba(0,0,0,0.6);
+	box-shadow: 0px 6px 5px 0px rgba(0,0,0,0.6);*/
+	
+}
+#controls {
+	position: fixed;
+	bottom:0;
+	left:0;
+	right:0;
+	height:50px;
+	background-color:rgba(0,0,0,0.8);
+	color:#fff;
+	border-top: 1px solid rgba(255,255,255,0.2);
 	text-align: center;
 }
-#stepper a {
+#controls div {
+	margin: 5px auto;
+}
+#controls span {
+	min-width: 30px;
+	/*display: block;
+	float: left;*/
+	text-align: center;
+}
+#controls a {
 	color:#fff;
 	text-decoration: none;
-	float: left;
-	display: block;
+	/*float: left;
+	display: block;*/
 }
-#stepper a:hover {
+#controls a:hover {
 	color:#ffff00;
 }
