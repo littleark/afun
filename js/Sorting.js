@@ -42,6 +42,30 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 
 		}
 
+		this.updateData=function(data) {
+			
+			var data=data || [1,3,0,4,2];
+			data=setData(data);
+
+			require(["support"],function(support){
+				algorithms_container
+					.selectAll("div.algorithm")
+						.each(function(d,i){
+							//console.log(d,support.cloneArray(data));
+							steps[d]=[];
+							steps[d]=functions[d](support.cloneArray(data));
+							var items=[];
+							items.push(support.cloneArray(data));
+
+							//console.log(d,items,steps[d])
+							
+							algoviz[d].updateData(steps[d],items);
+
+						});
+			})
+			
+		}
+
 		this.addAlgorithm=function(fn,callback) {
 			require(["algorithms/"+fn,"support"], function(algorithm,support) {
 				

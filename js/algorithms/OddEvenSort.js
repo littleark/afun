@@ -51,6 +51,7 @@ define(["../support"], function(support) {
 			}
 
 			return function(array) {
+				steps=[];
 				oddevensort(array);
 				return steps.filter(function(d){
 					return d.length>0;

@@ -40,6 +40,7 @@ define(["../support"], function(support) {
 			}
 
 			return function(array) {
+				steps=[];
 				radixsort(array);
 				return steps.filter(function(d){
 					return d.length>0;

@@ -34,6 +34,7 @@ define(["../support"], function(support) {
 
 
 			return function(array) {
+				steps=[];
 				bubblesort(array);
 				return steps.filter(function(d){
 					return d.length>0;

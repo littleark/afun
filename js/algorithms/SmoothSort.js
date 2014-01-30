@@ -203,6 +203,7 @@ define(["../support"], function(support) {
 			}
 
 			return function(array) {
+				steps=[];
 				sort(array,0,array.length-1);
 				//console.log(array)
 				return steps.filter(function(d){

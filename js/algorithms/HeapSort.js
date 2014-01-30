@@ -80,6 +80,7 @@ define(["../support"], function(support) {
 			}
 
 			return function(array) {
+				steps=[];
 				heapsort(array,0,array.length-1);
 				return steps.filter(function(d){
 					return d.length>0;
