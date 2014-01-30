@@ -1,4 +1,7 @@
 define(["./support"],function(support) {
+
+	
+
 	function AlgorithmView(options){
 
 		var OWIDTH=options.width,
@@ -64,9 +67,7 @@ define(["./support"],function(support) {
 					//.append("g");
 		var to=null;
 
-		
-		var slider_scale=d3.scale.linear().range([0,100]).domain([0,steps.length-1]);
-		
+		var slider_scale=d3.scale.linear().domain([0,100]).rangeRound([0,steps.length-1]);
 		var slider_container=div
 			.append("div")
 				.attr("id","slider_"+options.name)
@@ -115,32 +116,6 @@ define(["./support"],function(support) {
 							.attr("transform","translate("+margins.left+","+margins.top+")");
 		var circles=null;
 		var traces=null;
-		/*=circles_container.selectAll("g.circle")
-					.data(items[0],function(d,i){
-						return d.id;
-						//return d;
-					});*/
-		
-					/*
-					.enter()
-					.append("g")
-						.attr("id",function(d){
-							return "p"+d.id;
-						})
-						.attr("class","circle")
-						.attr("transform",function(d,i){
-							
-							var x=xscale(i),
-								y=HEIGHT/2;
-
-							//console.log(i,x,xscale.range(),xscale.domain())
-
-							return "translate("+x+","+y+")";
-						});
-					*/
-		
-
-	    
 
 		var RADIUS=Math.ceil((WIDTH-margins.left-margins.right)/(items[0].length+1)/2);
 
@@ -180,9 +155,9 @@ define(["./support"],function(support) {
 			
 			var new_circles=circles.enter()
 				.append("g")
-						.attr("id",function(d){
+						/*.attr("id",function(d){
 							return "p"+d.id;
-						})
+						})*/
 						.attr("class","circle")
 						.attr("transform",function(d,i){
 							
@@ -245,9 +220,11 @@ define(["./support"],function(support) {
 				var new_traces=traces.enter()
 									.append("g")
 										.attr("class","step")
+										/*
 										.attr("rel",function(d,i){
 											return "step_"+i;
 										});
+										*/
 
 				new_traces.selectAll("path")
 						.data(function(d){
@@ -258,6 +235,7 @@ define(["./support"],function(support) {
 							
 
 				traces=traces_container.selectAll("g.step");
+				
 
 				traces
 					.selectAll("path")
@@ -330,7 +308,30 @@ define(["./support"],function(support) {
 			return;
 
 		}
+		this.setColor=function(c) {
+			var colors={};
+			colors["blue"]="199,86%,53%";
+			colors["blue2"]="202,100%,41%";
+			colors["red"]="333,100%,50%";
+			colors["orange"]="24,87%,50%";
+			colors["limegreen"]="87,100%,50%";
 
+			var c=c||"blue";
+			color.range(["hsl(0,0%,100%)", "hsl("+(colors[c])+")"]);
+
+			traces
+				.selectAll("path")
+					.style("stroke",function(d){
+						return color(d.index);
+					});
+
+			circles.selectAll("circle")
+				.style("fill",function(d){
+					console.log(d,color(d.value))
+					return color(d.value);
+				});
+
+		}
 		this.resize=function(factor) {
 			WIDTH=OWIDTH*factor;
 			HEIGHT=OHEIGHT*factor;
@@ -489,7 +490,11 @@ define(["./support"],function(support) {
 					})
 
 		}
-		var slider_scale=d3.scale.linear().domain([0,100]).rangeRound([0,steps.length-1]);
+
+
+
+
+		
 		this.goToPerc=function(p,callback) {
 			console.log(p,slider_scale(p));
 			this.goTo(slider_scale(p),callback);

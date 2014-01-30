@@ -233,6 +233,19 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 			for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
 			return o;
 		};
+		this.setColor=function(color,name) {
+			d3.entries(algoviz)
+				.filter(function(d){
+					console.log("!!!!!!!",d)
+					return !name || d.key==name;
+				})
+				.forEach(function(d){
+					console.log("color for",d.key)
+					d.value.setColor(color);	
+				})
+				
+
+		}
 		this.updateData=function(data,name) {
 			
 			var data=data || [2,1];//shuffle(d3.range(50));
