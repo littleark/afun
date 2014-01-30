@@ -19,8 +19,7 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 		var algoviz={};
 
 		var steps={},
-			step=0,
-			stepper={};
+			step=0;
 		
 		var running=0;
 
@@ -42,48 +41,82 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 
 		}
 
-		
+		this.removeAlgorithm=function(name) {
+
+			sorting=sorting.filter(function(d){
+				return d.name!=name;
+			})
+			algorithms_container
+				.selectAll("div.algorithm")
+					.filter(function(d){
+						return d.name==name;
+					})
+					.remove();
+			delete(algoviz[name]);
+
+			console.log(sorting,algoviz)
+		}
 
 		this.addAlgorithm=function(fn,callback) {
 			require(["algorithms/"+fn,"support"], function(algorithm,support) {
 				
-				sorting.push(fn);
-				functions[fn]=algorithm["code"]();
+				sorting.push({
+					fn:fn,
+					name:fn+"_"+sorting.length
+				});
+				if(!functions[fn]) {
+					functions[fn]=algorithm["code"]();	
+				}
 
 				var algorithms=algorithms_container
 					.selectAll("div.algorithm")
-						.data(sorting,function(d,i){
+						.data(sorting);
+						/*.data(sorting,function(d,i){
 							return d+"_"+i;
-						});
+						});*/
+						/*
+						.data(sorting.map(function(d,i){
+							return {
+								fn:d,
+								name:d+"_"+i
+							}
+						}))
+						*/
 
 				var new_algorithms=algorithms.enter()
 							.append("div")
 							//.insert("div","div.add")
 							.attr("class","algorithm")
 							.attr("id",function(d,i){
-								return d+"_"+i;
+								return d.name;
+								//return d+"_"+i;
 							})
 							.attr("rel",function(d){
-								return d;
+								return d.name;
 							});
+				/*
+				new_algorithms.each(function(d){
+					sorting.push(d.name);
+				})
+				*/
 
 				new_algorithms
 					.append("h2")
 					.text(function(d){
-						return algorithm.name || d;
+						return algorithm.name || d.name;
 					})
 					.append("span")
 						.html(" "+(algorithm.complexity || ""))
 
 				
-				
 
 
-				stepper[fn]=new_algorithms
-								.append("h3")
-								.text("0");
 
-				console.log(fn,new_algorithms)
+				new_algorithms
+					.append("h3")
+					.text("0");
+
+				//console.log(fn,new_algorithms)
 
 				console.log("running:",running)
 				self.pause(running?-1:0);
@@ -92,26 +125,28 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 
 				new_algorithms.each(function(d,i){
 
-					steps[d]=functions[d](support.cloneArray(data));
+					steps[d.name]=functions[d.fn](support.cloneArray(data));
 					var items=[];
 					items.push(support.cloneArray(data));
 
-					algoviz[d]=
+					var self=this;
+					algoviz[d.name]=
 
 					//algoviz.push(
 						new AlgorithmView({
-							name:d,
+							name:d.name,
 							container:"#"+d3.select(this).attr("id"),
 							width:WIDTH,
 							height:HEIGHT,
 							size:size,
-							steps:steps[d],
+							steps:steps[d.name],
 							step:step,
 							items:items,
 							step_callback:function(n) {
 								step=n;
 								//stepper[d].text(steps[d].length - step);
-								stepper[d].text(step);
+								//stepper[d].text(step);
+								d3.select(self).select("h3").text(step)
 								//console.log("STEP",d,step,steps[d].length-n)
 
 							},
@@ -122,7 +157,7 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 									}
 								},0)
 
-								d3.select("#range_"+d)
+								d3.select("#range_"+d.name)
 									
 							}
 						});
@@ -198,18 +233,21 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 			for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
 			return o;
 		};
-		this.updateData=function(data) {
+		this.updateData=function(data,name) {
 			
-			var data=data || shuffle(d3.range(50));
+			var data=data || [2,1];//shuffle(d3.range(50));
 			data=setData(data);
 
 			require(["support"],function(support){
 				algorithms_container
 					.selectAll("div.algorithm")
+						.filter(function(d){
+							return !name || name==d.name;
+						})
 						.each(function(d,i){
 							//console.log(d,support.cloneArray(data));
-							steps[d]=[];
-							steps[d]=functions[d](support.cloneArray(data));
+							steps[d.name]=[];
+							steps[d.name]=functions[d.fn](support.cloneArray(data));
 							
 							//console.log(d,items,steps[d])
 							
@@ -219,10 +257,13 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 
 				algorithms_container
 					.selectAll("div.algorithm")
+						.filter(function(d){
+							return !name || name==d.name;
+						})
 						.each(function(d,i){
 							var items=[];
 							items.push(support.cloneArray(data));
-							algoviz[d].updateData(steps[d],items);
+							algoviz[d.name].updateData(steps[d.name],items);
 						})
 			})
 			

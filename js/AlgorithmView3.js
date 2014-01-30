@@ -140,21 +140,28 @@ define(["./support"],function(support) {
 					*/
 		
 
-	    var color = d3.scale.linear()
-	    				.domain([0, items[0].length-1])
-						//.range(["hsl(42,95%,54%)", "hsl(202,100%,41%)"])
-						//199,86%,53%
-						//202,100%,41%
-						//333,100%,50%
-						.range(["hsl(0,0%,100%)", "hsl(333,100%,50%)"])
-						.interpolate(d3.interpolateLab);
+	    
 
 		var RADIUS=Math.ceil((WIDTH-margins.left-margins.right)/(items[0].length+1)/2);
 
 		var max_value=d3.max(items[0],function(d){
 			return d.value;
 		});
+		var value_extents=d3.extent(items[0],function(d){
+			return d.value;
+		})
 
+		var color = d3.scale.linear()
+	    				//.domain([0, items[0].length-1])
+	    				.domain(value_extents)
+						//.range(["hsl(42,95%,54%)", "hsl(202,100%,41%)"])
+						//199,86%,53% blue
+						//202,100%,41% blue2
+						//333,100%,50% red
+						//24,87%,50% orange
+						//87,100%,50% limegreen
+						.range(["hsl(0,0%,100%)", "hsl(87,100%,50%)"])
+						.interpolate(d3.interpolateLab);
 
 		var radius=d3.scale.sqrt()
 						//.domain([0, items[0].length-1])
@@ -215,26 +222,18 @@ define(["./support"],function(support) {
 						y=HEIGHT/2;
 
 					return "translate("+x+","+y+")";
-				});
+				})
+				.style("fill",function(d){
+					//return "hsl("+Math.floor(255-255/(items[0].length-1)*(d))+", 100%, 50%)"
+					return color(d.value);
+				})
 
 		}
-
-		
-		
 		
 		var traces_container=svg.append("g")
 						.attr("id","traces2")
 						.attr("transform","translate("+margins.left+","+margins.top+")");
 
-		
-		var traces=traces_container.selectAll("g.step")
-					.data(steps)
-					/*.enter()
-						.append("g")
-						.attr("class","step")
-						.attr("rel",function(d,i){
-							return "step_"+i;
-						});*/
 		
 		function updateTraces() {
 				traces=traces_container
@@ -312,11 +311,16 @@ define(["./support"],function(support) {
 			console.log(items)
 
 			xscale.domain([0,items[0].length-1]);
-			color.domain([0, items[0].length-1]);
+			//color.domain([0, items[0].length-1]);
 			max_value=d3.max(items[0],function(d){
 				return d.value;
 			});
 			radius.domain([0, max_value]);
+			value_extents=d3.extent(items[0],function(d){
+				return d.value;
+			})
+			color.domain(value_extents);
+			//color.domain([0, max_value]);
 
 			slider.setSteps(steps.length);
 
