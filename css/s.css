@@ -134,6 +134,9 @@ body {
 	position: relative;
 	float: left;
 }
+#algorithms div.algorithm.full {
+	width: 100%;
+}
 #algorithms div.algorithm h2 {
 	/*position: absolute;*/
 	bottom:10px;
@@ -205,6 +208,65 @@ svg .circle text {
 	font-family: Arial;
 	fill-opacity:0.5;
 }
+
+/**
+ * Dragdealer.js 0.9.6
+ * http://github.com/skidding/dragdealer
+ *
+ * (c) 2010+ Ovidiu Cherecheș
+ * http://skidding.mit-license.org
+ */
+#mainslider {
+	width:450px;
+}
+.dragdealer {
+	position: relative;
+	height: 20px;
+	background: #000;
+}
+.dragdealer .bg-dragdealer {
+	position: absolute;
+	top:10px;
+	width: 100%;
+	height:1px;
+	background: #f0f0f0;
+}
+.dragdealer .handle {
+	position: absolute;
+	top: 0;
+	left: 0;
+	cursor: pointer;
+}
+.dragdealer .red-bar {
+	width: 16px;
+	height: 16px;
+
+	background: #CC0000;
+	color: #FFF;
+	font-size: 14px;
+	line-height: 30px;
+	text-align: center;
+
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+	background-color:#000;
+	border:2px solid #f0f0f0;
+}
+.dragdealer .disabled {
+	background: #898989;
+}
+.dragdealer .handle span {
+	position: absolute;
+	font-size: 11px;
+	text-transform: uppercase;
+	top:14px;
+	left:-25px;
+	width: 70px;
+	text-align: center;
+}
+
+
 
 input[type="range"] {
 	-webkit-appearance: none;

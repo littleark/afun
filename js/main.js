@@ -18,7 +18,7 @@ require(["vendors/d3.v3.min","Sorting"], function(ignore,Sorting) {
 		//data:([0,2,3,4,5,6,19,7,8,9,10,12,16,13,14,15,17,18,20,21,11,22,23,24,25,26,27,28,29,1,30])
 		//data:shuffle([0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9])
 		//data:shuffle([0,1,2,3,3,4,5,1,1,1,1,1,1,1,2,2,2,2,3,3,3])
-		data:shuffle(d3.range(20))
+		data:shuffle(d3.range(10))
 		//data:[0,1,2,3,4]
 	});
 
@@ -155,17 +155,27 @@ require(["vendors/d3.v3.min","Sorting"], function(ignore,Sorting) {
 
 		});
 	var to=null;
-	d3.select("#mainrange")
-		.on("change",function(d){
-			if(to){
-				clearTimeout(to);
-				to=null;
-			}
-			(function(s){
-				to=setTimeout(function(){
-					console.log(s,d);
-					sorting.goTo(s);
-				},200);
-			}(+this.value));
-		})
+	var slider=new Dragdealer("mainslider",{
+			snap:true,
+			steps:101,
+			callback:function(x,y) {
+				if(to){
+					clearTimeout(to);
+					to=null;
+				}
+				var dd=this;
+				(function(s){
+					to=setTimeout(function(){
+						//console.log(steps.length-1,dragdealer.getStep()[0]-1);
+						console.log()
+						sorting.goTo(dd.getStep()[0]-1);
+					},200);
+				}());
+			},
+			animationCallback: function(x, y) {
+		    	d3.select("#mainslider").select('.value').text(Math.round(this.getStep()[0]-1)+"%");
+		    	//console.log("!!!!!!!!!!!!!!!!!!!!",this.getStep())
+		    	//sorting.setAllSliders(this.getStep()[0]);
+		  	}
+		});
 });

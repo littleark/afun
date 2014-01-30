@@ -1,8 +1,10 @@
 define(["./support"],function(support) {
 	function AlgorithmView(options){
 
-		var WIDTH=options.width,
-			HEIGHT=options.height;
+		var OWIDTH=options.width,
+			OHEIGHT=options.height,
+			WIDTH=options.width*options.size,
+			HEIGHT=options.height*options.size;
 
 		var name=options.name;
 
@@ -50,73 +52,64 @@ define(["./support"],function(support) {
 			container=options.container;
 
 
-		/*new_algorithms
-						.append("input")
-						.attr({
-							type:"range",
-							min:0,
-							step:1
-						})
-						.attr("id",function(d){
-							return "range_"+d;
-						})
-						.attr("value",function(d){
-							return algoviz[d].getCurrentStep();
-						})
-						.attr("max",function(d){
-							return algoviz[d].getStepsLength();
-						})
-						.on("change",function(d){
-							if(to[d]){
-								clearTimeout(to[d]);
-								to[d]=null;
-							}
-							(function(s){
-								to[d]=setTimeout(function(){
-									console.log(s,d);
-									algoviz[d].goTo(s);
-								},200);
-							}(+this.value));
-							
-						});*/
+
 		var div=d3.select(container)
+					.classed("full",options.size>1)
 					.append("div")
 						.style("width",WIDTH+"px");
 		var svg=div
 				.append("svg")
 					.attr("width",WIDTH)
 					.attr("height",HEIGHT)
-					.append("g");
+					//.append("g");
 		var to=null;
-		var slider=div
-					.append("input")
-						.attr({
-							type:"range",
-							min:0,
-							step:1
-						})
-						.attr("id",function(d){
-							return "range_"+options.name;
-						})
-						.attr("value",function(d){
-							return current_step;
-						})
-						.attr("max",function(d){
-							return steps.length-1;
-						})
-						.on("change",function(d){
-							if(to){
-								clearTimeout(to);
-								to=null;
-							}
-							(function(s){
-								to=setTimeout(function(){
-									console.log(s,d);
-									self.goTo(s);
-								},200);
-							}(+this.value));
-						});
+
 		
+		var slider_scale=d3.scale.linear().range([0,100]).domain([0,steps.length-1]);
+		
+		var slider_container=div
+			.append("div")
+				.attr("id","slider_"+options.name)
+				.attr("class","dragdealer");
+
+		slider_container
+				.append("div")
+					.attr("class","bg-dragdealer");
+
+		slider_container
+				.append("div")
+					.attr("class","handle red-bar")
+						.append("span")
+						.attr("class","value")
+							.text("drag me");
+
+		var slider=new Dragdealer("slider_"+options.name,{
+			steps:steps.length,
+			snap:true,
+			x:current_step,
+			callback:function(x,y) {
+				if(to){
+					clearTimeout(to);
+					to=null;
+				}
+				var dd=this;
+				(function(s){
+					to=setTimeout(function(){
+						//console.log(steps.length-1,dragdealer.getStep()[0]-1);
+						var step=dd.getStep()[0]-1;
+						if(Math.abs(current_step-step)>0) {
+							self.goTo(step);
+							return;
+						}
+					},200);
+				}());
+			},
+			animationCallback: function(x, y) {
+		    	slider_container.select('.value').text(this.getStep()[0]-1);
+		  	}
+		});
+
+
 		var circles=svg.append("g")
 							.attr("id","circles")
 							.attr("transform","translate("+margins.left+","+margins.top+")");
@@ -187,9 +180,7 @@ define(["./support"],function(support) {
 						.attr("id","traces2")
 						.attr("transform","translate("+margins.left+","+margins.top+")");
 
-		var traces_opposite=svg.append("g")
-						.attr("id","traces_opposite")
-						.attr("transform","translate("+margins.left+","+margins.top+")");
+		
 		traces=traces.selectAll("g.step")
 					.data(steps)
 					.enter()
@@ -232,7 +223,55 @@ define(["./support"],function(support) {
 				});
 
 
-		
+		this.resize=function(factor) {
+			WIDTH=OWIDTH*factor;
+			HEIGHT=OHEIGHT*factor;
+
+			d3.select(container)
+				.classed("full",factor>1)
+				.select("div")
+					.style("width",WIDTH+"px")
+
+			slider.reflow();
+
+			svg
+				.attr("width",WIDTH)
+				.attr("height",HEIGHT)
+
+			xscale.range([0,WIDTH-margins.left-margins.right]);
+
+			traces.selectAll("path")
+					.attr("d",function(d,i){
+						//console.log("adding",i,d);
+					
+						var	x1=xscale(d.from),
+						   	x2=xscale(d.to),
+						   	y=HEIGHT/2,
+						   	c1x=x1+(x2-x1)/2,
+						   	c1y=HEIGHT/2-(x2-x1)/2;
+						//console.log(i,d)
+						return "M"+x1+","+y+"Q"+c1x+","+c1y+","+x2+","+y;
+						
+					})
+					.attr("stroke-dashoffset",function(d){
+						return d3.select(this).node().getTotalLength();
+					})
+					.attr("stroke-dasharray",function(d){
+						var len=d3.select(this).node().getTotalLength();
+						return len+" "+len;
+					});
+
+			circles.attr("transform",function(d,i){
+					
+					var x=xscale(i),
+						y=HEIGHT/2;
+
+					//console.log(i,x,xscale.range(),xscale.domain())
+
+					return "translate("+x+","+y+")";
+				});
+
+		}
 
 
 		this.show=function(n,animate){
@@ -329,7 +368,7 @@ define(["./support"],function(support) {
 						
 						options.step_callback(current_step);
 
-						slider.node().value=current_step;
+						slider.setStep(current_step+1);
 
 						animating=false;
 
@@ -341,7 +380,17 @@ define(["./support"],function(support) {
 						}
 					})
 
-		}			
+		}
+		var slider_scale=d3.scale.linear().domain([0,100]).rangeRound([0,steps.length-1]);
+		this.goToPerc=function(p,callback) {
+			console.log(p,slider_scale(p));
+			this.goTo(slider_scale(p),callback);
+		}
+		this.setSlider=function(p) {
+			console.log("----->",p,slider_scale(p));
+			//this.goTo(slider_scale(p),callback);
+			slider.setStep(slider_scale(p));
+		}
 		this.goTo=function(n,callback) {
 			if(animating) {
 				return;
@@ -359,15 +408,22 @@ define(["./support"],function(support) {
 				n=0;
 			}
 			if(n>steps.length-1){
+				console.log(n,">",steps.length-1)
 				n=steps.length-1;
+			}
+
+			if(Math.abs(current_step-n)===1) {
+				this.show(n,callback);
+				return;
 			}
 
 			animating=true;
 			current_step=n;
 
 			options.step_callback(current_step);
-			if(+slider.node().value!=current_step) {
-				slider.node().value=current_step;
+
+			if(slider.getStep()[0]-1!=current_step) {
+				slider.setStep(current_step+1);
 			}
 
 			traces

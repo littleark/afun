@@ -6,7 +6,8 @@
 	<link href='http://fonts.googleapis.com/css?family=Alegreya+Sans:100,300' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="css/normalize.css">
 	<link rel="stylesheet" href="css/s.css">
-	<script src="js/vendors/html5slider.js"></script>
+	<!--<script src="js/vendors/html5slider.js"></script>-->
+	<script src="js/vendors/dragdealer.js"></script>
 	<script data-main="js/main" src="js/require.js"></script>
 </head>
 <body>
@@ -25,7 +26,10 @@
 	</div>
 	<div id="controls">
 		<div>
-			<input type="range" min="0" step="1" id="mainrange" value="0" max="100">
+			<div id="mainslider" class="dragdealer">
+				<div class="bg-dragdealer"></div>
+				<div class="handle red-bar"><span class="value"></span></div>
+			</div>
 			<br/>
 			<a href="#">&lt;</a>
 			&nbsp;

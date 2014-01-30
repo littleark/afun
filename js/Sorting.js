@@ -6,6 +6,8 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 		var WIDTH=450,
 			HEIGHT=220;
 
+		var size=1;
+
 		var data=setData(options.data) || [],
 			container=options.container || "#algorithms",
 			algorithms_container=d3.select(container);
@@ -100,18 +102,15 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 							container:"#"+d3.select(this).attr("id"),
 							width:WIDTH,
 							height:HEIGHT,
+							size:size,
 							steps:steps[d],
 							step:step,
 							items:items,
 							step_callback:function(n) {
 								step=n;
-								stepper[d].text(steps[d].length - step);
-								console.log("STEP",d,step,steps[d].length-n)
-								/*
-								if(d3.select("#range_"+d).node()) {
-									d3.select("#range_"+d).node().value=step;
-								}
-								*/
+								//stepper[d].text(steps[d].length - step);
+								stepper[d].text(step);
+								//console.log("STEP",d,step,steps[d].length-n)
 
 							},
 							callback:function(){
@@ -133,35 +132,7 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 
 				});
 
-				/*new_algorithms
-						.append("input")
-						.attr({
-							type:"range",
-							min:0,
-							step:1
-						})
-						.attr("id",function(d){
-							return "range_"+d;
-						})
-						.attr("value",function(d){
-							return algoviz[d].getCurrentStep();
-						})
-						.attr("max",function(d){
-							return algoviz[d].getStepsLength();
-						})
-						.on("change",function(d){
-							if(to[d]){
-								clearTimeout(to[d]);
-								to[d]=null;
-							}
-							(function(s){
-								to[d]=setTimeout(function(){
-									console.log(s,d);
-									algoviz[d].goTo(s);
-								},200);
-							}(+this.value));
-							
-						});*/
+
 				
 
 			});
@@ -196,10 +167,15 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 				a.stepPrev();
 			})
 		}
-		this.goTo=function(n){
+		this.goTo=function(p){
 			d3.values(algoviz).forEach(function(a){
-				a.goTo(n);
+				a.goToPerc(p);
 			})
+		}
+		this.setAllSliders=function(p) {
+			d3.values(algoviz).forEach(function(a){
+				a.setSlider(p);
+			})	
 		}
 		this.getSteps=function(){
 			var steps=0;
@@ -208,6 +184,12 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 				steps=Math.max(a.getStepsLength(),steps);
 			})
 			return steps;
+		}
+		this.resize=function(s) {
+			size=s;
+			d3.values(algoviz).forEach(function(a){
+				a.resize(size);
+			})	
 		}
 	};
 
