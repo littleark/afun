@@ -437,6 +437,11 @@ Dragdealer.prototype = {
   getValue: function() {
     return this.value.target;
   },
+  setSteps:function(steps) {
+    this.options.steps=steps;
+    this.stepRatios=this.calculateStepRatios();
+    this.reflow();
+  },
   setStep: function(x, y, snap) {
     this.setValue(
       this.options.steps && x > 1 ? (x - 1) / (this.options.steps - 1) : 0,

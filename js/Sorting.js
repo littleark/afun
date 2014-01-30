@@ -42,29 +42,7 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 
 		}
 
-		this.updateData=function(data) {
-			
-			var data=data || [1,3,0,4,2];
-			data=setData(data);
-
-			require(["support"],function(support){
-				algorithms_container
-					.selectAll("div.algorithm")
-						.each(function(d,i){
-							//console.log(d,support.cloneArray(data));
-							steps[d]=[];
-							steps[d]=functions[d](support.cloneArray(data));
-							var items=[];
-							items.push(support.cloneArray(data));
-
-							//console.log(d,items,steps[d])
-							
-							algoviz[d].updateData(steps[d],items);
-
-						});
-			})
-			
-		}
+		
 
 		this.addAlgorithm=function(fn,callback) {
 			require(["algorithms/"+fn,"support"], function(algorithm,support) {
@@ -214,6 +192,40 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 			d3.values(algoviz).forEach(function(a){
 				a.resize(size);
 			})	
+		}
+		function shuffle(o){ //v1.0
+			console.log("shuffling")
+			for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+			return o;
+		};
+		this.updateData=function(data) {
+			
+			var data=data || shuffle(d3.range(50));
+			data=setData(data);
+
+			require(["support"],function(support){
+				algorithms_container
+					.selectAll("div.algorithm")
+						.each(function(d,i){
+							//console.log(d,support.cloneArray(data));
+							steps[d]=[];
+							steps[d]=functions[d](support.cloneArray(data));
+							
+							//console.log(d,items,steps[d])
+							
+							
+
+						})
+
+				algorithms_container
+					.selectAll("div.algorithm")
+						.each(function(d,i){
+							var items=[];
+							items.push(support.cloneArray(data));
+							algoviz[d].updateData(steps[d],items);
+						})
+			})
+			
 		}
 	};
 

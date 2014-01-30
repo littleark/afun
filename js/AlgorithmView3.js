@@ -113,11 +113,13 @@ define(["./support"],function(support) {
 		var circles_container=svg.append("g")
 							.attr("id","circles")
 							.attr("transform","translate("+margins.left+","+margins.top+")");
-		var circles=circles_container.selectAll("g.circle")
+		var circles=null;
+		var traces=null;
+		/*=circles_container.selectAll("g.circle")
 					.data(items[0],function(d,i){
 						return d.id;
 						//return d;
-					});
+					});*/
 		
 					/*
 					.enter()
@@ -141,7 +143,10 @@ define(["./support"],function(support) {
 	    var color = d3.scale.linear()
 	    				.domain([0, items[0].length-1])
 						//.range(["hsl(42,95%,54%)", "hsl(202,100%,41%)"])
-						.range(["hsl(0,0%,100%)", "hsl(202,100%,41%)"])
+						//199,86%,53%
+						//202,100%,41%
+						//333,100%,50%
+						.range(["hsl(0,0%,100%)", "hsl(333,100%,50%)"])
 						.interpolate(d3.interpolateLab);
 
 		var RADIUS=Math.ceil((WIDTH-margins.left-margins.right)/(items[0].length+1)/2);
@@ -159,10 +164,10 @@ define(["./support"],function(support) {
 		function updateCircles() {
 
 			circles=circles_container.selectAll("g.circle")
-					.data(items[0],function(d,i){
-						return d.id;
-						//return d;
-					});
+						.data(items[0],function(d,i){
+							return d.id;
+							//return d;
+						});
 
 			circles.exit().remove();
 			
@@ -171,7 +176,14 @@ define(["./support"],function(support) {
 						.attr("id",function(d){
 							return "p"+d.id;
 						})
-						.attr("class","circle");
+						.attr("class","circle")
+						.attr("transform",function(d,i){
+							
+							var x=xscale(i),
+								y=HEIGHT/2;
+
+							return "translate("+0+","+y+")";
+						});
 
 
 			new_circles.append("circle")
@@ -196,13 +208,14 @@ define(["./support"],function(support) {
 						})
 
 			circles=circles_container.selectAll("g.circle");
-			circles.attr("transform",function(d,i){
+			circles
+				.attr("transform",function(d,i){
 							
-							var x=xscale(i),
-								y=HEIGHT/2;
+					var x=xscale(i),
+						y=HEIGHT/2;
 
-							return "translate("+x+","+y+")";
-						});
+					return "translate("+x+","+y+")";
+				});
 
 		}
 
@@ -243,14 +256,15 @@ define(["./support"],function(support) {
 						})
 						.enter()
 							.append("path")
-							.style("stroke",function(d){
-								return color(d.index);
-							})
+							
 
 				traces=traces_container.selectAll("g.step");
 
 				traces
 					.selectAll("path")
+						.data(function(d){
+							return d;
+						})
 						.attr("d",function(d,i){
 							//console.log("adding",i,d);
 						
@@ -263,9 +277,9 @@ define(["./support"],function(support) {
 							return "M"+x1+","+y+"Q"+c1x+","+c1y+","+x2+","+y;
 							
 						})
-
-				traces
-					.selectAll("path")
+						.style("stroke",function(d){
+							return color(d.index);
+						})
 						.attr("stroke-dashoffset",function(d){
 							return d3.select(this).node().getTotalLength();
 						})
@@ -273,6 +287,15 @@ define(["./support"],function(support) {
 							var len=d3.select(this).node().getTotalLength();
 							return len+" "+len;
 						});
+				/*
+				traces
+					.filter(function(d,i){
+						return i<=current_step;
+					})
+					.selectAll("path")
+						.attr("stroke-dashoffset",function(d){
+							return 0;//d3.select(this).node().getTotalLength();
+						})*/
 
 		}
 
@@ -295,9 +318,11 @@ define(["./support"],function(support) {
 			});
 			radius.domain([0, max_value]);
 
+			slider.setSteps(steps.length);
+
 			updateCircles();
 			updateTraces();
-			
+			this.goTo(current_step)
 			return;
 
 		}
@@ -492,8 +517,8 @@ define(["./support"],function(support) {
 			}
 
 			if(Math.abs(current_step-n)===1) {
-				this.show(n,callback);
-				return;
+				//this.show(n,callback);
+				//return;
 			}
 
 			animating=true;
