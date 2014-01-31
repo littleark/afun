@@ -6,8 +6,8 @@ define(["./support"],function(support) {
 
 		var OWIDTH=options.width,
 			OHEIGHT=options.height,
-			WIDTH=options.width*options.size,
-			HEIGHT=options.height*options.size;
+			WIDTH=Math.floor(options.width/options.size_factor),
+			HEIGHT=Math.floor(options.height/options.size_factor);
 
 		var name=options.name;
 
@@ -57,7 +57,7 @@ define(["./support"],function(support) {
 
 
 		var div=d3.select(container)
-					.classed("full",options.size>1)
+					.attr("class","algorithm size"+options.size_factor)
 					.append("div")
 						.style("width",WIDTH+"px");
 		var svg=div
@@ -79,7 +79,7 @@ define(["./support"],function(support) {
 
 		slider_container
 				.append("div")
-					.attr("class","handle red-bar")
+					.attr("class","handle bar")
 						.append("span")
 						.attr("class","value")
 							.text("drag me");
@@ -97,7 +97,7 @@ define(["./support"],function(support) {
 				(function(s){
 					to=setTimeout(function(){
 						//console.log(steps.length-1,dragdealer.getStep()[0]-1);
-						var step=dd.getStep()[0]-1;
+						var step=Math.round(dd.getStep()[0]-1);
 						if(Math.abs(current_step-step)>0) {
 							self.goTo(step);
 							return;
@@ -106,7 +106,7 @@ define(["./support"],function(support) {
 				}());
 			},
 			animationCallback: function(x, y) {
-		    	slider_container.select('.value').text(this.getStep()[0]-1);
+		    	slider_container.select('.value').text(Math.round(this.getStep()[0]-1));
 		  	}
 		});
 
@@ -141,7 +141,7 @@ define(["./support"],function(support) {
 		var radius=d3.scale.sqrt()
 						//.domain([0, items[0].length-1])
 						.domain([0, max_value])
-						.range([1, 20])
+						.range([1, Math.ceil(20/options.size_factor)])
 
 		function updateCircles() {
 
@@ -264,15 +264,7 @@ define(["./support"],function(support) {
 							var len=d3.select(this).node().getTotalLength();
 							return len+" "+len;
 						});
-				/*
-				traces
-					.filter(function(d,i){
-						return i<=current_step;
-					})
-					.selectAll("path")
-						.attr("stroke-dashoffset",function(d){
-							return 0;//d3.select(this).node().getTotalLength();
-						})*/
+
 
 		}
 
@@ -333,11 +325,13 @@ define(["./support"],function(support) {
 
 		}
 		this.resize=function(factor) {
-			WIDTH=OWIDTH*factor;
-			HEIGHT=OHEIGHT*factor;
+			WIDTH=Math.floor(OWIDTH/factor);
+			HEIGHT=Math.floor(OHEIGHT/factor);
 
 			d3.select(container)
-				.classed("full",factor>1)
+				.classed("size1",factor===1)
+				.classed("size2",factor===2)
+				.classed("size3",factor===3)
 				.select("div")
 					.style("width",WIDTH+"px")
 
@@ -369,8 +363,19 @@ define(["./support"],function(support) {
 						var len=d3.select(this).node().getTotalLength();
 						return len+" "+len;
 					});
+			traces
+				.filter(function(d,i){
+					return i<=current_step;
+				})
+				.selectAll("path")
+					.attr("stroke-dashoffset",function(d){
+						return 0;
+					})
+			
+			radius.range([1, Math.ceil(20/factor)]);
 
-			circles.attr("transform",function(d,i){
+			circles
+				.attr("transform",function(d,i){
 					
 					var x=xscale(i),
 						y=HEIGHT/2;
@@ -378,13 +383,17 @@ define(["./support"],function(support) {
 					//console.log(i,x,xscale.range(),xscale.domain())
 
 					return "translate("+x+","+y+")";
-				});
+				})
+				.selectAll("circle")
+					.attr("r",function(d){
+						return radius(d.value);
+					})
 
 		}
 
 
 		this.show=function(n,animate){
-			console.log("show",n,animate)
+			//console.log("show",n,animate)
 			if(animating) {
 				console.log("already animating")
 				return;
@@ -409,6 +418,8 @@ define(["./support"],function(support) {
 			
 
 			current_step=n;
+
+			//console.log(name,"N",n)
 
 			
 

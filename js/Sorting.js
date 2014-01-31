@@ -3,10 +3,10 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 
 		var self=this;
 
-		var WIDTH=450,
-			HEIGHT=220;
+		var WIDTH=900,
+			HEIGHT=440;
 
-		var size=1;
+		var SIZE_FACTOR=3;
 
 		var data=setData(options.data) || [],
 			container=options.container || "#algorithms",
@@ -109,13 +109,6 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 						.html(" "+(algorithm.complexity || ""))
 
 				
-
-
-
-				new_algorithms
-					.append("h3")
-					.text("0");
-
 				//console.log(fn,new_algorithms)
 
 				console.log("running:",running)
@@ -138,7 +131,7 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 							container:"#"+d3.select(this).attr("id"),
 							width:WIDTH,
 							height:HEIGHT,
-							size:size,
+							size_factor:SIZE_FACTOR,
 							steps:steps[d.name],
 							step:step,
 							items:items,
@@ -146,7 +139,7 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 								step=n;
 								//stepper[d].text(steps[d].length - step);
 								//stepper[d].text(step);
-								d3.select(self).select("h3").text(step)
+								
 								//console.log("STEP",d,step,steps[d].length-n)
 
 							},
@@ -223,9 +216,9 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 			return steps;
 		}
 		this.resize=function(s) {
-			size=s;
+			SIZE_FACTOR=s;
 			d3.values(algoviz).forEach(function(a){
-				a.resize(size);
+				a.resize(SIZE_FACTOR);
 			})	
 		}
 		function shuffle(o){ //v1.0

@@ -18,7 +18,7 @@ require(["vendors/d3.v3.min","Sorting"], function(ignore,Sorting) {
 		//data:([0,2,3,4,5,6,19,7,8,9,10,12,16,13,14,15,17,18,20,21,11,22,23,24,25,26,27,28,29,1,30])
 		//data:shuffle([0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9])
 		//data:shuffle([0,1,2,3,3,4,5,1,1,1,1,1,1,1,2,2,2,2,3,3,3])
-		data:shuffle(d3.range(50))
+		data:shuffle(d3.range(20))
 		//data:[0,1,2,3,4]
 	});
 
@@ -36,22 +36,22 @@ require(["vendors/d3.v3.min","Sorting"], function(ignore,Sorting) {
 		{
 			name:"QuickSort w/ Partition",
 			file:"QuickSort2",
-			active:false
+			active:true
 		},
 		{
 			name:"HeapSort",
 			file:"HeapSort",
-			active:false
+			active:true
 		},
 		{
 			name:"MergeSort",
 			file:"MergeSort",
-			active:false
+			active:true
 		},
 		{
 			name:"SmoothSort",
 			file:"SmoothSort",
-			active:false
+			active:true
 		},
 		{
 			name:"RadixSort",
@@ -66,7 +66,7 @@ require(["vendors/d3.v3.min","Sorting"], function(ignore,Sorting) {
 		{
 			name:"CycleSort",
 			file:"CycleSort",
-			active:false
+			active:true
 		},
 		{
 			name:"SelectionSort",
@@ -157,6 +157,12 @@ require(["vendors/d3.v3.min","Sorting"], function(ignore,Sorting) {
 				d3.selectAll(".circle").style("display","block")
 			if(i===5)
 				d3.selectAll(".circle").style("display","none")
+			if(i===6)
+				sorting.resize(1);
+			if(i===7)
+				sorting.resize(2);
+			if(i===8)
+				sorting.resize(3);
 
 			//d3.select("#stepper span")
 			//	.text(qs_view.getStepsLength() - qs_view.getCurrentStep())
@@ -176,7 +182,7 @@ require(["vendors/d3.v3.min","Sorting"], function(ignore,Sorting) {
 					to=setTimeout(function(){
 						//console.log(steps.length-1,dragdealer.getStep()[0]-1);
 						console.log()
-						sorting.goTo(dd.getStep()[0]-1);
+						sorting.goTo(Math.round(dd.getStep()[0]-1));
 					},200);
 				}());
 			},
