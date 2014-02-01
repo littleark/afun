@@ -1,4 +1,4 @@
-define(["AlgorithmView3"],function(AlgorithmView) {
+define(["AlgorithmView3","distribution"],function(AlgorithmView,Distribution) {
 	function Sorting(options) {
 
 		var self=this;
@@ -153,6 +153,11 @@ define(["AlgorithmView3"],function(AlgorithmView) {
 								d3.select("#range_"+d.name)
 									
 							}
+						});
+
+						new Distribution({
+							name:d.name,
+							steps:steps[d.name]
 						});
 
 

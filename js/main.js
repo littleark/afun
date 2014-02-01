@@ -18,7 +18,7 @@ require(["vendors/d3.v3.min","Sorting"], function(ignore,Sorting) {
 		//data:([0,2,3,4,5,6,19,7,8,9,10,12,16,13,14,15,17,18,20,21,11,22,23,24,25,26,27,28,29,1,30])
 		//data:shuffle([0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9])
 		//data:shuffle([0,1,2,3,3,4,5,1,1,1,1,1,1,1,2,2,2,2,3,3,3])
-		data:shuffle(d3.range(20))
+		data:shuffle(d3.range(500))
 		//data:[0,1,2,3,4]
 	});
 
@@ -31,27 +31,27 @@ require(["vendors/d3.v3.min","Sorting"], function(ignore,Sorting) {
 		{
 			name:"QuickSort",
 			file:"QuickSort",
-			active:true
+			active:false
 		},
 		{
 			name:"QuickSort w/ Partition",
 			file:"QuickSort2",
-			active:true
+			active:false
 		},
 		{
 			name:"HeapSort",
 			file:"HeapSort",
-			active:true
+			active:false
 		},
 		{
 			name:"MergeSort",
 			file:"MergeSort",
-			active:true
+			active:false
 		},
 		{
 			name:"SmoothSort",
 			file:"SmoothSort",
-			active:true
+			active:false
 		},
 		{
 			name:"RadixSort",
@@ -66,7 +66,7 @@ require(["vendors/d3.v3.min","Sorting"], function(ignore,Sorting) {
 		{
 			name:"CycleSort",
 			file:"CycleSort",
-			active:true
+			active:false
 		},
 		{
 			name:"SelectionSort",

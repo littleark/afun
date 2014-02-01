@@ -80,15 +80,15 @@ define(["../support"], function(support) {
 		          rt,
 		          lf,
 		          trail;
-		      //var val_old_pos=m.indexOf(val);
+		      
 		      var val_old_pos=head;
-		      console.log("------------->",val_old_pos)
+		      
 		      steps.push([]);
 		      while (p !== 1) {
 		        stepson = head - LP[pshift];
 
 		        if (compare(mstepson = m[stepson], val) <= 0) break;
-
+		        //steps.push([]);
 		        if (!trusty && pshift > 1) {
 		          rt = head - 1;
 		          lf = head - 1 - LP[pshift - 2];
@@ -96,17 +96,9 @@ define(["../support"], function(support) {
 		            break;
 		          }
 		        }
-		        //console.log("t1",cloneArray(m),mstepson,m.indexOf(mstepson),"->",head,"::",steps.length-1)
+
 		        addStep(steps,mstepson,m.indexOf(mstepson),head);
-		        /*
-		        steps[steps.length-1].push({
-		        	index:mstepson,
-		        	from:m.indexOf(mstepson),
-		        	to:head
-		        });
-				*/
 		        m[head] = mstepson;
-		        //items.push(cloneArray(m));
 		        
 
 		        head = stepson;
@@ -117,16 +109,9 @@ define(["../support"], function(support) {
 		        
 		      }
 		      if (!trusty) {
-		        //console.log("t2",cloneArray(m),val,val_old_pos,"->",head,"::",steps.length-1)
+
 		        addStep(steps,val,val_old_pos,head);
-		        /*
-		        steps[steps.length-1].push({
-		        	index:val,
-		        	from:val_old_pos,
-		        	to:head
-		        });*/
 		        m[head] = val;
-		        //items.push(cloneArray(m));
 		        
 		        sift(m, pshift, head);
 		      }
@@ -139,7 +124,6 @@ define(["../support"], function(support) {
 		          mrt,
 		          mlf,
 		          val = m[head];
-		      //var val_old_pos=m.indexOf(val);
 		      var val_old_pos=head;
 		      steps.push([]);
 		      while (pshift > 1) {
@@ -150,17 +134,15 @@ define(["../support"], function(support) {
 		        mlf = m[lf];
 
 		        if (compare(val, mlf) >= 0 && compare(val, mrt) >= 0) break;
-
+		        //steps.push([]);
 		        if (compare(mlf, mrt) >= 0) {
-		          //console.log("s",cloneArray(m),mlf,m.indexOf(mlf),"->",head,"::",steps.length-1)
 		          addStep(steps,mlf,m.indexOf(mlf),head);
-		          
 		          m[head] = mlf;
 		          
 		          head = lf;
 		          pshift--;
 		        } else {
-		          //console.log("s",cloneArray(m),mrt,m.indexOf(mrt),"->",head,"::",steps.length-1)
+		          
 		          addStep(steps,mrt,m.indexOf(mrt),head);
 		          
 		          m[head] = mrt;
@@ -169,20 +151,12 @@ define(["../support"], function(support) {
 		          pshift -= 2;
 		        }
 		        
-		        //items.push(cloneArray(m));
-		      	//console.log("s1",cloneArray(m))
+		       
 		      }
-		      //console.log("s2",cloneArray(m),val,val_old_pos,"->",head,"::",steps.length-1)
+		     
 		      addStep(steps,val,val_old_pos,head);
-		      /*
-		      steps[steps.length-1].push({
-		    	index:val,
-		    	from:val_old_pos,
-		    	to:head
-		      });
-				*/
 		      m[head] = val;
-		      //items.push(cloneArray(m));
+
 		      
 		    }
 

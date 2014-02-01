@@ -31,7 +31,7 @@ html,body {
 	position: relative;
 }
 html {
-	height: 100%;
+	/*height: 100%;*/
 }
 body {
 	min-height: 100%;
@@ -223,15 +223,17 @@ svg circle {
 	stroke-opacity:0;
 	stroke-width:3;
 
-	-webkit-transition: stroke-opacity 0.25s linear;
-	-moz-transition: stroke-opacity 0.25s linear;
-	-ms-transition: stroke-opacity 0.25s linear;
-	-o-transition: stroke-opacity 0.25s linear;
-	transition: stroke-opacity 0.25s linear;
+	-webkit-transition: fill 0.25s linear,fill-opacity 0.25s linear;
+	-moz-transition: fill 0.25s linear,fill-opacity 0.25s linear;
+	-ms-transition: fill 0.25s linear,fill-opacity 0.25s linear;
+	-o-transition: fill 0.25s linear,fill-opacity 0.25s linear;
+	transition: fill 0.25s linear,fill-opacity 0.25s linear;
 
 }
 svg .swap circle {
-	stroke-opacity:1;
+	stroke-opacity:0;
+	fill-opacity:1;
+	fill:#ff009e !important;
 }
 svg .circle text {
 	fill:#ddd;

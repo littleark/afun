@@ -1,5 +1,10 @@
 define(["./support"],function(support) {
-
+	var colors={};
+	colors["blue"]="199,86%,53%";
+	colors["blue2"]="202,100%,41%";
+	colors["red"]="333,100%,50%";
+	colors["orange"]="24,87%,50%";
+	colors["limegreen"]="87,100%,50%";
 	
 
 	function AlgorithmView(options){
@@ -135,7 +140,7 @@ define(["./support"],function(support) {
 						//333,100%,50% red
 						//24,87%,50% orange
 						//87,100%,50% limegreen
-						.range(["hsl(0,0%,100%)", "hsl(87,100%,50%)"])
+						.range(["hsl(0,0%,100%)", "hsl("+(colors["blue2"])+")"])
 						.interpolate(d3.interpolateLab);
 
 		var radius=d3.scale.sqrt()
@@ -301,12 +306,7 @@ define(["./support"],function(support) {
 
 		}
 		this.setColor=function(c) {
-			var colors={};
-			colors["blue"]="199,86%,53%";
-			colors["blue2"]="202,100%,41%";
-			colors["red"]="333,100%,50%";
-			colors["orange"]="24,87%,50%";
-			colors["limegreen"]="87,100%,50%";
+			
 
 			var c=c||"blue";
 			color.range(["hsl(0,0%,100%)", "hsl("+(colors[c])+")"]);
@@ -373,11 +373,12 @@ define(["./support"],function(support) {
 					})
 			
 			radius.range([1, Math.ceil(20/factor)]);
-
+			console.log("items",items)
 			circles
 				.attr("transform",function(d,i){
 					
-					var x=xscale(i),
+					var pos=support.indexOf(items[current_step],d.id,"id"),
+						x=xscale(pos),
 						y=HEIGHT/2;
 
 					//console.log(i,x,xscale.range(),xscale.domain())

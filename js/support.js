@@ -43,11 +43,20 @@ define(
 			}
 			return B;
 		}
+		
+		//var pos=items[current_step].map(function(e) { return e.id; }).indexOf(d.id);
+		function arrayObjectIndexOf(A, searchTerm, property) {
+		    for(var i = 0, len = A.length; i < len; i++) {
+		        if (A[i][property] === searchTerm) return i;
+		    }
+		    return -1;
+		}
 
 		return {
 			addStep:addStep,
 			swap:swap,
-			cloneArray:cloneArray
+			cloneArray:cloneArray,
+			indexOf:arrayObjectIndexOf
 		}
 	}
 );
