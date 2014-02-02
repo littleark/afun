@@ -52,7 +52,7 @@ define(
 		    return -1;
 		}
 
-		
+
 		return {
 			addStep:addStep,
 			swap:swap,
@@ -64,7 +64,8 @@ define(
 				"red":"333,100%,50%",
 				"orange":"24,87%,50%",
 				"limegreen":"87,100%,50%",
-				"tan":"41,32%,62%"
+				//"tan":"41,32%,62%",
+				"crimson":"346,100%,42%"
 			},
 			items:[5,10,20,50,75,100]
 		}

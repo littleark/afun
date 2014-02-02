@@ -39,17 +39,17 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		{
 			name:"QuickSort",
 			file:"QuickSort",
-			active:false
+			active:true
 		},
 		{
 			name:"QuickSort w/ Partition",
 			file:"QuickSort2",
-			active:false
+			active:true
 		},
 		{
 			name:"HeapSort",
 			file:"HeapSort",
-			active:false
+			active:true
 		},
 		{
 			name:"MergeSort",
@@ -157,7 +157,12 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 					d3.select(this).classed("selected",true)
 
 					options.algorithm=d.file;
-				});
+				})
+				.append("img")
+					.attr("src",function(d){
+						return "img/heapsort.png";
+						return "img/"+d.file.toLowerCase()+".png";
+					})
 
 	d3.select("#add ul#colors").selectAll("li")
 		.data(d3.entries(support.colors))
@@ -252,7 +257,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 			if(i===7)
 				sorting.resize(2);
 			if(i===8)
-				sorting.resize(3);
+				sorting.resize(5);
 
 			//d3.select("#stepper span")
 			//	.text(qs_view.getStepsLength() - qs_view.getCurrentStep())
@@ -261,7 +266,8 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 	var to=null;
 	var slider=new Dragdealer("mainslider",{
 			snap:true,
-			steps:101,
+			steps:5,
+			x:1,
 			callback:function(x,y) {
 				if(to){
 					clearTimeout(to);
@@ -270,16 +276,14 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 				var dd=this;
 				(function(s){
 					to=setTimeout(function(){
-						//console.log(steps.length-1,dragdealer.getStep()[0]-1);
 						console.log()
-						sorting.goTo(Math.round(dd.getStep()[0]-1));
+						//sorting.goTo(Math.round(dd.getStep()[0]-1));
+						sorting.goTo(dd.getValue()[0]);
 					},200);
 				}());
 			},
 			animationCallback: function(x, y) {
-		    	d3.select("#mainslider").select('.value').text(Math.round(this.getStep()[0]-1)+"%");
-		    	//console.log("!!!!!!!!!!!!!!!!!!!!",this.getStep())
-		    	//sorting.setAllSliders(this.getStep()[0]);
+		    	d3.select("#mainslider").select('.value').text((x*100)+"%");;
 		  	}
 		});
 });

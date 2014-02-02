@@ -19,7 +19,7 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 		var algoviz={};
 
 		var steps={},
-			step=0;
+			STEP=1;
 		
 		var running=0;
 
@@ -106,8 +106,8 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 					.text(function(d){
 						return algorithm.name || d.name;
 					})
-					.append("span")
-						.html(" "+(algorithm.complexity || ""))
+					//.append("span")
+					//	.html(" "+(algorithm.complexity || ""))
 
 				
 				//console.log(fn,new_algorithms)
@@ -136,26 +136,19 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 							height:HEIGHT,
 							size_factor:SIZE_FACTOR,
 							steps:steps[d.name],
-							step:step,
+							step:STEP,
 							items:items,
 							color:color,
-							step_callback:function(n) {
-								step=n;
-								//stepper[d].text(steps[d].length - step);
-								//stepper[d].text(step);
-								
-								//console.log("STEP",d,step,steps[d].length-n)
-
-							},
+							//step_callback:function(n) {},
 							callback:function(){
 								setTimeout(function(){
 									if(running<0) {
 										self.start();
+									};
+									if(i==new_algorithms.length-1) {
+										console.log("RENDER")	
 									}
-								},0)
-
-								d3.select("#range_"+d.name)
-									
+								},0);									
 							}
 						});
 
@@ -207,15 +200,19 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 			})
 		}
 		this.goTo=function(p){
+			STEP=p;
 			d3.values(algoviz).forEach(function(a){
+				console.log("setting position for",a.getName(),p)
 				a.goToPerc(p);
 			})
 		}
+		/*
 		this.setAllSliders=function(p) {
 			d3.values(algoviz).forEach(function(a){
 				a.setSlider(p);
 			})	
 		}
+		*/
 		this.getSteps=function(){
 			var steps=0;
 			d3.values(algoviz).forEach(function(a){

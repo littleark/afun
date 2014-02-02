@@ -25,8 +25,7 @@ define(["./support"],function(support) {
 
 		var steps=options.steps || [],
 			current_steps=0,
-			current_step=options.step || 0;//steps.length-1;
-
+			current_step=Math.round((steps.length)*options.step);
 
 		console.log("~~~~~~~~~~~~~~~~~",steps)
 
@@ -87,7 +86,7 @@ define(["./support"],function(support) {
 		var slider=new Dragdealer("slider_"+options.name,{
 			steps:steps.length,
 			snap:true,
-			x:current_step,
+			x:(steps.length/current_step),
 			callback:function(x,y) {
 				if(to){
 					clearTimeout(to);
@@ -98,6 +97,7 @@ define(["./support"],function(support) {
 					to=setTimeout(function(){
 						//console.log(steps.length-1,dragdealer.getStep()[0]-1);
 						var step=Math.round(dd.getStep()[0]-1);
+						//console.log("!!!!!",name,current_step,step)
 						if(Math.abs(current_step-step)>0) {
 							self.goTo(step);
 							return;
@@ -139,7 +139,6 @@ define(["./support"],function(support) {
 						.interpolate(d3.interpolateLab);
 
 		var radius=d3.scale.sqrt()
-						//.domain([0, items[0].length-1])
 						.domain([0, max_value])
 						.range([1, Math.ceil(20/options.size_factor)])
 
@@ -148,16 +147,12 @@ define(["./support"],function(support) {
 			circles=circles_container.selectAll("g.circle")
 						.data(items[0],function(d,i){
 							return d.id;
-							//return d;
 						});
 
 			circles.exit().remove();
 			
 			var new_circles=circles.enter()
 				.append("g")
-						/*.attr("id",function(d){
-							return "p"+d.id;
-						})*/
 						.attr("class","circle")
 						.attr("transform",function(d,i){
 							
@@ -175,7 +170,6 @@ define(["./support"],function(support) {
 							return radius(d.value);
 						})
 						.style("fill",function(d){
-							//return "hsl("+Math.floor(255-255/(items[0].length-1)*(d))+", 100%, 50%)"
 							return color(d.value);
 						})
 
@@ -199,7 +193,6 @@ define(["./support"],function(support) {
 					return "translate("+x+","+y+")";
 				})
 				.style("fill",function(d){
-					//return "hsl("+Math.floor(255-255/(items[0].length-1)*(d))+", 100%, 50%)"
 					return color(d.value);
 				})
 
@@ -268,8 +261,7 @@ define(["./support"],function(support) {
 
 		}
 
-		updateCircles();
-		updateTraces();
+		
 
 		this.updateData=function(__steps,__items) {
 
@@ -482,9 +474,10 @@ define(["./support"],function(support) {
 					.each("end",function(d,i){
 						d3.select(this).classed("swap",false)
 						
-						options.step_callback(current_step);
-
-						slider.setStep(current_step+1);
+						//options.step_callback(current_step);
+						
+						//slider.setStep(current_step+1);
+						self.setSlider(current_step+1);
 
 						animating=false;
 
@@ -503,13 +496,15 @@ define(["./support"],function(support) {
 
 		
 		this.goToPerc=function(p,callback) {
-			console.log(p,slider_scale(p));
-			this.goTo(slider_scale(p),callback);
+			console.log(p,Math.round((steps.length-1)*p));
+			//this.goTo(slider_scale(p),callback);
+			this.goTo(Math.round((steps.length-1)*p),callback)
 		}
 		this.setSlider=function(p) {
-			console.log("----->",p,slider_scale(p));
+			//console.log("----->",name,p);
 			//this.goTo(slider_scale(p),callback);
-			slider.setStep(slider_scale(p));
+			slider.setStep(p,0);
+			//slider.setValue(Math.round((steps.length-1)*p),0,true);
 		}
 		this.goTo=function(n,callback) {
 			if(animating) {
@@ -540,11 +535,12 @@ define(["./support"],function(support) {
 			animating=true;
 			current_step=n;
 
-			options.step_callback(current_step);
+			//options.step_callback(current_step);
 
-			if(slider.getStep()[0]-1!=current_step) {
-				slider.setStep(current_step+1);
-			}
+			//if(slider.getStep()[0]-1!=current_step) {
+				//slider.setStep(current_step+1);
+				self.setSlider(current_step+1);
+			//}
 
 			traces
 				.selectAll("path")
@@ -574,20 +570,16 @@ define(["./support"],function(support) {
 					return "translate("+x+","+y+")";
 				})
 				.each("end",function(d,i){
-					animating=false;
-					if(callback) {
-						callback();
+					if(i==items[current_step].length-1) {
+						animating=false;
+						if(callback) {
+							callback();
+						}
 					}
 				})
 		}
 
-		if(options.step>0) {
-			this.goTo(options.step,options.callback);
-		} else {
-			if(options.callback) {
-				options.callback();
-			}
-		}
+		
 
 		this.stepNext=function(animate) {
 			if(animating) {
@@ -634,6 +626,18 @@ define(["./support"],function(support) {
 		this.getName=function() {
 			return name;
 		}
+
+		;(function init(){
+			updateCircles();
+			updateTraces();
+			if(current_step>0) {
+				self.goTo(current_step,options.callback);
+			} else {
+				if(options.callback) {
+					options.callback();
+				}
+			}
+		}());
 
 	}
 

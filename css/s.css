@@ -27,7 +27,7 @@ html,body {
 	padding:0px;
 	background: #000;
 	color:#fff;
-	font-family: Arial;
+	font-family: sans-serif;
 	position: relative;
 }
 html {
@@ -38,7 +38,7 @@ body {
 }
 #wrapper {
 	width: 960px;
-	margin:0 auto;
+	margin:0 auto 100px;
 	position: relative;
 }
 #header {
@@ -100,6 +100,9 @@ body {
 #algorithms.size3 div.algorithm {
 	width: 32%;
 }
+#algorithms.size5 div.algorithm {
+	width: 20%;
+}
 #algorithms div.algorithm h2 {
 	/*position: absolute;*/
 	bottom:10px;
@@ -121,6 +124,9 @@ body {
 }
 #algorithms.size3 div.algorithm h2 {
 	font-size: 15px;
+}
+#algorithms.size5 div.algorithm h2 {
+	font-size: 12px;
 }
 #algorithms div.algorithm:hover h2 {
 	color: #fff;
@@ -145,6 +151,7 @@ body {
 	margin:0 auto;
 }
 /***************** ADD **********************/
+/*
 #algorithms div#add.algorithm {
 	font-family: 'Alegreya Sans', sans-serif;
 	font-size: 18px;
@@ -277,7 +284,137 @@ body {
 #add ul#items li a.selected {
 	border:2px solid #fff;
 }
+*/
+/***************** ADD **********************/
+#add {
+	font-family: 'Alegreya Sans', sans-serif;
+}
+#add.collapsed * {
+	display: none;
+}
+#add h5,
+#add h4 {
+	font-family: inherit;
+	font-size: inherit;
+	font-weight: inherit;
+	text-transform: uppercase;
+	margin: 0;
+	padding: 0;
+	color:yellow;
+}
+#add h5 {
+	font-size: 1.2em;
+	margin-bottom: 15px;
+	border-bottom: 1px solid #333;
+}
+#add h4 {
+	width: 100%;
+	font-size:1.2em;
+	text-align: center;
+	color:#fff;
+}
+#add h4,
+#add.collapsed h4 {
+	display: none;
+}
+#add.collapsed:hover h4 {
+	display: block;
+}
+#add a.plus,
+#add.collapsed a.plus,
+#add a.generate {
+	font-family: sans-serif;
+	display: block;
+	width:30px;
+	height: 30px;
+	margin: 20px auto;
+	padding:10px;
+	border: 4px solid #ccc;
+	-webkit-border-radius: 30px;
+	border-radius: 30px;
+	color:#ccc;
+	font-size: 30px;
+	font-weight: 800;
+	text-align: center;
+	line-height: 30px;
+	text-decoration: none;
+}
+#add.collapsed a.generate {
+	display: none;
+}
+#add a.plus:hover,
+#add a.generate:hover {
+	color:yellow;
+	border: 4px solid yellow;
+}
+#add ul {
+	list-style: none;
+	margin: 0 auto;
+	padding: 0;
+	width: 100%;
+}
+#add ul a {
+	color:#fff;
+	text-decoration: none;
+}
+#add ul a:hover {
+	color:#ccc;
+	text-decoration: none;
+}
+#add ul#algs {
+	width: 100%;
+	padding: 10px 0;
+}
+#add ul#algs li {
+	float: left;
+	width: 20%;
+	text-align: center;
+	text-transform: uppercase;
+	line-height: 18px;
+	margin: 0px;
 
+}
+#add ul#algs li a {
+	display: block;
+	text-align:center;
+	border:2px solid #000;
+	min-height: 101px;
+	padding:5px 0;
+}
+#add ul#algs li a:hover {
+	border:2px solid #fff;
+}
+#add ul#algs li a.selected {
+	font-weight: 300;
+	border:2px solid #fff;
+}
+#add ul#colors li,
+#add ul#items li {
+	float:left;
+	margin:0 10px;
+	display: block;
+	min-width:40px;
+	height: 40px;
+	line-height: 30px;
+}
+#add ul#colors li a,
+#add ul#items li a {
+	display: block;
+	min-width:36px;
+	height: 36px;
+	line-height: 36px;
+	text-align: center;
+	border:2px solid #000;
+	font-size: 1.2em;
+}
+#add ul#colors li a:hover,
+#add ul#items li a:hover {
+	border:2px solid #fff;
+}
+#add ul#colors li a.selected,
+#add ul#items li a.selected {
+	border:2px solid #fff;
+}
 /***************** SVG *********************/
 svg path {
 	stroke-opacity:0.6;
@@ -295,9 +432,9 @@ path.highlight {
 svg circle {
 	fill:#fff;
 	fill-opacity:0.6;
-	stroke:#ffff00;
+	stroke:none;
 	stroke-opacity:0;
-	stroke-width:3;
+	stroke-width:0;
 
 	-webkit-transition: fill 0.25s linear,fill-opacity 0.25s linear;
 	-moz-transition: fill 0.25s linear,fill-opacity 0.25s linear;
@@ -388,7 +525,7 @@ svg .circle text {
 }
 
 #mainslider {
-	width:450px;
+	width:200px;
 	height: 20px;
 }
 #mainslider .bar {
