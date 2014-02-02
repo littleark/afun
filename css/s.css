@@ -72,71 +72,12 @@ body {
 	text-rendering: optimizelegibility;
 	text-shadow: 0px 0px 1px #fff;
 }
+/**************** ALGORITHM ****************/
 #algorithms {
 	width:960px;
 }
-#algorithms div.add {
-	width: 100%;
-	position: relative;
-	float: left;
-}
-#add {
-	margin-bottom:90px;
-}
-#add a.plus {
-	display: block;
-	width:30px;
-	height: 30px;
-	margin: 20px auto;
-	padding:10px;
-	border: 4px solid #ccc;
-	-webkit-border-radius: 30px;
-	border-radius: 30px;
-	color:#ccc;
-	font-size: 30px;
-	text-align: center;
-	line-height: 30px;
-	text-decoration: none;
-}
-#add a.plus:hover {
-	background: #333;
-	color:#000;
-}
-#add ul {
-	display: none;
-	width: 50%;
-	list-style: none;
-	margin: 0 auto;
-	padding: 10px 0;
-	border-top:1px solid #ddd;
-}
-#add ul li {
-	float: left;
-	width: 50%;
-	font-family: 'Alegreya Sans', sans-serif;
-	font-size: 18px;
-	font-weight: 100;
-	text-align: center;
-	text-transform: uppercase;
-	line-height: 18px;
-	margin: 2px 0;
-}
-#add ul li a {
-	display: block;
-	color:#fff;
-	text-decoration: none;
-	text-align:left;
-}
-#add ul li:nth-child(even) a {
-	text-align: right;
-}
-#add ul li a:hover {
-	color:#ccc;
-	text-decoration: none;
-}
-#add ul.visible {
-	display: block;
-}
+
+
 #algorithms div.algorithm {
 	width:100%;
 	/*height:400px;*/
@@ -150,13 +91,13 @@ body {
 #algorithms div.algorithm:hover {
 	border: 1px solid #111;
 }
-#algorithms div.algorithm.size1 {
+#algorithms.size1 div.algorithm {
 	width: 99%;
 }
-#algorithms div.algorithm.size2 {
+#algorithms.size2 div.algorithm {
 	width: 49%;
 }
-#algorithms div.algorithm.size3 {
+#algorithms.size3 div.algorithm {
 	width: 32%;
 }
 #algorithms div.algorithm h2 {
@@ -175,10 +116,10 @@ body {
 	margin: 0;
 	padding: 0;
 }
-#algorithms div.algorithm.size2 h2 {
+#algorithms.size2 div.algorithm h2 {
 	font-size: 18px;
 }
-#algorithms div.algorithm.size3 h2 {
+#algorithms.size3 div.algorithm h2 {
 	font-size: 15px;
 }
 #algorithms div.algorithm:hover h2 {
@@ -203,6 +144,141 @@ body {
 .algorithm > div {
 	margin:0 auto;
 }
+/***************** ADD **********************/
+#algorithms div#add.algorithm {
+	font-family: 'Alegreya Sans', sans-serif;
+	font-size: 18px;
+	font-weight: 100;
+	border: 1px solid #111;
+	min-height: 166px;
+}
+#algorithms div#add.algorithm.collapsed {
+	border: 1px solid #000;
+}
+#algorithms div#add.algorithm.collapsed:hover {
+	border: 1px solid #111;
+}
+#add.collapsed * {
+	display: none;
+}
+#add h5,
+#add h4 {
+	font-family: inherit;
+	font-size: inherit;
+	font-weight: inherit;
+	text-transform: uppercase;
+	margin: 0;
+	padding: 0;
+	color:yellow;
+}
+#add h4 {
+	width: 100%;
+	font-size:1.2em;
+	text-align: center;
+	color:#fff;
+}
+#add h4,
+#add.collapsed h4 {
+	display: none;
+}
+#add.collapsed:hover h4 {
+	display: block;
+}
+#add a.plus,
+#add.collapsed a.plus,
+#add a.generate {
+	display: block;
+	width:30px;
+	height: 30px;
+	margin: 20px auto;
+	padding:10px;
+	border: 4px solid #ccc;
+	-webkit-border-radius: 30px;
+	border-radius: 30px;
+	color:#ccc;
+	font-size: 30px;
+	font-weight: 800;
+	text-align: center;
+	line-height: 30px;
+	text-decoration: none;
+}
+#add.collapsed a.generate {
+	display: none;
+}
+#add a.plus:hover,
+#add a.generate:hover {
+	color:yellow;
+	border: 4px solid yellow;
+}
+#add ul {
+	list-style: none;
+	margin: 0 auto;
+	padding: 0;
+	width: 100%;
+}
+#add ul a {
+	color:#fff;
+	text-decoration: none;
+}
+#add ul a:hover {
+	color:#ccc;
+	text-decoration: none;
+}
+#add ul#algs {
+	width: 94%;
+	padding: 10px 0;
+}
+#add ul#algs li {
+	float: left;
+	width: 40%;
+	text-align: center;
+	text-transform: uppercase;
+	line-height: 18px;
+	margin: 2px 10px;
+}
+#add ul#algs li:nth-child(even) {
+	float: right;
+}
+#add ul#algs li a {
+	display: block;
+	text-align:left;
+	border:2px solid #000;
+}
+#add ul#algs li:nth-child(even) a {
+	text-align: right;
+}
+#add ul#algs li a.selected {
+	font-weight: 300;
+	border:2px solid #fff;
+}
+#add ul#colors li,
+#add ul#items li {
+	float:left;
+	margin:0 10px;
+	display: block;
+	min-width:24px;
+	height: 24px;
+	line-height: 20px;
+}
+#add ul#colors li a,
+#add ul#items li a {
+	display: block;
+	min-width:20px;
+	height: 20px;
+	line-height: 20px;
+	text-align: center;
+	border:2px solid #000;
+}
+#add ul#colors li a:hover,
+#add ul#items li a:hover {
+	border:2px solid #fff;
+}
+#add ul#colors li a.selected,
+#add ul#items li a.selected {
+	border:2px solid #fff;
+}
+
+/***************** SVG *********************/
 svg path {
 	stroke-opacity:0.6;
 	stroke-width:1;

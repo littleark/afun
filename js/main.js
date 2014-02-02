@@ -1,4 +1,4 @@
-require(["vendors/d3.v3.min","Sorting"], function(ignore,Sorting) {
+require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,support) {
 	////d3js.org/d3.v3.min.js
 	//cdnjs.cloudflare.com/ajax/libs/d3/3.3.13/d3.min.js
 
@@ -11,6 +11,11 @@ require(["vendors/d3.v3.min","Sorting"], function(ignore,Sorting) {
 		return o;
 	};
 
+	var data={};
+	(support.items).forEach(function(d){
+		data[d]=shuffle(d3.range(d));
+	});
+
 	window.sorting=new Sorting({
 		container:"#algorithms",
 		//sorting:["quicksort","mergesort","smoothsort"],
@@ -18,14 +23,17 @@ require(["vendors/d3.v3.min","Sorting"], function(ignore,Sorting) {
 		//data:([0,2,3,4,5,6,19,7,8,9,10,12,16,13,14,15,17,18,20,21,11,22,23,24,25,26,27,28,29,1,30])
 		//data:shuffle([0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9])
 		//data:shuffle([0,1,2,3,3,4,5,1,1,1,1,1,1,1,2,2,2,2,3,3,3])
-		data:shuffle(d3.range(500))
+		//data:shuffle(d3.range(10))
 		//data:[0,1,2,3,4]
+		data:data[20]
 	});
 
 	
 	//sorting.addAlgorithm("MergeSort");
 
 	//d3.select("#stepper span").text(sorting.getSteps());
+
+
 
 	var algorithms=[
 		{
@@ -105,19 +113,30 @@ require(["vendors/d3.v3.min","Sorting"], function(ignore,Sorting) {
 		}
 	];
 
+	var options={
+		algorithm:algorithms[0].file,
+		color:"blue2",
+		items:10
+	};
+
 	algorithms.forEach(function(d){
 		if(d.active)
-			sorting.addAlgorithm(d.file);	
+			sorting.addAlgorithm(
+				d.file,
+				data[options.items],
+				options.color
+				
+			);	
 	})
 	
 
 
 	d3.select("#add a.plus").on("click",function(){
 		d3.event.preventDefault();
-		d3.select("#add ul").classed("visible",!d3.select("#add ul").classed("visible"))
+		d3.select("#add").classed("collapsed",!d3.select("#add").classed("collapsed"))
 	})	
 
-	d3.select("#add ul").selectAll("li")
+	d3.select("ul#algs").selectAll("li")
 		.data(algorithms)
 		.enter()
 		.append("li")
@@ -126,13 +145,84 @@ require(["vendors/d3.v3.min","Sorting"], function(ignore,Sorting) {
 				.text(function(d){
 					return d.name;
 				})
+				.classed("selected",function(d,i){
+					return d.name=="QuickSort";
+				})
 				.on("click",function(d,i){
 					d3.event.preventDefault();
 
 					console.log(d);
-					sorting.addAlgorithm(d.file)
 
-				})	
+					d3.selectAll("#add ul#algs li a").classed("selected",false);
+					d3.select(this).classed("selected",true)
+
+					options.algorithm=d.file;
+				});
+
+	d3.select("#add ul#colors").selectAll("li")
+		.data(d3.entries(support.colors))
+		.enter()
+		.append("li")
+			.append("a")
+				.attr("href","#")
+				.attr("title",function(d){
+					return d.key;
+				})
+				.classed("selected",function(d,i){
+					return d.key=="blue2";
+				})
+				.style("background-color",function(d){
+					return d3.rgb("hsl("+d.value+")").toString();
+				})
+				.on("click",function(d,i){
+					d3.event.preventDefault();
+
+					console.log(d);
+					
+					d3.selectAll("#add ul#colors li a").classed("selected",false);
+					d3.select(this).classed("selected",true)
+
+					options.color=d.key;
+				});
+
+	d3.select("#add ul#items").selectAll("li")
+		.data(support.items)
+		.enter()
+		.append("li")
+			.append("a")
+				.attr("href","#")
+				.attr("title",function(d){
+					return d+" items";
+				})
+				.classed("selected",function(d,i){
+					return d==10;
+				})
+				.text(function(d){
+					return d;
+				})
+				.on("click",function(d,i){
+					d3.event.preventDefault();
+
+					console.log(d,this,this.parentNode);
+
+					d3.selectAll("#add ul#items li a").classed("selected",false);
+					d3.select(this).classed("selected",true);
+
+					options.items=d;
+				});
+
+	d3.select("#add .generate")
+		.on("click",function(d,i){
+			d3.event.preventDefault();
+
+			sorting.addAlgorithm(
+				options.algorithm,
+				data[options.items],
+				options.color
+				
+			)
+		});
+
 	d3.select("body").on("keyup",function(){
 		console.log(d3.event)
 		if(d3.event.keyCode==39) {

@@ -1,4 +1,4 @@
-define(["AlgorithmView3","distribution"],function(AlgorithmView,Distribution) {
+define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distribution,support) {
 	function Sorting(options) {
 
 		var self=this;
@@ -8,11 +8,11 @@ define(["AlgorithmView3","distribution"],function(AlgorithmView,Distribution) {
 
 		var SIZE_FACTOR=3;
 
-		var data=setData(options.data) || [],
-			container=options.container || "#algorithms",
-			algorithms_container=d3.select(container);
+		//var data=setData(options.data) || [],
+		var	container=options.container || "#algorithms",
+			algorithms_container=d3.select(container).classed("size"+SIZE_FACTOR,true);;
 
-		console.log("DATAAAAAAAAA",data)
+		
 
 		var sorting=options.sorting || [];
 
@@ -57,7 +57,8 @@ define(["AlgorithmView3","distribution"],function(AlgorithmView,Distribution) {
 			console.log(sorting,algoviz)
 		}
 
-		this.addAlgorithm=function(fn,callback) {
+		this.addAlgorithm=function(fn,data,color,callback) {
+			
 			require(["algorithms/"+fn,"support"], function(algorithm,support) {
 				
 				sorting.push({
@@ -67,9 +68,9 @@ define(["AlgorithmView3","distribution"],function(AlgorithmView,Distribution) {
 				if(!functions[fn]) {
 					functions[fn]=algorithm["code"]();	
 				}
-
+				data= setData(data||data.options);
 				var algorithms=algorithms_container
-					.selectAll("div.algorithm")
+					.selectAll("div.algorithm:not(#add)")
 						.data(sorting);
 						/*.data(sorting,function(d,i){
 							return d+"_"+i;
@@ -84,8 +85,8 @@ define(["AlgorithmView3","distribution"],function(AlgorithmView,Distribution) {
 						*/
 
 				var new_algorithms=algorithms.enter()
-							.append("div")
-							//.insert("div","div.add")
+							//.append("div")
+							.insert("div","div#add")
 							.attr("class","algorithm")
 							.attr("id",function(d,i){
 								return d.name;
@@ -118,6 +119,8 @@ define(["AlgorithmView3","distribution"],function(AlgorithmView,Distribution) {
 
 				new_algorithms.each(function(d,i){
 
+					console.log("using data",data.length)
+
 					steps[d.name]=functions[d.fn](support.cloneArray(data));
 					var items=[];
 					items.push(support.cloneArray(data));
@@ -135,6 +138,7 @@ define(["AlgorithmView3","distribution"],function(AlgorithmView,Distribution) {
 							steps:steps[d.name],
 							step:step,
 							items:items,
+							color:color,
 							step_callback:function(n) {
 								step=n;
 								//stepper[d].text(steps[d].length - step);
@@ -222,6 +226,12 @@ define(["AlgorithmView3","distribution"],function(AlgorithmView,Distribution) {
 		}
 		this.resize=function(s) {
 			SIZE_FACTOR=s;
+			algorithms_container
+				.classed("size1",false)
+				.classed("size2",false)
+				.classed("size3",false)
+				.classed("size"+SIZE_FACTOR,true);
+			
 			d3.values(algoviz).forEach(function(a){
 				a.resize(SIZE_FACTOR);
 			})	

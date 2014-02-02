@@ -43,7 +43,7 @@ define(
 			}
 			return B;
 		}
-		
+
 		//var pos=items[current_step].map(function(e) { return e.id; }).indexOf(d.id);
 		function arrayObjectIndexOf(A, searchTerm, property) {
 		    for(var i = 0, len = A.length; i < len; i++) {
@@ -52,11 +52,21 @@ define(
 		    return -1;
 		}
 
+		
 		return {
 			addStep:addStep,
 			swap:swap,
 			cloneArray:cloneArray,
-			indexOf:arrayObjectIndexOf
+			indexOf:arrayObjectIndexOf,
+			colors:{
+				"blue":"199,86%,53%",
+				"blue2":"202,100%,41%",
+				"red":"333,100%,50%",
+				"orange":"24,87%,50%",
+				"limegreen":"87,100%,50%",
+				"tan":"41,32%,62%"
+			},
+			items:[5,10,20,50,75,100]
 		}
 	}
 );

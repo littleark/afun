@@ -1,10 +1,5 @@
 define(["./support"],function(support) {
-	var colors={};
-	colors["blue"]="199,86%,53%";
-	colors["blue2"]="202,100%,41%";
-	colors["red"]="333,100%,50%";
-	colors["orange"]="24,87%,50%";
-	colors["limegreen"]="87,100%,50%";
+	
 	
 
 	function AlgorithmView(options){
@@ -62,7 +57,7 @@ define(["./support"],function(support) {
 
 
 		var div=d3.select(container)
-					.attr("class","algorithm size"+options.size_factor)
+					.attr("class","algorithm")
 					.append("div")
 						.style("width",WIDTH+"px");
 		var svg=div
@@ -140,7 +135,7 @@ define(["./support"],function(support) {
 						//333,100%,50% red
 						//24,87%,50% orange
 						//87,100%,50% limegreen
-						.range(["hsl(0,0%,100%)", "hsl("+(colors["blue2"])+")"])
+						.range(["hsl(0,0%,100%)", "hsl("+(support.colors[options.color])+")"])
 						.interpolate(d3.interpolateLab);
 
 		var radius=d3.scale.sqrt()
@@ -309,7 +304,7 @@ define(["./support"],function(support) {
 			
 
 			var c=c||"blue";
-			color.range(["hsl(0,0%,100%)", "hsl("+(colors[c])+")"]);
+			color.range(["hsl(0,0%,100%)", "hsl("+(support.colors[c])+")"]);
 
 			traces
 				.selectAll("path")
