@@ -115,7 +115,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 
 	var options={
 		algorithm:algorithms[0].file,
-		color:"blue2",
+		color:"blue",
 		items:10
 	};
 
@@ -174,7 +174,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 					return d.key;
 				})
 				.classed("selected",function(d,i){
-					return d.key=="blue2";
+					return d.key=="blue";
 				})
 				.style("background-color",function(d){
 					return d3.rgb("hsl("+d.value+")").toString();
@@ -257,7 +257,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 			if(i===7)
 				sorting.resize(2);
 			if(i===8)
-				sorting.resize(5);
+				sorting.resize(3);
 
 			//d3.select("#stepper span")
 			//	.text(qs_view.getStepsLength() - qs_view.getCurrentStep())

@@ -47,7 +47,7 @@ body {
 #header h1 {
 	color:#fff;
 	font-family: 'Alegreya Sans', sans-serif;
-	font-size: 18px;
+	font-size: 1.4em;
 	line-height: 25px;
 	font-weight: 100;
 	text-transform: uppercase;
@@ -63,7 +63,7 @@ body {
 #footer h5 {
 	color:#fff;
 	font-family: 'Alegreya Sans', sans-serif;
-	font-size: 17px;
+	font-size: 1.3em;
 	font-weight: 100;
 	text-align: center;
 	text-transform: uppercase;
@@ -110,9 +110,9 @@ body {
 	width: 100%;
 	text-align:center;
 	text-transform: uppercase;
-	color: #ccc;
+	color: #fff;
 	font-family: 'Alegreya Sans', sans-serif;
-	font-size: 22px;
+	font-size: 1.55em;
 	font-weight: 100;
 	text-rendering: optimizelegibility;
 	text-shadow: 0px 0px 1px #fff;
@@ -120,32 +120,20 @@ body {
 	padding: 0;
 }
 #algorithms.size2 div.algorithm h2 {
-	font-size: 18px;
+	font-size: 1.25em;
 }
 #algorithms.size3 div.algorithm h2 {
-	font-size: 15px;
+	font-size: 1.1em;
 }
 #algorithms.size5 div.algorithm h2 {
 	font-size: 12px;
 }
 #algorithms div.algorithm:hover h2 {
-	color: #fff;
+	color: gold;
 }
 #algorithms div.algorithm h2 span {
-	color:#ddd;
+	color:#fff;
 	text-transform: none;
-}
-#algorithms div.algorithm h3 {
-	position: absolute;
-	top:10px;
-	right: 10px;
-	text-align: right;
-	text-transform: uppercase;
-	color: #fff;
-	font-size: 12px;
-	font-weight: normal;
-	margin: 0;
-	padding: 0;
 }
 .algorithm > div {
 	margin:0 auto;
@@ -176,7 +164,7 @@ body {
 	text-transform: uppercase;
 	margin: 0;
 	padding: 0;
-	color:yellow;
+	color:gold;
 }
 #add h4 {
 	width: 100%;
@@ -214,8 +202,8 @@ body {
 }
 #add a.plus:hover,
 #add a.generate:hover {
-	color:yellow;
-	border: 4px solid yellow;
+	color:gold;
+	border: 4px solid gold;
 }
 #add ul {
 	list-style: none;
@@ -288,6 +276,8 @@ body {
 /***************** ADD **********************/
 #add {
 	font-family: 'Alegreya Sans', sans-serif;
+	font-size: 1.05em;
+	font-weight: 100;
 }
 #add.collapsed * {
 	display: none;
@@ -300,52 +290,64 @@ body {
 	text-transform: uppercase;
 	margin: 0;
 	padding: 0;
-	color:yellow;
+	color:gold;
 }
 #add h5 {
 	font-size: 1.2em;
 	margin-bottom: 15px;
 	border-bottom: 1px solid #333;
 }
-#add h4 {
-	width: 100%;
-	font-size:1.2em;
-	text-align: center;
-	color:#fff;
-}
-#add h4,
-#add.collapsed h4 {
-	display: none;
-}
-#add.collapsed:hover h4 {
-	display: block;
-}
+
+
+
+
 #add a.plus,
 #add.collapsed a.plus,
 #add a.generate {
 	font-family: sans-serif;
 	display: block;
+	width: 300px;
+	margin: 5px auto;
+	text-align: center;
+	text-decoration: none;
+}
+#add a.plus h4,
+#add a.generate h4 {
+	display: block;
+	visibility: hidden;
+	width: 100%;
+	font-size:1.2em;
+	text-align: center;
+	color:gold;
+	font-family: 'Alegreya Sans', sans-serif;
+}
+
+#add.collapsed a:hover h4 {
+	visibility: visible !important;
+}
+#add a.plus span,
+#add a.generate span {
+	display: block;
+	margin: 5px auto;
 	width:30px;
 	height: 30px;
-	margin: 20px auto;
 	padding:10px;
-	border: 4px solid #ccc;
+	border: 4px solid #fff;
 	-webkit-border-radius: 30px;
 	border-radius: 30px;
-	color:#ccc;
+	color:#fff;
 	font-size: 30px;
 	font-weight: 800;
 	text-align: center;
 	line-height: 30px;
-	text-decoration: none;
 }
 #add.collapsed a.generate {
 	display: none;
 }
-#add a.plus:hover,
-#add a.generate:hover {
-	color:yellow;
-	border: 4px solid yellow;
+#add a.plus:hover span,
+#add a.generate:hover span {
+	color:gold;
+	border: 4px solid gold;
 }
 #add ul {
 	list-style: none;
@@ -358,7 +360,7 @@ body {
 	text-decoration: none;
 }
 #add ul a:hover {
-	color:#ccc;
+	color:gold;
 	text-decoration: none;
 }
 #add ul#algs {
@@ -367,11 +369,11 @@ body {
 }
 #add ul#algs li {
 	float: left;
-	width: 20%;
+	width: 19.8%;
 	text-align: center;
 	text-transform: uppercase;
 	line-height: 18px;
-	margin: 0px;
+	margin: 2px 0.1%;
 
 }
 #add ul#algs li a {
@@ -386,6 +388,7 @@ body {
 }
 #add ul#algs li a.selected {
 	font-weight: 300;
+	color:#fff;
 	border:2px solid #fff;
 }
 #add ul#colors li,
@@ -413,6 +416,8 @@ body {
 }
 #add ul#colors li a.selected,
 #add ul#items li a.selected {
+	color:#fff;
+	font-weight: 300;
 	border:2px solid #fff;
 }
 /***************** SVG *********************/
@@ -580,7 +585,7 @@ svg .circle text {
 	display: block;*/
 }
 #controls a:hover {
-	color:#ffff00;
+	color:gold;
 }
 
 #controls ul.colors {

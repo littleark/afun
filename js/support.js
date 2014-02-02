@@ -59,8 +59,9 @@ define(
 			cloneArray:cloneArray,
 			indexOf:arrayObjectIndexOf,
 			colors:{
+				"gold":"53,100%,50%",
 				"blue":"199,86%,53%",
-				"blue2":"202,100%,41%",
+				//"blue2":"202,100%,41%",
 				"red":"333,100%,50%",
 				"orange":"24,87%,50%",
 				"limegreen":"87,100%,50%",
