@@ -44,12 +44,12 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		{
 			name:"QuickSort w/ Partition",
 			file:"QuickSort2",
-			active:true
+			active:false
 		},
 		{
 			name:"HeapSort",
 			file:"HeapSort",
-			active:true
+			active:false
 		},
 		{
 			name:"MergeSort",
@@ -130,8 +130,40 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 	})
 	
 
+	function scrollTween(offset) {
+	  return function() {
+	    var i = 
+	        d3.interpolateNumber(
+	            window.pageYOffset || document.documentElement.scrollTop,
+	            offset
+	        );
+	    return function(t) { 
+	        scrollTo(0, i(t)); 
+	    };
+	  };
+	}
+	
 
 	d3.select("#add a.plus").on("click",function(){
+		d3.event.preventDefault();
+		d3.select("#add").classed("collapsed",!d3.select("#add").classed("collapsed"))
+
+		//return;
+		
+		var position=support.findPos(d3.select("#add").node());
+
+		
+		d3.transition()
+		    .delay(50)
+		    .duration(1000)
+		    .tween(
+		        "scroll",
+		        scrollTween(position[1]-10)
+		    );
+		
+		
+	});
+	d3.select("#add a.close").on("click",function(){
 		d3.event.preventDefault();
 		d3.select("#add").classed("collapsed",!d3.select("#add").classed("collapsed"))
 	})	

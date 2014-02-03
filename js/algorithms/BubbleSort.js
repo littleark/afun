@@ -6,7 +6,8 @@ define(["../support"], function(support) {
 		"complexity":"O(n&sup2;)",
 	    "code":function() {
 			var steps=[];
-
+			var iterations=[];
+			
 			function bubblesort(array) {
 			    var n = array.length - 1;
 			    for (var i = 0; i < n; i++) {

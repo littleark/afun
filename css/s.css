@@ -32,6 +32,7 @@ html,body {
 }
 html {
 	/*height: 100%;*/
+	overflow-y: scroll;
 }
 body {
 	min-height: 100%;
@@ -278,9 +279,26 @@ body {
 	font-family: 'Alegreya Sans', sans-serif;
 	font-size: 1.05em;
 	font-weight: 100;
+	position: relative;
 }
-#add.collapsed * {
-	display: none;
+#add #form {
+	overflow: hidden;
+	height: 800px;
+	border: 1px solid #666;
+	-webkit-transition: height 500ms;
+	-moz-transition: height 500ms;
+	-ms-transition: height 500ms;
+	-o-transition: height 500ms;
+	transition: height 500ms;
+	padding:0px;
+}
+#add #form>div {
+	margin:10px;
+	position: relative;
+}
+#add.collapsed #form {
+	height: 0px;
+	border: 1px solid transparent;
 }
 #add h5,
 #add h4 {
@@ -298,8 +316,21 @@ body {
 	border-bottom: 1px solid #333;
 }
 
+#add a {
+	color:#fff;
+	text-decoration: none;
+}
+#add a:hover {
+	color:gold;
+	text-decoration: none;
+}
 
-
+#add #form a.close{
+	position: absolute;
+	top:0px;
+	right:0px;
+	text-align: right;
+}
 
 #add a.plus,
 #add.collapsed a.plus,
@@ -310,7 +341,22 @@ body {
 	margin: 5px auto;
 	text-align: center;
 	text-decoration: none;
+	padding-top: 2px;
 }
+
+#add a.plus {
+	overflow: hidden;
+	height: 0;
+	-webkit-transition: height 500ms linear;
+	-moz-transition: height 500ms linear;
+	-ms-transition: height 500ms linear;
+	-o-transition: height 500ms linear;
+	transition: height 500ms linear;
+}
+#add.collapsed a.plus {
+	height:100px;
+}
+
 #add a.plus h4,
 #add a.generate h4 {
 	display: block;
@@ -355,14 +401,7 @@ body {
 	padding: 0;
 	width: 100%;
 }
-#add ul a {
-	color:#fff;
-	text-decoration: none;
-}
-#add ul a:hover {
-	color:gold;
-	text-decoration: none;
-}
+
 #add ul#algs {
 	width: 100%;
 	padding: 10px 0;
