@@ -85,8 +85,8 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 						*/
 
 				var new_algorithms=algorithms.enter()
-							//.append("div")
-							.insert("div","div#add")
+							.append("div")
+							//.insert("div","div#add")
 							.attr("class","algorithm")
 							.attr("id",function(d,i){
 								return d.name;
@@ -103,7 +103,7 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 
 				new_algorithms
 					.append("h2")
-					.text(function(d){
+					.html(function(d){
 						return algorithm.name || d.name;
 					})
 					//.append("span")

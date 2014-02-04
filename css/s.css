@@ -387,6 +387,9 @@ body {
 	text-align: center;
 	line-height: 30px;
 }
+#add a.generate span i {
+	margin-left:-5px;
+}
 #add.collapsed a.generate {
 	display: none;
 }
@@ -430,6 +433,13 @@ body {
 	color:#fff;
 	border:2px solid #fff;
 }
+#add ul#algs li span {
+	width:142px;
+	height:74px;
+	display: block;
+	margin: 0 auto;
+	background: transparent url(../img/charts.png) no-repeat;
+}
 #add ul#colors li,
 #add ul#items li {
 	float:left;
@@ -459,12 +469,60 @@ body {
 	font-weight: 300;
 	border:2px solid #fff;
 }
+/***************** ALGS FOR MENU *********************/
+
+#add ul#algs li a.QuickSort span {
+	background-position: 0 0;
+}
+#add ul#algs li a.QuickSort2 span {
+	background-position: 25% 0;
+}
+#add ul#algs li a.HeapSort span {
+	background-position: 50% 0;
+}
+#add ul#algs li a.MergeSort span {
+	background-position: 75% 0;
+}
+#add ul#algs li a.SmoothSort span {
+	background-position: 100% 0;
+}
+#add ul#algs li a.RadixSort span {
+	background-position: 0 50%;
+}
+#add ul#algs li a.ShellSort span {
+	background-position: 25% 50%;
+}
+#add ul#algs li a.CycleSort span {
+	background-position: 50% 50%;
+}
+#add ul#algs li a.SelectionSort span {
+	background-position: 75% 50%;
+}
+#add ul#algs li a.InsertionSort span {
+	background-position: 100% 50%;
+}
+#add ul#algs li a.GnomeSort span {
+	background-position: 0 100%;
+}
+#add ul#algs li a.CombSort span {
+	background-position: 25% 100%;
+}
+#add ul#algs li a.BubbleSort span {
+	background-position: 50% 100%;
+}
+#add ul#algs li a.CocktailSort span {
+	background-position: 75% 100%;
+}
+#add ul#algs li a.OddEvenSort span {
+	background-position: 100% 100%;
+}
 /***************** SVG *********************/
 svg path {
-	stroke-opacity:0.6;
-	stroke-width:1;
-	fill:none;
-	stroke:#ffffff;
+	stroke-opacity: 0.6;
+	stroke-width: 1.3;
+	fill: none;
+	stroke: #ffffff;
+	shape-rendering: optimizeSpeed;
 }
 svg .visible path {
 	stroke-opacity:0.6;

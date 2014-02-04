@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>Copyright (C) 2014 by original authors @ fontello.com</metadata>
+<defs>
+<font id="afun" horiz-adv-x="1000" >
+<font-face font-family="afun" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="th-large" unicode="&#xe800;" d="m0-150l0 438l438 0l0-438l-438 0z m0 563l0 437l438 0l0-437l-438 0z m563-563l0 438l437 0l0-438l-437 0z m0 563l0 437l437 0l0-437l-437 0z" horiz-adv-x="1000" />
+<glyph glyph-name="th" unicode="&#xe801;" d="m0-150l0 250l250 0l0-250l-250 0z m0 375l0 250l250 0l0-250l-250 0z m0 375l0 250l250 0l0-250l-250 0z m375-750l0 250l250 0l0-250l-250 0z m0 375l0 250l250 0l0-250l-250 0z m0 375l0 250l250 0l0-250l-250 0z m375-750l0 250l250 0l0-250l-250 0z m0 375l0 250l250 0l0-250l-250 0z m0 375l0 250l250 0l0-250l-250 0z" horiz-adv-x="1000" />
+<glyph glyph-name="left-open" unicode="&#xe805;" d="m0 350l148 149l352 351l148-148l-351-352l351-352l-148-148l-352 352z" horiz-adv-x="648" />
+<glyph glyph-name="right-open" unicode="&#xe804;" d="m0-2l352 352l-352 352l148 148l352-351l148-149l-148-148l-352-352z" horiz-adv-x="648" />
+<glyph glyph-name="play" unicode="&#xe802;" d="m0-25l0 750l625-375z" horiz-adv-x="625" />
+<glyph glyph-name="pause" unicode="&#xe803;" d="m0-25l0 750l313 0l0-750l-313 0z m438 0l0 750l312 0l0-750l-312 0z" horiz-adv-x="750" />
+<glyph glyph-name="align-justify" unicode="&#xe806;" d="m0-89l0 156l1000 0l0-156l-1000 0z m0 240l0 156l1000 0l0-156l-1000 0z m0 242l0 156l1000 0l0-156l-1000 0z m0 240l0 157l1000 0l0-157l-1000 0z" horiz-adv-x="1000" />
+</font>
+</defs>
+</svg>

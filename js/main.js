@@ -37,77 +37,77 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 
 	var algorithms=[
 		{
-			name:"QuickSort",
+			name:"Quick Sort",
 			file:"QuickSort",
 			active:true
 		},
 		{
-			name:"QuickSort w/ Partition",
+			name:"Quick Sort w/Partition",
 			file:"QuickSort2",
 			active:false
 		},
 		{
-			name:"HeapSort",
+			name:"Heap Sort",
 			file:"HeapSort",
-			active:false
+			active:true
 		},
 		{
-			name:"MergeSort",
+			name:"Merge Sort",
 			file:"MergeSort",
 			active:false
 		},
 		{
-			name:"SmoothSort",
+			name:"Smooth Sort",
 			file:"SmoothSort",
 			active:false
 		},
 		{
-			name:"RadixSort",
+			name:"Radix Sort",
 			file:"RadixSort",
 			active:false
 		},
 		{
-			name:"ShellSort",
+			name:"Shell Sort",
 			file:"ShellSort",
 			active:false
 		},
 		{
-			name:"CycleSort",
+			name:"Cycle Sort",
 			file:"CycleSort",
 			active:false
 		},
 		{
-			name:"SelectionSort",
+			name:"Selection Sort",
 			file:"SelectionSort",
-			active:false
+			active:true
 		},
 		{
-			name:"InsertionSort",
+			name:"Insertion Sort",
 			file:"InsertionSort",
 			active:false
 		},
 		{
-			name:"GnomeSort",
+			name:"Gnome Sort",
 			file:"GnomeSort",
 			active:false
 		},
 		{
-			name:"CombSort",
+			name:"Comb Sort",
 			file:"CombSort",
 			active:false
 		},
 		{
-			name:"BubbleSort",
+			name:"Bubble Sort",
 			file:"BubbleSort",
 			active:false
 		},
 		{
-			name:"CocktailSort",
+			name:"Cocktail Sort",
 			file:"CocktailSort",
 			active:false
 		},
 		{
-			name:"OddEvenSort",
+			name:"OddEven Sort",
 			file:"OddEvenSort",
 			active:false
 		}
@@ -177,8 +177,11 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 				.text(function(d){
 					return d.name;
 				})
+				.attr("class",function(d){
+					return d.file;
+				})
 				.classed("selected",function(d,i){
-					return d.name=="QuickSort";
+					return d.file=="QuickSort";
 				})
 				.on("click",function(d,i){
 					d3.event.preventDefault();
@@ -190,11 +193,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 
 					options.algorithm=d.file;
 				})
-				.append("img")
-					.attr("src",function(d){
-						return "img/heapsort.png";
-						return "img/"+d.file.toLowerCase()+".png";
-					})
+				.append("span")
 
 	d3.select("#add ul#colors").selectAll("li")
 		.data(d3.entries(support.colors))
@@ -285,7 +284,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 			if(i===5)
 				d3.selectAll(".circle").style("display","none")
 			if(i===6)
-				sorting.resize(1);
+				sorting.resize(1.5);
 			if(i===7)
 				sorting.resize(2);
 			if(i===8)

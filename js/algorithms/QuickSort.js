@@ -2,7 +2,7 @@ define(["../support"], function(support) {
 	swap=support.swap;
 	addStep=support.addStep;
 	return {
-		"name":"Quicksort",
+		"name":"Quick Sort",
 		"complexity":"O(n log n)",
 	    "code":function() {
 			var steps=[];

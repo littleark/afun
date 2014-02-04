@@ -2,29 +2,23 @@ define(["../support"], function(support) {
 	swap=support.swap;
 	addStep=support.addStep;
 	return {
-		"name":"Bubblesort",
+		"name":"Bubble Sort",
 		"complexity":"O(n&sup2;)",
 	    "code":function() {
 			var steps=[];
 			var iterations=[];
-			
+
 			function bubblesort(array) {
 			    var n = array.length - 1;
+			    var it=0;
 			    for (var i = 0; i < n; i++) {
+			    	it++;
 			        for (var j = n; j > i; j--) {
+			        	it++;
 			        	if(array[j-1].value > array[j].value) {
-			            //if (((IComparable)arrayToSort[j - 1]).CompareTo(arrayToSort[j]) > 0) {
+			            	iterations.push(it);
+			            	it=0;
 			                swap(steps,array,j-1,j);
-			                /*
-			                object temp = arrayToSort[j - 1];
-			                arrayToSort[j - 1] = arrayToSort[j];
-			                arrayToSort[j] = temp;
-			                RedrawItem(j);
-			                RedrawItem(j - 1);
-			                pnlSamples.Refresh();
-			                if (chkCreateAnimation.Checked)
-			                    SavePicture();
-			                */
 			            }
 			        }
 			    }
@@ -37,6 +31,11 @@ define(["../support"], function(support) {
 			return function(array) {
 				steps=[];
 				bubblesort(array);
+				console.log("SWAPS",steps.filter(function(d){
+					return d.length>0;
+				}))
+				console.log("ITERATIONS",iterations)
+				console.log("complexity",d3.sum(iterations))
 				return steps.filter(function(d){
 					return d.length>0;
 				});
