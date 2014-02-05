@@ -10,6 +10,7 @@ define(["../support"], function(support) {
 			//http://en.wikibooks.org/wiki/Algorithm_Implementation/Sorting/Quicksort
 			//without in-line partition ==> function name: quick
 			function quicksort(array, start, end){
+				//console.log("quicksort"+steps)
 				steps.push([]);
 			    if(start < end){
 			        var l=start+1, r=end, p = array[start];
@@ -40,12 +41,27 @@ define(["../support"], function(support) {
 
 			return function(array) {
 				steps=[];
-				
-				quicksort(array,0,array.length-1);
+
+				var myWorker = new Worker("js/task.js");
+
+				myWorker.onmessage = function (oEvent) {
+					console.log("MEEEEEEEEEEERDA")
+					if(oEvent.data.steps) {
+						console.log("Worker said : " + JSON.stringify(oEvent.data.steps));	
+					} else {
+						console.log("Worker said : " + JSON.stringify(oEvent.data));
+					}
+				  	
+				};
+				myWorker.postMessage({fn:quicksort.toString(),data:array,arg1:0,arg2:array.length-1});
+
+				//quicksort(array,0,array.length-1);
+				/*
 				console.log("SWAPS",steps.filter(function(d){
 					return d.length>0;
 				}))
-				console.log("ITERATIONS",iterations)
+				*/
+				//console.log("ITERATIONS",iterations)
 				return steps.filter(function(d){
 					return d.length>0;
 				});

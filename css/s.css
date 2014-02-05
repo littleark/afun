@@ -46,6 +46,7 @@ body {
 	height: 25px;
 }
 #header h1 {
+	display: inline-block;
 	color:#fff;
 	font-family: 'Alegreya Sans', sans-serif;
 	font-size: 1.4em;
@@ -53,7 +54,7 @@ body {
 	font-weight: 100;
 	text-transform: uppercase;
 	text-align: left;
-	margin: 0;
+	margin: 0 0 0 6px;
 	padding: 0;
 	text-rendering: optimizelegibility;
 	text-shadow: 0px 0px 1px #fff;
@@ -103,6 +104,16 @@ body {
 }
 #algorithms.size5 div.algorithm {
 	width: 20%;
+}
+#algorithms div.algorithm div.loading {
+	position: absolute;
+	z-index: 9999;
+	top:0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	background-color:rgba(0,0,0,0.75);
 }
 #algorithms div.algorithm h2 {
 	/*position: absolute;*/
@@ -358,7 +369,8 @@ body {
 }
 
 #add a.plus h4,
-#add a.generate h4 {
+#add a.generate h4,
+#add a.generate:hover h4 {
 	display: block;
 	visibility: hidden;
 	width: 100%;
@@ -367,7 +379,10 @@ body {
 	color:gold;
 	font-family: 'Alegreya Sans', sans-serif;
 }
-
+#add a.generate h4 {
+	visibility: visible !important;
+	color:#666;
+}
 #add.collapsed a:hover h4 {
 	visibility: visible !important;
 }
@@ -378,10 +393,10 @@ body {
 	width:30px;
 	height: 30px;
 	padding:10px;
-	border: 4px solid #fff;
+	border: 4px solid #333;
 	-webkit-border-radius: 30px;
 	border-radius: 30px;
-	color:#fff;
+	color:#333;
 	font-size: 30px;
 	font-weight: 800;
 	text-align: center;
@@ -556,7 +571,9 @@ svg .circle text {
 	font-family: Arial;
 	fill-opacity:0.5;
 }
-
+.hidden .circle {
+	display: none;
+}
 /**
  * Dragdealer.js 0.9.6
  * http://github.com/skidding/dragdealer
@@ -646,9 +663,9 @@ svg .circle text {
 }
 #mainslider .handle span {
 	position: absolute;
-	font-size: 11px;
+	font-size: 9px;
 	text-transform: uppercase;
-	top:14px;
+	top:10px;
 	left:-25px;
 	width: 70px;
 	text-align: center;
@@ -675,25 +692,127 @@ svg .circle text {
 	float: left;*/
 	text-align: center;
 }
+#controls ul {
+	list-style: none;
+	padding: 0;
+	margin: 0 auto;
+	width:150px;
+	display: block;
+	height: 32px;
+}
+#controls ul li {
+	float: left;
+}
 #controls a {
 	color:#fff;
 	text-decoration: none;
-	/*float: left;
-	display: block;*/
+	float: left;
+	display: block;
+	width:50px;
+	font-size: 22px;
 }
 #controls a:hover {
 	color:gold;
 }
-
+#controls a#play i.icon-play,
+#controls a#play.play i.icon-pause {
+	display: inline-block;
+}
+#controls a#play.play i.icon-play,
+#controls a#play i.icon-pause {
+	display: none;
+}
+#controls a#play.play span.play,
+#controls a#play span.pause{
+	display: none;
+}
+#controls a#play span.play,
+#controls a#play.play span.pause {
+	display: block;
+}
+#controls a span {
+	display: block;
+	font-size: 9px;
+	text-align: center;
+	width: 100%;
+	text-transform: uppercase;
+	color:#666;
+}
+#controls a:hover span {
+	color:gold;
+}
 #controls ul.colors {
 	list-style: none;
 	margin: 0;
 	padding: 0;
 }
+
 #controls ul.colors li {
 	display: block;
 	width: 10px;
 	height: 10px;
 	margin:0 2px;
 	background-color: #fff;
+}
+
+#header ul#layout {
+	list-style: none;
+	float: right;
+	margin: 6px 12px 0 0;
+	padding: 0;
+}
+#header ul#layout li {
+	float: left;
+	display: block;
+	width: 18px;
+	height: 24px;
+	text-align: center;
+}
+#header ul#layout a {
+	display: block;
+	color:#fff;
+	text-decoration: none;
+	/*float: left;
+	display: block;*/
+}
+#header ul#layout li.title {
+	width: auto;
+	font-size: 12px;
+	line-height: 18px;
+	color:#666;
+	margin-right: 5px;
+}
+#header ul#layout a:hover {
+	color:gold !important;
+}
+#header ul#layout a.selected {
+	color: gold !important;
+}
+#header ul#layout li a.size[rev='1'] {
+	font-size: 13px;
+}
+#header ul#layout li a.size[rev='2'] {
+	font-size: 11px;
+	margin-top: 1px;
+}
+#header ul#layout li a.size[rev='3'] {
+	font-size: 11px;
+	margin-top: 1px;
+}
+#header ul#layout li.sep {
+	width: 1px;
+	margin-right: 10px;
+	margin-left: 10px;
+}
+#header ul#layout li.sep span{
+	border-left:1px solid #666;
+}
+#header ul#layout li a.items {
+	font-size: 21px;
+	line-height: 18px;
+	color:#666;
+}
+#header ul#layout li a.items.selected {
+	line-height: 17px;
+	font-weight: bold;
 }

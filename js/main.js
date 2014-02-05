@@ -3,7 +3,18 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 	//cdnjs.cloudflare.com/ajax/libs/d3/3.3.13/d3.min.js
 
 
-	
+	(function () {
+	  function CustomEvent ( event, params ) {
+	    params = params || { bubbles: false, cancelable: false, detail: undefined };
+	    var evt = document.createEvent( 'CustomEvent' );
+	    evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
+	    return evt;
+	   };
+
+	  CustomEvent.prototype = window.CustomEvent.prototype;
+
+	  window.CustomEvent = CustomEvent;
+	})();
 
 	function shuffle(o){ //v1.0
 		console.log("shuffling")
@@ -25,7 +36,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		//data:shuffle([0,1,2,3,3,4,5,1,1,1,1,1,1,1,2,2,2,2,3,3,3])
 		//data:shuffle(d3.range(10))
 		//data:[0,1,2,3,4]
-		data:data[20]
+		data:data[10]
 	});
 
 	
@@ -49,12 +60,12 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		{
 			name:"Heap Sort",
 			file:"HeapSort",
-			active:true
+			active:false
 		},
 		{
 			name:"Merge Sort",
 			file:"MergeSort",
-			active:false
+			active:true
 		},
 		{
 			name:"Smooth Sort",
@@ -79,7 +90,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		{
 			name:"Selection Sort",
 			file:"SelectionSort",
-			active:true
+			active:false
 		},
 		{
 			name:"Insertion Sort",
@@ -260,7 +271,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		});
 
 	d3.select("body").on("keyup",function(){
-		console.log(d3.event)
+		//console.log(d3.event)
 		if(d3.event.keyCode==39) {
 			sorting.nextStep();
 		}
@@ -268,32 +279,70 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 			sorting.prevStep();
 		}
 	})
+/*
 	d3.selectAll("#controls a")
 		.on("click",function(d,i){
 			d3.event.preventDefault();
-			if(i===0)
-				sorting.prevStep();
-			if(i===1)
-				sorting.nextStep();
-			if(i===2)
-				sorting.start();
-			if(i===3)
-				sorting.pause();
+
 			if(i===4)
 				d3.selectAll(".circle").style("display","block")
 			if(i===5)
 				d3.selectAll(".circle").style("display","none")
-			if(i===6)
-				sorting.resize(1.5);
-			if(i===7)
-				sorting.resize(2);
-			if(i===8)
-				sorting.resize(3);
 
-			//d3.select("#stepper span")
-			//	.text(qs_view.getStepsLength() - qs_view.getCurrentStep())
+		});*/
 
+	d3.select("#controls #back")
+		.on("click",function(d,i){
+			d3.event.preventDefault();
+
+			sorting.prevStep();
+			var running=sorting.getStatus();
+			d3.select("#controls #play").classed("play",running);
+			
 		});
+	d3.select("#controls #forward")
+		.on("click",function(d,i){
+			d3.event.preventDefault();
+
+			sorting.nextStep();
+			var running=sorting.getStatus();
+			
+			d3.select("#controls #play").classed("play",running);
+			
+		});
+	d3.select("#controls #play")
+		.on("click",function(d,i){
+			d3.event.preventDefault();
+			var running=sorting.getStatus();
+			
+			d3.select(this).classed("play",!running);
+			if(!running) {
+				sorting.pause();
+				sorting.start();
+			} else {
+				sorting.pause();
+			}
+			
+		});
+	d3.selectAll("#layout a.size")
+		.on("click",function(d,i){
+			d3.event.preventDefault();
+
+			d3.selectAll("#layout a").classed("selected",function(l,j){
+				return i==j;
+			});
+			
+			sorting.resize(support.sizes[i]);
+			
+		});
+	d3.select("#layout a.items")
+		.on("click",function(d,i){
+			d3.event.preventDefault();
+
+			sorting.toggleItems();
+			d3.select(this).classed("selected",!d3.select(this).classed("selected"));
+		});
+
 	var to=null;
 	var slider=new Dragdealer("mainslider",{
 			snap:true,
@@ -304,11 +353,12 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 					clearTimeout(to);
 					to=null;
 				}
+				sorting.pause();
+				var running=sorting.getStatus();
+				d3.select("#controls #play").classed("play",running);
 				var dd=this;
 				(function(s){
 					to=setTimeout(function(){
-						console.log()
-						//sorting.goTo(Math.round(dd.getStep()[0]-1));
 						sorting.goTo(dd.getValue()[0]);
 					},200);
 				}());

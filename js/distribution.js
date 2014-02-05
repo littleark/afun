@@ -20,9 +20,10 @@ define(["./support"],function(support) {
 		})
 
 		console.log(name,"DISTRIBUTION",d3.values(distribution).toString())
-		d3.entries(distribution).forEach(function(d){
-			console.log(d.key,"swapped",d.value,"times")
-		})
+		//d3.entries(distribution).forEach(function(d){
+		//	console.log(d.key,"swapped",d.value,"times")
+		//})
+		//console.table(distribution)
 
 	}
 

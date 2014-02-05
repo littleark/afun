@@ -64,6 +64,11 @@ define(["./support"],function(support) {
 					.attr("width",WIDTH)
 					.attr("height",HEIGHT)
 					//.append("g");
+
+		var loading=div
+				.append("div")
+				.attr("class","loading");
+
 		var to=null;
 
 		var slider_scale=d3.scale.linear().domain([0,100]).rangeRound([0,steps.length-1]);
@@ -98,8 +103,10 @@ define(["./support"],function(support) {
 						//console.log(steps.length-1,dragdealer.getStep()[0]-1);
 						var step=Math.round(dd.getStep()[0]-1);
 						//console.log("!!!!!",name,current_step,step)
-						if(Math.abs(current_step-step)>0) {
-							self.goTo(step);
+						var delta=Math.abs(current_step-step);
+						if(delta>0) {
+							self[delta===1?"show":"goTo"](step)
+							//self.goTo(step);
 							return;
 						}
 					},200);
@@ -198,9 +205,12 @@ define(["./support"],function(support) {
 
 		}
 		
+		var tmp_svg=document.createElement("svg");
+
 		var traces_container=svg.append("g")
 						.attr("id","traces2")
 						.attr("transform","translate("+margins.left+","+margins.top+")");
+
 
 		
 		function updateTraces() {
@@ -229,27 +239,63 @@ define(["./support"],function(support) {
 
 				traces=traces_container.selectAll("g.step");
 				
+				var total=traces.data().length,
+					count=0,
+					delta=100;
+				
+				d3.timer(function(_elapsed){
+					//console.log("timer",_elapsed,count,total)
+				//setTimeout(function(){
+					traces
+						.filter(function(d,i){
+							return i>=count && i<=count+delta;
+						})
+						.selectAll("path")
 
-				traces
-					.selectAll("path")
-						.data(function(d){
-							return d;
-						})
-						.attr("d",function(d,i){
-							//console.log("adding",i,d);
-						
-							var	x1=xscale(d.from),
-							   	x2=xscale(d.to),
-							   	y=HEIGHT/2,
-							   	c1x=x1+(x2-x1)/2,
-							   	c1y=HEIGHT/2-(x2-x1)/2;
-							//console.log(i,d)
-							return "M"+x1+","+y+"Q"+c1x+","+c1y+","+x2+","+y;
+							//.data(function(d){
+							//	return d;
+							//})
+							.attr("d",function(d,i){
+								//console.log("adding",i,d);
 							
-						})
-						.style("stroke",function(d){
-							return color(d.index);
-						})
+								var	x1=xscale(d.from),
+								   	x2=xscale(d.to),
+								   	y=HEIGHT/2,
+								   	c1x=x1+(x2-x1)/2,
+								   	c1y=HEIGHT/2-(x2-x1)/2;
+								//console.log(i,d)
+								return "M"+x1+","+y+"Q"+c1x+","+c1y+","+x2+","+y;
+								
+							})
+							.style("stroke",function(d){
+								return color(d.index);
+							})
+							.attr("stroke-dashoffset",function(d){
+								return d3.select(this).node().getTotalLength();
+							})
+							.attr("stroke-dasharray",function(d){
+								var len=d3.select(this).node().getTotalLength();
+								return len+" "+len;
+							});
+					count+=delta;
+					if(count>=total) {
+						var evt = new CustomEvent("ready"+name);
+						document.dispatchEvent(evt);
+					}
+					return count>=total;
+				})
+				
+						
+				/*
+				console.log(tmp_svg.innerHTML);
+
+				traces_container=svg.append("g")
+						.attr("id","traces2")
+						.attr("transform","translate("+margins.left+","+margins.top+")");
+				traces_container.node().innerHTML=tmp_svg.innerHTML;
+
+				traces=traces_container.selectAll("g.step");
+				trace.selectAll("path")
 						.attr("stroke-dashoffset",function(d){
 							return d3.select(this).node().getTotalLength();
 						})
@@ -257,10 +303,14 @@ define(["./support"],function(support) {
 							var len=d3.select(this).node().getTotalLength();
 							return len+" "+len;
 						});
-
-
+				
+				delete tmp_svg;
+				*/
 		}
 
+		function removeLoading() {
+			loading.remove();
+		}
 		
 
 		this.updateData=function(__steps,__items) {
@@ -506,6 +556,9 @@ define(["./support"],function(support) {
 			slider.setStep(p,0);
 			//slider.setValue(Math.round((steps.length-1)*p),0,true);
 		}
+		this.toggleItems=function() {
+			d3.select(container).classed("hidden",!d3.select(container).classed("hidden"));
+		}
 		this.goTo=function(n,callback) {
 			if(animating) {
 				return;
@@ -532,7 +585,7 @@ define(["./support"],function(support) {
 				//return;
 			}
 
-			animating=true;
+			//animating=true;
 			current_step=n;
 
 			//options.step_callback(current_step);
@@ -571,7 +624,7 @@ define(["./support"],function(support) {
 				})
 				.each("end",function(d,i){
 					if(i==items[current_step].length-1) {
-						animating=false;
+						//animating=false;
 						if(callback) {
 							callback();
 						}
@@ -608,9 +661,18 @@ define(["./support"],function(support) {
 		}
 
 		this.start=function() {
+			
 			if(!status) {
 				status=1;
-				this.stepNext(true)	
+				if(current_step==steps.length-1) {
+					this.goTo(0,function(){
+						self.pause();
+						self.start();
+					})
+				} else {
+					this.stepNext(true);
+				}
+				
 			} else {
 				console.log(name,"not starting because",status)
 			}
@@ -630,13 +692,19 @@ define(["./support"],function(support) {
 		;(function init(){
 			updateCircles();
 			updateTraces();
-			if(current_step>0) {
-				self.goTo(current_step,options.callback);
-			} else {
-				if(options.callback) {
-					options.callback();
+
+			document.addEventListener('ready'+name, function start(e) {
+				removeLoading();
+				if(current_step>0) {
+					self.goTo(current_step,options.callback);
+				} else {
+					if(options.callback) {
+						options.callback();
+					}
 				}
-			}
+				document.removeEventListener("ready"+name,start)
+			}, false);
+			
 		}());
 
 	}

@@ -6,7 +6,7 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 		var WIDTH=900,
 			HEIGHT=440;
 
-		var SIZE_FACTOR=3;
+		var SIZE_FACTOR=2;
 
 		//var data=setData(options.data) || [],
 		var	container=options.container || "#algorithms",
@@ -171,6 +171,9 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 		}
 
 		/* PUBLIC FUNCTIONS */
+		this.getStatus=function(){
+			return running;
+		}
 		this.start=function(){
 			console.log("------------->",running)
 			if(running>0)
@@ -190,11 +193,13 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 			})
 		}
 		this.nextStep=function(){
+			this.pause();
 			d3.values(algoviz).forEach(function(a){
 				a.stepNext();
 			})
 		}
 		this.prevStep=function(){
+			this.pause();
 			d3.values(algoviz).forEach(function(a){
 				a.stepPrev();
 			})
@@ -204,6 +209,11 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 			d3.values(algoviz).forEach(function(a){
 				console.log("setting position for",a.getName(),p)
 				a.goToPerc(p);
+			})
+		}
+		this.toggleItems=function() {
+			d3.values(algoviz).forEach(function(a){
+				a.toggleItems();
 			})
 		}
 		/*
