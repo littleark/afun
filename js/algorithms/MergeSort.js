@@ -9,6 +9,7 @@ define(["../support"], function(support) {
 			var comparisons=[];
 			var index=[];
 			var cmp=0;
+			var first=true;
 
 			function mergeSort(a, low, high) {
 
@@ -17,8 +18,9 @@ define(["../support"], function(support) {
 
 			    //console.log(l,">=",h)
 
-			    if(!steps.length) {
+			    if(first) {
 			    	index.push([l,low,high]);
+			    	first=false;
 			    }
 
 			    if (l >= h) {
@@ -62,6 +64,7 @@ define(["../support"], function(support) {
 			            		cmp:cmp,
 			            		index:support.cloneArray(index)
 			            	});
+
 			            	//console.log("SWAAAAAAAAAAAAAAAAAAAAP");
 			            	//index=[];
 
@@ -94,9 +97,10 @@ define(["../support"], function(support) {
 	            		cmp:cmp,
 	            		index:support.cloneArray(index)
 	            	});
-			        index=[];
+			        //index=[];
 		        	
 			    }
+			    index=[];
 			    //console.log(a)
 			    return a;
 			}
