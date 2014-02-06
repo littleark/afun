@@ -27,7 +27,7 @@ define(["./support"],function(support) {
 			current_steps=0,
 			current_step=Math.round((steps.length)*options.step);
 
-		console.log("~~~~~~~~~~~~~~~~~",steps)
+		console.log("STEPS",name,steps)
 
 		var callback=options.callback || function(){};
 
@@ -429,14 +429,127 @@ define(["./support"],function(support) {
 
 		}
 
+		
 
-		this.show=function(n,animate){
-			//console.log("show",n,animate)
+		var indicator=circles_container
+							.selectAll("g.indicator")
+							.data(steps[1][0].cmp.index[0],function(d,i){
+								return i;
+							})
+							.enter()
+							.append("g")
+							.attr("class","indicator")
+		indicator
+			.attr("transform",function(d,i){
+						
+				var x=xscale(d),
+					y=HEIGHT/2;
+
+				return "translate("+x+","+y+")";
+			})
+			.append("path")
+				.attr("d","M0,0L5,-10L-5,-10,Z")
+				.attr("transform",function(d,i){
+					if(i>0) {
+						return "rotate(180)translate(0,-5)";
+					} else {
+						return "rotate(0)translate(0,-5)";
+					}
+				})
+				.style("fill",function(d,i){
+					var colors=["#ffffff","#ff0000","#339933"];
+					return colors[i];
+				})
+				.style({
+					stroke:"none"
+				})
+
+		this.show=function(n,animate) {
 			if(animating) {
 				console.log("already animating")
 				return;
 			}
+			var n=(typeof n == "undefined")?steps.length-1:n;
+
+			var back=0;
+			if(current_step>n) {
+				back=1;
+			}
+
 			
+			if(n+back<=0 || n>steps.length-1){
+				return;
+			}
+
+			animating=true;
+			current_step=n;
+
+			//console.log("CURRENT STEP",current_step,steps[current_step])
+
+			var indexes=steps[current_step][0].cmp.index;
+
+			var transitions=[];
+
+			//console.log(indexes);
+
+			function slideIndicator(index){
+				//console.log("going to",index,indexes[index].toString())
+				indicator
+					.data(indexes[index],function(d,i){
+						return i;
+					})
+					.transition()
+					.duration(DURATION/2)
+					.attr("transform",function(d,i){
+						//console.log("index",index,"element",i,"go to",d)
+						var x=xscale(d),
+							y=HEIGHT/2;
+						return "translate("+x+","+y+")";
+					})
+					.each("end",function(d,i){
+						if(i==indexes[index].length-1) {
+							index++;
+							if(index<indexes.length) {
+								slideIndicator(index);
+							} else {
+								self.swap(n,true);
+							}	
+						}
+					});
+			}
+			slideIndicator(0);
+
+			/*
+			indexes.forEach(function(index,i){
+				
+				transitions[i]=((i===0)?indicator:transitions[i-1])
+								.transition()
+								.duration(1000)
+								.attr("transform",function(d){
+									var x=xscale(index),
+										y=HEIGHT/2-5;
+									return "translate("+x+","+y+")";
+								})
+								.each("end",function(d){
+									if(i==indexes.length-1) {
+										//self.swap(n,animate);
+									}
+								})
+				
+			})
+			*/
+
+
+		}
+
+		this.swap=function(n,animate){
+			//console.log("show",n,animate)
+			/*
+			if(animating) {
+				console.log("already animating")
+				return;
+			}
+			*/
 			var n=(typeof n == "undefined")?steps.length-1:n;
 
 			var back=0;
@@ -536,6 +649,8 @@ define(["./support"],function(support) {
 							if(status) {
 								self.stepNext(animate);	
 							}
+						} else {
+
 						}
 					})
 

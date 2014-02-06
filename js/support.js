@@ -7,24 +7,25 @@ define(
 		    return array;
 		}
 
-		function addStep(steps,index,from,to) {
+		function addStep(steps,index,from,to, cmp) {
 			//console.log(index,from,"->",to)
 			if(from==to)
 				return;
-
+			
 			steps[steps.length-1].push({
 	        	index:index.value,
 	        	id:index.id,
 	        	from:from,
-	        	to:to
+	        	to:to,
+	        	cmp:cmp
 	        });
 		}
 		
-		function swap(steps,list, a, b) {
+		function swap(steps,list, a, b, cmp) {
 			if(steps){//} && list[a].value!=list[b].value) {
 				steps.push([]);
-				addStep(steps,list[a],a,b);
-				addStep(steps,list[b],b,a);
+				addStep(steps,list[a],a,b,cmp);
+				addStep(steps,list[b],b,a,cmp);
 			}
 
 			swapItems(list,a,b);

@@ -140,6 +140,9 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 							items:items,
 							color:color,
 							//step_callback:function(n) {},
+							endOfAnimationCallback:function(){
+
+							},
 							callback:function(){
 								setTimeout(function(){
 									if(running<0) {
@@ -187,7 +190,7 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 		}
 		this.pause=function(status){
 			running= status || 0;
-			console.log("pause","setting running to",running,"status is",status)
+			//console.log("pause","setting running to",running,"status is",status)
 			d3.values(algoviz).forEach(function(a){
 				a.pause();
 			})

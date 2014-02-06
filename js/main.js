@@ -50,7 +50,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		{
 			name:"Quick Sort",
 			file:"QuickSort",
-			active:true
+			active:false
 		},
 		{
 			name:"Quick Sort w/Partition",
@@ -65,7 +65,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		{
 			name:"Merge Sort",
 			file:"MergeSort",
-			active:true
+			active:false
 		},
 		{
 			name:"Smooth Sort",
@@ -85,7 +85,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		{
 			name:"Cycle Sort",
 			file:"CycleSort",
-			active:false
+			active:true
 		},
 		{
 			name:"Selection Sort",
@@ -127,13 +127,14 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 	var options={
 		algorithm:algorithms[0].file,
 		color:"blue",
-		items:10
+		items:50
 	};
 
 	algorithms.forEach(function(d){
 		if(d.active)
 			sorting.addAlgorithm(
 				d.file,
+				//[15,4,23,12,56,2],
 				data[options.items],
 				options.color
 				

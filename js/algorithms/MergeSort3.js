@@ -10,16 +10,45 @@ define(["../support"], function(support) {
 			var index=[];
 			var cmp=0;
 
-			function mergeSort(a, low, high) {
+
+			function mergeSort(list,low,high) {
+				if(low<height) {
+					var mid=Math.floor((low+high)/2);
+
+					mergeSort(list,low,mid);
+					mergeSort(list,mid+1,high);
+
+					merge(list,low,high);
+
+				}
+			}
+
+			function merge(list,low,high) {
+				var temp=[];
+
+				var mid=Math.floor((low+high)/2),
+					index1=0,
+					index2=low,
+					index3=mid+1;
+
+				while(index2<=mid && index3<=high) {
+					if(list[index2]<list[index3]) {
+						temp[index1]=list[index2];
+						index1++;
+						index2++;
+					} else {
+						temp[index1]
+					}
+				}
+			}
+
+			/*
+			function mergeSort(a, low, height) {
 
 			    var l = low;
-			    var h = high;
+			    var h = height;
 
 			    //console.log(l,">=",h)
-
-			    if(!steps.length) {
-			    	index.push([l,low,high]);
-			    }
 
 			    if (l >= h) {
 			    	
@@ -47,7 +76,8 @@ define(["../support"], function(support) {
 			    	
 		        	//console.log("p",p,"l",l,"r",r);
 
-		        	
+		        	index.push([l,start_hi]);
+			    	
 
 			        if (a[l].value<a[start_hi].value) {
 			            l++;
@@ -56,8 +86,7 @@ define(["../support"], function(support) {
 			            steps.push([]);
 			            for (var k = start_hi - 1; k >= l; k--) {
 			            	cmp++;
-
-			            	index.push([k,low,high]); //here the index k decrease until it goes on l, then it takes element l+1 and move it to k
+			            	index.push([l,k+1]);
 			            	comparisons.push({
 			            		cmp:cmp,
 			            		index:support.cloneArray(index)
@@ -72,12 +101,11 @@ define(["../support"], function(support) {
 
 			            }
 			            steps.push([]);
-			            index.push([start_hi,low,high]);
-				    	comparisons.push({
+			            
+			            comparisons.push({
 		            		cmp:cmp,
 		            		index:support.cloneArray(index)
 		            	});
-			            
 		            	//console.log("SWAAAAAAAAAAAAAAAAAAAAP");
 			            addStep(steps,temp,start_hi,l,comparisons[comparisons.length-1])
 			            a[l] = temp;
@@ -89,18 +117,13 @@ define(["../support"], function(support) {
 			           
 			        }
 			        cmp++;
-			        index.push([l,low,high]);
-			    	comparisons.push({
-	            		cmp:cmp,
-	            		index:support.cloneArray(index)
-	            	});
 			        index=[];
 		        	
 			    }
 			    //console.log(a)
 			    return a;
 			}
-
+			*/
 			return function(array) {
 				steps=[];
 				mergeSort(array,0,array.length-1);

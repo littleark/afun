@@ -6,19 +6,25 @@ define(["../support"], function(support) {
 		"complexity":"O(n&sup2;)",
 	    "code":function() {
 			var steps=[];
-			var iterations=[];
+			var comparisons=[];
+			var index=[];
 
 			function bubblesort(array) {
 			    var n = array.length - 1;
-			    var it=0;
+			    var cmp=0;
 			    for (var i = 0; i < n; i++) {
-			    	it++;
 			        for (var j = n; j > i; j--) {
-			        	it++;
+			        	cmp++;
+			        	index.push([j]);
+			        	//console.log("j",j)
 			        	if(array[j-1].value > array[j].value) {
-			            	iterations.push(it);
-			            	it=0;
-			                swap(steps,array,j-1,j);
+			            	comparisons.push({
+			            		cmp:cmp,
+			            		index:support.cloneArray(index)
+			            	});
+			            	index=[];
+			                swap(steps,array,j-1,j,comparisons[comparisons.length-1]);
+			                //console.log("----------------");
 			            }
 			        }
 			    }
@@ -34,8 +40,8 @@ define(["../support"], function(support) {
 				console.log("SWAPS",steps.filter(function(d){
 					return d.length>0;
 				}))
-				console.log("ITERATIONS",iterations)
-				console.log("complexity",d3.sum(iterations))
+				console.log("COMPARISONS",(comparisons))
+				console.log("COMPLEXITY",comparisons[comparisons.length-1],steps[steps.length-1][0].cmp)
 				return steps.filter(function(d){
 					return d.length>0;
 				});
