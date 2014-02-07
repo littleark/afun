@@ -8,14 +8,15 @@ define(["../support"], function(support) {
 			var steps=[];
 			var comparisons=[];
 			var index=[];
-
+ 			var cmp=0;
+ 			
 			function bubblesort(array) {
 			    var n = array.length - 1;
-			    var cmp=0;
+			   
 			    for (var i = 0; i < n; i++) {
 			        for (var j = n; j > i; j--) {
 			        	cmp++;
-			        	index.push([j]);
+			        	index.push([j,j-1]);
 			        	//console.log("j",j)
 			        	if(array[j-1].value > array[j].value) {
 			            	comparisons.push({

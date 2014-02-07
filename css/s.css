@@ -1,3 +1,25 @@
+/* this is how a font-face rule usually looks like */
+@font-face {
+    font-family: 'Alegreya';
+    
+	src: url('../font/exo2/Exo2.0-Thin-webfont.eot'); /* IE9 Compat Modes */
+	src: url('../font/exo2/Exo2.0-Thin-webfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+		url('../font/exo2/Exo2.0-Thin-webfont.woff') format('woff'), /* Modern Browsers */
+		url('../font/exo2/Exo2.0-Thin-webfont.ttf')  format('truetype'), /* Safari, Android, iOS */
+		url('../font/exo2/Exo2.0-Light-webfont.svg#exo_2.0light') format('svg'); /* Legacy iOS */
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* the fix ! simply ADD this block BELOW the above block */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    @font-face {
+        font-family: 'Alegreya';
+            src: url('../font/exo2/Exo2.0-Light-webfont.svg#exo_2.0light') format('svg');
+    }
+}
+
+
 *:focus {
     outline: 0;
 }
@@ -48,31 +70,27 @@ body {
 #header h1 {
 	display: inline-block;
 	color:#fff;
-	font-family: 'Alegreya Sans', sans-serif;
+	font-family: 'Alegreya', sans-serif;
 	font-size: 1.4em;
 	line-height: 25px;
-	font-weight: 100;
 	text-transform: uppercase;
 	text-align: left;
 	margin: 0 0 0 6px;
 	padding: 0;
 	text-rendering: optimizelegibility;
-	text-shadow: 0px 0px 1px #fff;
 }
 #footer {
 	border-top: 1px solid #333;
 }
 #footer h5 {
 	color:#fff;
-	font-family: 'Alegreya Sans', sans-serif;
+	font-family: 'Alegreya', sans-serif;
 	font-size: 1.3em;
-	font-weight: 100;
 	text-align: center;
 	text-transform: uppercase;
 	margin: 0;
 	padding: 0;
 	text-rendering: optimizelegibility;
-	text-shadow: 0px 0px 1px #fff;
 }
 /**************** ALGORITHM ****************/
 #algorithms {
@@ -123,11 +141,9 @@ body {
 	text-align:center;
 	text-transform: uppercase;
 	color: #fff;
-	font-family: 'Alegreya Sans', sans-serif;
+	font-family: 'Alegreya', sans-serif;
 	font-size: 1.55em;
-	font-weight: 100;
-	text-rendering: optimizelegibility;
-	text-shadow: 0px 0px 1px #fff;
+	-webkit-text-stroke: 1px rgba(0,0,0,0.1);
 	margin: 0;
 	padding: 0;
 }
@@ -153,7 +169,7 @@ body {
 /***************** ADD **********************/
 /*
 #algorithms div#add.algorithm {
-	font-family: 'Alegreya Sans', sans-serif;
+	font-family: 'Alegreya', sans-serif;
 	font-size: 18px;
 	font-weight: 100;
 	border: 1px solid #111;
@@ -287,9 +303,8 @@ body {
 */
 /***************** ADD **********************/
 #add {
-	font-family: 'Alegreya Sans', sans-serif;
+	font-family: 'Alegreya', sans-serif;
 	font-size: 1.05em;
-	font-weight: 100;
 	position: relative;
 }
 #add #form {
@@ -377,7 +392,7 @@ body {
 	font-size:1.2em;
 	text-align: center;
 	color:gold;
-	font-family: 'Alegreya Sans', sans-serif;
+	font-family: 'Alegreya', sans-serif;
 }
 #add a.generate h4 {
 	visibility: visible !important;
@@ -398,7 +413,6 @@ body {
 	border-radius: 30px;
 	color:#333;
 	font-size: 30px;
-	font-weight: 800;
 	text-align: center;
 	line-height: 30px;
 }
@@ -444,7 +458,6 @@ body {
 	border:2px solid #fff;
 }
 #add ul#algs li a.selected {
-	font-weight: 300;
 	color:#fff;
 	border:2px solid #fff;
 }
@@ -481,7 +494,6 @@ body {
 #add ul#colors li a.selected,
 #add ul#items li a.selected {
 	color:#fff;
-	font-weight: 300;
 	border:2px solid #fff;
 }
 /***************** ALGS FOR MENU *********************/

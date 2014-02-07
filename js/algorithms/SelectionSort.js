@@ -6,6 +6,9 @@ define(["../support"], function(support) {
 		"complexity":"O(n&sup2;)",
 	    "code":function() {
 			var steps=[];
+			var comparisons=[];
+			var index=[];
+			var cmp=0;
 
 			function selectionsort(nums) {
 
@@ -27,33 +30,34 @@ define(["../support"], function(support) {
 							/* found new minimum; remember its index */
 							iMin=i;
 						}
+						cmp++;
+						index.push([j,i,iMin]);
 					}
 					/* iMin is the index of the minimum element. Swap it with the current position */
 					if(iMin != j) {
-						steps.push([]);
+						
+
 						/*
-						var tmp1={index:nums[j].index},
-							tmp2={index:nums[iMin].index};
-						*/
+						steps.push([]);
+
 						var tmp=nums[iMin];
 
 						addStep(steps,nums[j],j,iMin)
 						addStep(steps,nums[iMin],iMin,j)
-						/*
-						steps[steps.length-1].push({
-			            	index:tmp1.index,
-			            	from:j,
-			            	to:iMin
-			            });
-			            steps[steps.length-1].push({
-			            	index:tmp2.index,
-			            	from:iMin,
-			            	to:j
-			            });*/
 						
 						nums[iMin]=nums[j];
 						nums[j]=tmp;
+						*/
 						
+
+						comparisons.push({
+		            		cmp:cmp,
+		            		index:support.cloneArray(index)
+		            	});
+
+						index=[];
+
+						swap(steps,nums,j,iMin,comparisons[comparisons.length-1])
 
 					}
 				}
@@ -62,9 +66,18 @@ define(["../support"], function(support) {
 			return function(array) {
 				steps=[];
 				selectionsort(array);
-				return steps.filter(function(d){
+
+				steps=steps.filter(function(d){
 					return d.length>0;
 				});
+
+				console.log("SWAPS",steps.filter(function(d){
+					return d.length>0;
+				}))
+				console.log("COMPARISONS",(comparisons))
+				console.log("COMPLEXITY",comparisons[comparisons.length-1],steps[steps.length-1][0].cmp)
+
+				return steps;
 			}
 		}
 	}

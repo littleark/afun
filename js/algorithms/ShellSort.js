@@ -6,6 +6,9 @@ define(["../support"], function(support) {
 		"complexity":"",
 	    "code":function() {
 			var steps=[];
+			var comparisons=[];
+			var index=[];
+			var cmp=0;
 
 			function shellsort(nums) {
 
@@ -35,29 +38,32 @@ define(["../support"], function(support) {
 			            c = nums[i];
 			            j = i;
 			            while (j >= h && nums[j - h].value > c.value) {
-			            	addStep(steps,nums[j - h],j-h,j)
-			            	/*
-			            	steps[steps.length-1].push({
-				            	index:nums[j - h].index,
-				            	from:j - h,
-				            	to:j
-				            });
-				            */
+			            	steps.push([]);
+			            	cmp++;
+			            	index.push([i,j,j-h]);
+			            	comparisons.push({
+			            		cmp:cmp,
+			            		index:support.cloneArray(index)
+			            	});
+			            	index=[];
+			            	addStep(steps,nums[j - h],j-h,j,comparisons[comparisons.length-1])
+
 
 			                nums[j] = nums[j - h];
 			                j = j - h;
 			    			
 			            }
 			            nums[j] = c;
-			            addStep(steps,c,i,j);
-			    		/*
-			    		steps[steps.length-1].push({
-			            	index:c.index,
-			            	from:i,
-			            	to:j
-			            });
-			    		*/
-			            
+
+			            index.push([i,j,j-h]);
+		            	comparisons.push({
+		            		cmp:cmp,
+		            		index:support.cloneArray(index)
+		            	});
+		            	index=[];
+			            addStep(steps,c,i,j,comparisons[comparisons.length-1]);
+
+			            cmp++;
 			        }
 
 			        // AND HERE:
@@ -70,9 +76,18 @@ define(["../support"], function(support) {
 			return function(array) {
 				steps=[];
 				shellsort(array);
-				return steps.filter(function(d){
+
+				steps=steps.filter(function(d){
 					return d.length>0;
 				});
+
+				console.log("SWAPS",steps.filter(function(d){
+					return d.length>0;
+				}))
+				console.log("COMPARISONS",(comparisons))
+				console.log("COMPLEXITY",comparisons[comparisons.length-1],steps[steps.length-1][0].cmp)
+
+				return steps;
 			}
 		}
 	}

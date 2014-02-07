@@ -6,6 +6,9 @@ define(["../support"], function(support) {
 		"complexity":"O(n&sup2;)",
 	    "code":function() {
 			var steps=[];
+			var comparisons=[];
+			var index=[];
+ 			var cmp=0;
 
 			function cocktailsort(array)  {
 			    var limit = array.length;
@@ -17,70 +20,42 @@ define(["../support"], function(support) {
 			        limit--;
 			                
 			        for (var j = st; j < limit; j++) {
+			        	
+			        	index.push([j,st,limit,j+1]);
+
 			            if(array[j].value > array[j+1].value) {
-			            //if (((IComparable)arrayToSort[j]).CompareTo(arrayToSort[j + 1]) > 0) {
-			            	swap(steps,array,j,j+1);
+			            	comparisons.push({
+			            		cmp:cmp,
+			            		index:support.cloneArray(index)
+			            	});
+			            	index=[];
+			            	swap(steps,array,j,j+1,comparisons[comparisons.length-1]);
 			            	swapped=true;
-			            	/*
-			                object temp = arrayToSort[j];
-			                arrayToSort[j] = arrayToSort[j + 1];
-			                arrayToSort[j + 1] = temp;
-			                swapped = true;
-			                RedrawItem(j);
-			                RedrawItem(j + 1);
-			                pnlSamples.Refresh();
-			                if(chkCreateAnimation.Checked)
-			                    SavePicture();
-							*/
 			            }
-			        }
-			        for (var j = limit - 1; j >= st; j--) {
-			            if(array[j].value > array[j+1].value) {
-			            //if (((IComparable)arrayToSort[j]).CompareTo(arrayToSort[j + 1]) > 0) {
-			            	swap(steps,array,j,j+1);
-			            	swapped=true;
-			            	/*
-			                object temp = arrayToSort[j];
-			                arrayToSort[j] = arrayToSort[j + 1];
-			                arrayToSort[j + 1] = temp;
-			                swapped = true;
-			                RedrawItem(j);
-			                RedrawItem(j + 1);
-			                        
-			                pnlSamples.Refresh();
-			                if (chkCreateAnimation.Checked)
-			                    SavePicture();
-							*/
-			            }
+			            cmp++;
 			        }
 
+			        for (var j = limit - 1; j >= st; j--) {
+			        	
+			        	index.push([j,st,limit,j+1]);
+
+			            if(array[j].value > array[j+1].value) {
+			            	comparisons.push({
+			            		cmp:cmp,
+			            		index:support.cloneArray(index)
+			            	});
+			            	index=[];
+			            	swap(steps,array,j,j+1,comparisons[comparisons.length-1]);
+			            	swapped=true;
+			            }
+			            cmp++;
+			        }
+			        cmp++;
 			    } while (st < limit && swapped);
 
 			    return array;
 			}
 
-			function bubblesort(array) {
-			    var n = array.length - 1;
-			    for (var i = 0; i < n; i++) {
-			        for (var j = n; j > i; j--) {
-			        	if(array[j-1].value > array[j].value) {
-			            //if (((IComparable)arrayToSort[j - 1]).CompareTo(arrayToSort[j]) > 0) {
-			                swap(steps,array,j-1,j);
-			                /*
-			                object temp = arrayToSort[j - 1];
-			                arrayToSort[j - 1] = arrayToSort[j];
-			                arrayToSort[j] = temp;
-			                RedrawItem(j);
-			                RedrawItem(j - 1);
-			                pnlSamples.Refresh();
-			                if (chkCreateAnimation.Checked)
-			                    SavePicture();
-			                */
-			            }
-			        }
-			    }
-			    return array;
-			}
 
 			
 
@@ -88,6 +63,12 @@ define(["../support"], function(support) {
 			return function(array) {
 				steps=[];
 				cocktailsort(array);
+
+				console.log("SWAPS",steps.filter(function(d){
+					return d.length>0;
+				}))
+				console.log("COMPARISONS",(comparisons))
+				console.log("COMPLEXITY",comparisons[comparisons.length-1],steps[steps.length-1][0].cmp)
 				return steps.filter(function(d){
 					return d.length>0;
 				});

@@ -25,13 +25,6 @@ define(["../support"], function(support) {
 			        list[0] = list[i];
 			        list[i] = temp;
 			        
-			        //console.log(list,"main")
-			        /*RedrawItem(0);
-			        RedrawItem(i);
-			        pnlSamples.Refresh();
-			        if (chkCreateAnimation.Checked)
-			            SavePicture();
-			        */
 			        Adjust(list, 0, i - 1);
 			                
 			    }
@@ -56,12 +49,6 @@ define(["../support"], function(support) {
 			        	var tempj=list[j];
 			        	addStep(steps,tempj,j,i);
 			            list[i] = list[j];
-			            /*
-			            RedrawItem(i);
-			            pnlSamples.Refresh();
-			            if (chkCreateAnimation.Checked)
-			                SavePicture();
-			            */
 			            i = j;
 			            j = 2 * i + 1;
 			        } else {
@@ -70,13 +57,7 @@ define(["../support"], function(support) {
 			    }
 			    addStep(steps,temp,temp_i,i);
 			    list[i] = temp;
-			    //console.log(list,"Adjust");
-			    /*
-			    RedrawItem(i);
-			    pnlSamples.Refresh();
-			    if (chkCreateAnimation.Checked)
-			        SavePicture();
-			    */
+
 			}
 
 			return function(array) {

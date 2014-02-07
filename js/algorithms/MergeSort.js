@@ -66,7 +66,7 @@ define(["../support"], function(support) {
 			            	});
 
 			            	//console.log("SWAAAAAAAAAAAAAAAAAAAAP");
-			            	//index=[];
+			            	index=[];
 
 			            	steps.push([])
 			                addStep(steps,a[k],k,k+1,comparisons[comparisons.length-1])
@@ -80,7 +80,7 @@ define(["../support"], function(support) {
 		            		cmp:cmp,
 		            		index:support.cloneArray(index)
 		            	});
-			            
+			            index=[];
 		            	//console.log("SWAAAAAAAAAAAAAAAAAAAAP");
 			            addStep(steps,temp,start_hi,l,comparisons[comparisons.length-1])
 			            a[l] = temp;
@@ -100,7 +100,7 @@ define(["../support"], function(support) {
 			        //index=[];
 		        	
 			    }
-			    index=[];
+			    //index=[];
 			    //console.log(a)
 			    return a;
 			}

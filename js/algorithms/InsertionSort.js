@@ -6,6 +6,9 @@ define(["../support"], function(support) {
 		"complexity":"O(n&sup2;)",
 	    "code":function() {
 			var steps=[];
+			var comparisons=[];
+			var index=[];
+			var cmp=0;
 
 			function insertionsort(a) {
 
@@ -15,26 +18,23 @@ define(["../support"], function(support) {
 			        //console.log(j,key);
 			        //console.log(key+"<"+a[i].index+" && "+i+">0");
 					while(i>=0 && key.value<a[i].value) {
-						
-
+						cmp++;
+						index.push([i,i+1]);
+						comparisons.push({
+		            		cmp:cmp,
+		            		index:support.cloneArray(index)
+		            	});
+		            	//console.log("SWAAAAAAAAAAAAAAAAAAAAP");
+		            	index=[];
+						/*
 						steps.push([]);
 						addStep(steps,a[i+1],i+1,i);
 						addStep(steps,a[i],i,i+1);
-						/*
-			            steps[steps.length-1].push({
-			            	index:a[i+1].index,
-			            	from:i+1,
-			            	to:i
-			            });
-			            steps[steps.length-1].push({
-			            	index:a[i].index,
-			            	from:i,
-			            	to:i+1
-			            });
-						*/
+
 			            a=moveFromTo(i+1,i,a);
-						//items.push(getOrder(a));
-			            //console.log(i+1,i,a);
+			            */
+			            swap(steps,a,i,i+1,comparisons[comparisons.length-1])
+
 						i--;
 					}
 				}
@@ -50,9 +50,17 @@ define(["../support"], function(support) {
 			return function(array) {
 				steps=[];
 				insertionsort(array);
-				return steps.filter(function(d){
+				steps=steps.filter(function(d){
 					return d.length>0;
 				});
+
+				console.log("SWAPS",steps.filter(function(d){
+					return d.length>0;
+				}))
+				console.log("COMPARISONS",(comparisons))
+				console.log("COMPLEXITY",comparisons[comparisons.length-1],steps[steps.length-1][0].cmp)
+
+				return steps;
 			}
 		}
 	}

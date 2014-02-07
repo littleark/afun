@@ -457,7 +457,7 @@ define(["./support"],function(support) {
 					}
 				})
 				.style("fill",function(d,i){
-					var colors=["#ffffff","#ff0000","#339933"];
+					var colors=["#ffffff","#ff0000","#339933","#ffffff"];
 					return colors[i];
 				})
 				.style({
