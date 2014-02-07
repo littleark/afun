@@ -31,7 +31,7 @@ define(["../support"], function(support) {
 			    var start_hi = mid + 1;
 			    
 			    if(first) {
-			    	index.push([l,start_hi,start_hi,start_hi+1]);
+			    	index.push([l,start_hi,-1,-1]);
 			    	first=false;
 			    }
 
@@ -75,7 +75,7 @@ define(["../support"], function(support) {
 
 			            }
 			            
-			            index.push([l,start_hi,start_hi,start_hi+1]);
+			            index.push([l,start_hi,-1,-1]);
 				    	comparisons.push({
 		            		cmp:cmp,
 		            		index:support.cloneArray(index)
@@ -93,7 +93,7 @@ define(["../support"], function(support) {
 			           
 			        }
 			        cmp++;
-			        index.push([l,start_hi,start_hi,start_hi+1]);
+			        index.push([l,start_hi,-1,-1]);
 			    	/*
 			    	comparisons.push({
 	            		cmp:cmp,

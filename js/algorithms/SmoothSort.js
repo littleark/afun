@@ -6,6 +6,10 @@ define(["../support"], function(support) {
 		"complexity":"O(n log n)",
 	    "code":function() {
 			var steps=[];
+			var comparisons=[];
+			var index=[];
+			var cmp=0;
+
 			var compare = ascending;
 
 			// Leonardo numbers.
@@ -32,13 +36,19 @@ define(["../support"], function(support) {
 		          trail;
 
 		      while (head < hi) {
+
+		      	index.push([p,head,head,-1,-1,-1]);
+
 		        if ((p & 3) === 3) {
-		          sift(m, pshift, head);
+		          sift(m, pshift, head,p);
 		          p >>>= 2;
 		          pshift += 2;
 		        } else {
-		          if (LP[pshift - 1] >= hi - head) trinkle(m, p, pshift, head, false);
-		          else sift(m, pshift, head);
+		          if (LP[pshift - 1] >= hi - head) {
+		          	trinkle(m, p, pshift, head, false);
+		          } else {
+		          	sift(m, pshift, head,p);
+		          }
 		          if (pshift === 1) {
 		            p <<= 1;
 		            pshift--;
@@ -49,11 +59,14 @@ define(["../support"], function(support) {
 		        }
 		        p |= 1;
 		        head++;
-		        
+		       
 		      }
 		      trinkle(m, p, pshift, head, false);
 
 		      while (pshift !== 1 || p !== 1) {
+		        
+		      	index.push([p,head,head,-1,-1,-1]);
+
 		        if (pshift <= 1) {
 		          trail = trailingzeroes(p & ~1);
 		          p >>>= trail;
@@ -62,6 +75,8 @@ define(["../support"], function(support) {
 		          p <<= 2;
 		          p ^= 7;
 		          pshift -= 2;
+
+
 
 		          trinkle(m, p >>> 1, pshift + 1, head - LP[pshift] - 1, true);
 		          trinkle(m, p, pshift, head - 1, true);
@@ -97,7 +112,15 @@ define(["../support"], function(support) {
 		          }
 		        }
 
-		        addStep(steps,mstepson,m.indexOf(mstepson),head);
+		        index.push([p,head,val_old_pos,stepson,-1,-1]);
+
+		        comparisons.push({
+            		cmp:cmp,
+            		index:support.cloneArray(index)
+            	});
+            	index=[];
+
+		        addStep(steps,mstepson,m.indexOf(mstepson),head,comparisons[comparisons.length-1]);
 		        m[head] = mstepson;
 		        
 
@@ -107,18 +130,26 @@ define(["../support"], function(support) {
 		        pshift += trail;
 		        trusty = false;
 		        
+		        cmp++;
 		      }
 		      if (!trusty) {
 
-		        addStep(steps,val,val_old_pos,head);
+		      	index.push([p,head,val_old_pos,stepson,-1,-1]);
+		      	comparisons.push({
+            		cmp:cmp,
+            		index:support.cloneArray(index)
+            	});
+            	index=[];
+
+		        addStep(steps,val,val_old_pos,head,comparisons[comparisons.length-1]);
 		        m[head] = val;
 		        
-		        sift(m, pshift, head);
+		        sift(m, pshift, head,p);
 		      }
 		      
 		    }
 
-			function sift(m, pshift, head) {
+			function sift(m, pshift, head, p) { //p just for tracking purposes
 		      var rt,
 		          lf,
 		          mrt,
@@ -128,33 +159,63 @@ define(["../support"], function(support) {
 		      steps.push([]);
 		      while (pshift > 1) {
 		      	
+		      	
+
 		        rt = head - 1;
 		        lf = head - 1 - LP[pshift - 2];
 		        mrt = m[rt];
 		        mlf = m[lf];
 
+		        index.push([p,head,val_old_pos,-1,lf,rt]);
+
 		        if (compare(val, mlf) >= 0 && compare(val, mrt) >= 0) break;
-		        //steps.push([]);
+		        steps.push([]);
+		        
+
 		        if (compare(mlf, mrt) >= 0) {
-		          addStep(steps,mlf,m.indexOf(mlf),head);
-		          m[head] = mlf;
-		          
-		          head = lf;
-		          pshift--;
+		          	
+		          	
+
+		           	comparisons.push({
+						cmp:cmp,
+						index:support.cloneArray(index)
+					});
+					index=[];
+
+					addStep(steps,mlf,m.indexOf(mlf),head,comparisons[comparisons.length-1]);
+					m[head] = mlf;
+
+					head = lf;
+					pshift--;
 		        } else {
-		          
-		          addStep(steps,mrt,m.indexOf(mrt),head);
-		          
-		          m[head] = mrt;
-		          
-		          head = rt;
-		          pshift -= 2;
+		          	
+		        	
+
+		        	comparisons.push({
+						cmp:cmp,
+						index:support.cloneArray(index)
+					});
+					index=[];
+
+					addStep(steps,mrt,m.indexOf(mrt),head,comparisons[comparisons.length-1]);
+
+					m[head] = mrt;
+
+					head = rt;
+					pshift -= 2;
 		        }
 		        
-		       
+		        cmp++;
 		      }
-		     
-		      addStep(steps,val,val_old_pos,head);
+		      	
+		      index.push([p,head,val_old_pos,-1,-1,-1]);
+		      comparisons.push({
+					cmp:cmp,
+					index:support.cloneArray(index)
+			  });
+			  index=[];
+
+		      addStep(steps,val,val_old_pos,head,comparisons[comparisons.length-1]);
 		      m[head] = val;
 
 		      
@@ -179,10 +240,18 @@ define(["../support"], function(support) {
 			return function(array) {
 				steps=[];
 				sort(array,0,array.length-1);
-				//console.log(array)
-				return steps.filter(function(d){
+				
+				steps=steps.filter(function(d){
 					return d.length>0;
 				});
+
+				console.log("SWAPS",steps.filter(function(d){
+					return d.length>0;
+				}))
+				console.log("COMPARISONS",(comparisons))
+				console.log("COMPLEXITY",comparisons[comparisons.length-1],steps[steps.length-1][0].cmp)
+
+				return steps;
 			}
 		}
 	}

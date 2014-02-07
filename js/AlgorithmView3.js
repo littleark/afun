@@ -11,9 +11,14 @@ define(["./support"],function(support) {
 
 		var name=options.name;
 
+		var RADIUS={
+			min:6,
+			max:30
+		};
+
 		var margins={
-			left:20,
-			right:20,
+			left:RADIUS.max/options.size_factor,
+			right:RADIUS.max/options.size_factor,
 			top:0,
 			bottom:0
 		};
@@ -124,7 +129,10 @@ define(["./support"],function(support) {
 		var circles=null;
 		var traces=null;
 
-		var RADIUS=Math.ceil((WIDTH-margins.left-margins.right)/(items[0].length+1)/2);
+		var indicator_container=svg.append("g")
+							.attr("id","indicators")
+							.attr("transform","translate("+margins.left+","+(margins.top+(HEIGHT/2))+")");
+		var circles=null;
 
 		var max_value=d3.max(items[0],function(d){
 			return d.value;
@@ -147,7 +155,7 @@ define(["./support"],function(support) {
 
 		var radius=d3.scale.sqrt()
 						.domain([0, max_value])
-						.range([1, Math.ceil(20/options.size_factor)])
+						.range([RADIUS.min, Math.ceil(RADIUS.max/options.size_factor)])
 
 		function updateCircles() {
 
@@ -409,7 +417,7 @@ define(["./support"],function(support) {
 						return 0;
 					})
 			
-			radius.range([1, Math.ceil(20/factor)]);
+			radius.range([RADIUS.min, Math.ceil(RADIUS.max/factor)]);
 			console.log("items",items)
 			circles
 				.attr("transform",function(d,i){
@@ -427,11 +435,12 @@ define(["./support"],function(support) {
 						return radius(d.value);
 					})
 
+			indicator_container.attr("transform","translate("+margins.left+","+(margins.top+(HEIGHT/2))+")");
 		}
 
 		
 
-		var indicator=circles_container
+		var indicator=indicator_container
 							.selectAll("g.indicator")
 							.data(steps[1][0].cmp.index[0],function(d,i){
 								return i;
@@ -443,7 +452,7 @@ define(["./support"],function(support) {
 			.attr("transform",function(d,i){
 						
 				var x=xscale(d),
-					y=HEIGHT/2;
+					y=0;
 
 				return "translate("+x+","+y+")";
 			})
@@ -453,16 +462,65 @@ define(["./support"],function(support) {
 					if(i>0) {
 						return "rotate(180)translate(0,-5)";
 					} else {
-						return "rotate(0)translate(0,-5)";
+						return "rotate(180)translate(0,-5)";
 					}
 				})
 				.style("fill",function(d,i){
+					return "#ffffff";
 					var colors=["#ffffff","#ff0000","#339933","#ffffff"];
 					return colors[i];
 				})
 				.style({
 					stroke:"none"
 				})
+
+		function slideIndicator(index,animate,back){
+			//console.log("slide to",current_step,index,back)
+			//var indexes=steps[current_step][0].cmp.index;
+
+			var indexes=(steps[current_step].length
+							?
+							steps[current_step][0].cmp.index
+							:
+							[d3.range(indicator.data().length).map(function(d){return -1})]
+						);
+
+			if(back) {
+				index=indexes.length-1;
+			}
+
+			try {
+				indicator
+					.data(indexes[index],function(d,i){
+						return i;
+					})
+					.transition()
+					.duration(DURATION/2)
+					.attr("transform",function(d,i){
+						//console.log("index",index,"element",i,"go to",d)
+						var x=xscale(d),
+							y=0;
+						return "translate("+x+","+y+")";
+					})
+					.each("end",function(d,i){
+						if(i==indexes[index].length-1) {
+							index++;
+							if(index<indexes.length) {
+								slideIndicator(index,animate,back);
+							} else {
+								self.swap(current_step,animate,back);
+							}	
+						}
+					});
+			} catch(e){
+				console.error("slideIndicator",e)
+			}
+			
+		}
+
+		this.isSorted=function() {
+			return current_step == steps.length-1;
+		}
 
 		this.show=function(n,animate) {
 			if(animating) {
@@ -478,6 +536,11 @@ define(["./support"],function(support) {
 
 			
 			if(n+back<=0 || n>steps.length-1){
+				if(n>steps.length-1 && animate) {
+					if(options.sortedCallback) {
+						options.sortedCallback();
+					}	
+				}
 				return;
 			}
 
@@ -486,70 +549,18 @@ define(["./support"],function(support) {
 
 			//console.log("CURRENT STEP",current_step,steps[current_step])
 
-			var indexes=steps[current_step][0].cmp.index;
-
-			var transitions=[];
-
-			//console.log(indexes);
-
-			function slideIndicator(index){
-				//console.log("going to",index,indexes[index].toString())
-				indicator
-					.data(indexes[index],function(d,i){
-						return i;
-					})
-					.transition()
-					.duration(DURATION/2)
-					.attr("transform",function(d,i){
-						//console.log("index",index,"element",i,"go to",d)
-						var x=xscale(d),
-							y=HEIGHT/2;
-						return "translate("+x+","+y+")";
-					})
-					.each("end",function(d,i){
-						if(i==indexes[index].length-1) {
-							index++;
-							if(index<indexes.length) {
-								slideIndicator(index);
-							} else {
-								self.swap(n,true);
-							}	
-						}
-					});
-			}
-			slideIndicator(0);
-
-			/*
-			indexes.forEach(function(index,i){
-				
-				transitions[i]=((i===0)?indicator:transitions[i-1])
-								.transition()
-								.duration(1000)
-								.attr("transform",function(d){
-									var x=xscale(index),
-										y=HEIGHT/2-5;
-									return "translate("+x+","+y+")";
-								})
-								.each("end",function(d){
-									if(i==indexes.length-1) {
-										//self.swap(n,animate);
-									}
-								})
-				
-			})
-			*/
-
+			slideIndicator(0,animate,back);
 
 		}
 
-		this.swap=function(n,animate){
+		this.swap=function(n,animate,back){
 			//console.log("show",n,animate)
 			/*
 			if(animating) {
 				console.log("already animating")
 				return;
 			}
-			*/
+			
 			var n=(typeof n == "undefined")?steps.length-1:n;
 
 			var back=0;
@@ -561,7 +572,7 @@ define(["./support"],function(support) {
 			if(n+back<=0 || n>steps.length-1){
 				return;
 			}
-
+			
 
 
 			animating=true;
@@ -569,6 +580,7 @@ define(["./support"],function(support) {
 			
 
 			current_step=n;
+			*/
 
 			//console.log(name,"N",n)
 
@@ -650,7 +662,7 @@ define(["./support"],function(support) {
 								self.stepNext(animate);	
 							}
 						} else {
-
+							//do nothing ciao
 						}
 					})
 
@@ -674,7 +686,66 @@ define(["./support"],function(support) {
 		this.toggleItems=function() {
 			d3.select(container).classed("hidden",!d3.select(container).classed("hidden"));
 		}
+		function slideIndicatorGoTo(n,callback) {
+			console.log(n,steps[n],steps)
+
+			var indexes=(steps[n].length
+								?
+								steps[n][0].cmp.index
+								:
+								[d3.range(indicator.data().length).map(function(d){return -1})]
+							);
+
+			console.log("indexes",indexes);
+
+			indicator
+				.data(indexes[indexes.length-1],function(d,i){
+					return i;
+				})
+				.transition()
+				.duration(DURATION/2)
+				.attr("transform",function(d,i){
+					//console.log("index",index,"element",i,"go to",d)
+					var x=xscale(d),
+						y=0;
+					return "translate("+x+","+y+")";
+				})
+			
+			if(callback) {
+				callback();
+			}
+			
+		}
 		this.goTo=function(n,callback) {
+			if(animating) {
+				return;
+			}
+
+			if(typeof n == "undefined") {
+				n=steps.length-1;
+			}
+
+			if((current_step==0 && n<0)||(current_step==steps.length-1 && n>steps.length-1)) {
+				return;
+			}
+
+			if(n<0){
+				n=0;
+			}
+			if(n>steps.length-1){
+				console.log(n,">",steps.length-1)
+				n=steps.length-1;
+			}
+
+			current_step=n;
+
+			slideIndicatorGoTo(current_step,function(){
+				self.goTo2(n,callback);
+			})
+
+		}
+
+		this.goTo2=function(n,callback) {
 			if(animating) {
 				return;
 			}
@@ -740,6 +811,7 @@ define(["./support"],function(support) {
 				.each("end",function(d,i){
 					if(i==items[current_step].length-1) {
 						//animating=false;
+
 						if(callback) {
 							callback();
 						}

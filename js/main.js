@@ -65,7 +65,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		{
 			name:"Merge Sort",
 			file:"MergeSort",
-			active:true
+			active:false
 		},
 		{
 			name:"Smooth Sort",
@@ -75,7 +75,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		{
 			name:"Radix Sort",
 			file:"RadixSort",
-			active:true
+			active:false
 		},
 		{
 			name:"Shell Sort",
@@ -110,7 +110,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		{
 			name:"Bubble Sort",
 			file:"BubbleSort",
-			active:false
+			active:true
 		},
 		{
 			name:"Cocktail Sort",
@@ -127,7 +127,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 	var options={
 		algorithm:algorithms[0].file,
 		color:"blue",
-		items:10
+		items:20
 	};
 
 	algorithms.forEach(function(d){
@@ -280,18 +280,12 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 			sorting.prevStep();
 		}
 	})
-/*
-	d3.selectAll("#controls a")
-		.on("click",function(d,i){
-			d3.event.preventDefault();
 
-			if(i===4)
-				d3.selectAll(".circle").style("display","block")
-			if(i===5)
-				d3.selectAll(".circle").style("display","none")
-
-		});*/
-
+	document.addEventListener('paused', function start(e) {
+		var running=sorting.getStatus();
+		d3.select("#controls #play").classed("play",!running);
+		sorting.pause();
+	});
 	d3.select("#controls #back")
 		.on("click",function(d,i){
 			d3.event.preventDefault();

@@ -140,8 +140,11 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 							items:items,
 							color:color,
 							//step_callback:function(n) {},
-							endOfAnimationCallback:function(){
-
+							sortedCallback:function(){
+								if (allSorted()) {
+									var evt = new CustomEvent("paused");
+									document.dispatchEvent(evt);
+								}
 							},
 							callback:function(){
 								setTimeout(function(){
@@ -171,6 +174,17 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 				
 
 			});
+		}
+
+		function allSorted() {
+			var sorted=true;
+
+			d3.values(algoviz).forEach(function(a,i){
+				if (!a.isSorted()) {
+					sorted=false;
+				}
+			})
+			return sorted;
 		}
 
 		/* PUBLIC FUNCTIONS */

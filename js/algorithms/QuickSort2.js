@@ -6,22 +6,51 @@ define(["../support"], function(support) {
 		"complexity":"O(n log n)",
 	    "code":function() {
 			var steps=[];
-
-			
+			var comparisons=[];
+			var index=[];
+			var cmp=0;
 
 			function partition(array, begin, end, pivot) {
 				//console.log(array.length,begin,end,pivot)
 				var piv=array[pivot];
-				swap(steps,array,pivot, end-1);
+
+				index.push([begin,-1,end-1,pivot]);
+				comparisons.push({
+            		cmp:cmp,
+            		index:support.cloneArray(index)
+            	});
+            	index=[];
+
+				swap(steps,array,pivot, end-1 ,comparisons[comparisons.length-1]);
+
+
 				var store=begin;
 				var ix;
 				for(ix=begin; ix<end-1; ++ix) {
+					
+					index.push([store,ix,end-1,pivot]);
+
 					if(array[ix].value<=piv.value) {
-						swap(steps,array,store, ix);
+
+						comparisons.push({
+		            		cmp:cmp,
+		            		index:support.cloneArray(index)
+		            	});
+		            	index=[];
+
+						swap(steps,array,store, ix,comparisons[comparisons.length-1]);
 						++store;
 					}
+					cmp++;
 				}
-				swap(steps,array,end-1, store);
+
+				index.push([store,ix,end-1,pivot]);
+				comparisons.push({
+            		cmp:cmp,
+            		index:support.cloneArray(index)
+            	});
+            	index=[];
+				swap(steps,array,end-1, store,comparisons[comparisons.length-1]);
 
 				return store;
 			}
@@ -39,9 +68,18 @@ define(["../support"], function(support) {
 			return function(array) {
 				steps=[];
 				quicksort(array,0,array.length);
-				return steps.filter(function(d){
+				
+				steps=steps.filter(function(d){
 					return d.length>0;
 				});
+
+				console.log("SWAPS",steps.filter(function(d){
+					return d.length>0;
+				}))
+				console.log("COMPARISONS",(comparisons))
+				console.log("COMPLEXITY",comparisons[comparisons.length-1],steps[steps.length-1][0].cmp)
+
+				return steps;
 			}
 
 		}

@@ -16,14 +16,14 @@ define(["../support"], function(support) {
 				    return Math.ceil(Math.log(i.value)/Math.log(2));
 				}));
 
-				console.log("K",k)
+				
 				steps.push([]);
 				for (var d = 0; d < k; ++d) {
 				    for (var i = 0, p = 0, b = 1 << d, n = nums.length; i < n; ++i) {
 				        var o = nums[i];
 				        //console.log(o,"&",b)
 
-				        index.push([i,i-1,i,p]);
+				        index.push([i,p,-1,-1]);
 
 				        if ((o.value & b) == 0) {
 				            // this number is a 0 for this digit
@@ -39,7 +39,7 @@ define(["../support"], function(support) {
 				            addStep(steps,nums[i],i,p,comparisons[comparisons.length-1])
 
 				            for(var __i=i-1;__i>=p;__i--) {
-				            	index.push([i,__i,__i+1,p]);
+				            	index.push([i,p,__i,__i+1]);
 
 				            	comparisons.push({
 				            		cmp:cmp,

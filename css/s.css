@@ -2,11 +2,11 @@
 @font-face {
     font-family: 'Alegreya';
     
-	src: url('../font/exo2/Exo2.0-Thin-webfont.eot'); /* IE9 Compat Modes */
-	src: url('../font/exo2/Exo2.0-Thin-webfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-		url('../font/exo2/Exo2.0-Thin-webfont.woff') format('woff'), /* Modern Browsers */
-		url('../font/exo2/Exo2.0-Thin-webfont.ttf')  format('truetype'), /* Safari, Android, iOS */
-		url('../font/exo2/Exo2.0-Light-webfont.svg#exo_2.0light') format('svg'); /* Legacy iOS */
+	src: url('../font/Exo 2/Exo 2.0-Thin-webfont.eot'); /* IE9 Compat Modes */
+	src: url('../font/Exo 2/Exo 2.0-Thin-webfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+		url('../font/Exo 2/Exo 2.0-Thin-webfont.woff') format('woff'), /* Modern Browsers */
+		url('../font/Exo 2/Exo 2.0-Thin-webfont.ttf')  format('truetype'), /* Safari, Android, iOS */
+		url('../font/Exo 2/Exo 2.0-Light-webfont.svg#exo_2.0light') format('svg'); /* Legacy iOS */
     font-weight: normal;
     font-style: normal;
 }
@@ -15,7 +15,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
     @font-face {
         font-family: 'Alegreya';
-            src: url('../font/exo2/Exo2.0-Light-webfont.svg#exo_2.0light') format('svg');
+            src: url('../font/Exo 2/Exo 2.0-Light-webfont.svg#exo_2.0light') format('svg');
     }
 }
 
@@ -70,8 +70,9 @@ body {
 #header h1 {
 	display: inline-block;
 	color:#fff;
-	font-family: 'Alegreya', sans-serif;
+	font-family: 'Exo 2', sans-serif;
 	font-size: 1.4em;
+	font-weight: 100;
 	line-height: 25px;
 	text-transform: uppercase;
 	text-align: left;
@@ -84,7 +85,7 @@ body {
 }
 #footer h5 {
 	color:#fff;
-	font-family: 'Alegreya', sans-serif;
+	font-family: 'Exo 2', sans-serif;
 	font-size: 1.3em;
 	text-align: center;
 	text-transform: uppercase;
@@ -141,9 +142,9 @@ body {
 	text-align:center;
 	text-transform: uppercase;
 	color: #fff;
-	font-family: 'Alegreya', sans-serif;
+	font-family: 'Exo 2', sans-serif;
+	font-weight: 100;
 	font-size: 1.55em;
-	-webkit-text-stroke: 1px rgba(0,0,0,0.1);
 	margin: 0;
 	padding: 0;
 }
@@ -169,7 +170,7 @@ body {
 /***************** ADD **********************/
 /*
 #algorithms div#add.algorithm {
-	font-family: 'Alegreya', sans-serif;
+	font-family: 'Exo 2', sans-serif;
 	font-size: 18px;
 	font-weight: 100;
 	border: 1px solid #111;
@@ -271,7 +272,7 @@ body {
 	text-align: right;
 }
 #add ul#algs li a.selected {
-	font-weight: 300;
+	font-weight: 100;
 	border:2px solid #fff;
 }
 #add ul#colors li,
@@ -303,7 +304,8 @@ body {
 */
 /***************** ADD **********************/
 #add {
-	font-family: 'Alegreya', sans-serif;
+	font-family: 'Exo 2', sans-serif;
+	font-weight: 100;
 	font-size: 1.05em;
 	position: relative;
 }
@@ -356,6 +358,7 @@ body {
 	top:0px;
 	right:0px;
 	text-align: right;
+	text-transform: uppercase;
 }
 
 #add a.plus,
@@ -392,8 +395,10 @@ body {
 	font-size:1.2em;
 	text-align: center;
 	color:gold;
-	font-family: 'Alegreya', sans-serif;
+	font-family: 'Exo 2', sans-serif;
+	font-weight: 100;
 }
+
 #add a.generate h4 {
 	visibility: visible !important;
 	color:#666;
@@ -453,6 +458,9 @@ body {
 	border:2px solid #000;
 	min-height: 101px;
 	padding:5px 0;
+	font-family: sans-serif;
+	font-size: 12px;
+	color:#f0f0f0;
 }
 #add ul#algs li a:hover {
 	border:2px solid #fff;
@@ -583,7 +591,8 @@ svg .circle text {
 	font-family: Arial;
 	fill-opacity:0.5;
 }
-.hidden .circle {
+.hidden #circles,
+.hidden #indicators {
 	display: none;
 }
 /**
