@@ -18,10 +18,7 @@ define(["../support"], function(support) {
 
 			    //console.log(l,">=",h)
 
-			    if(first) {
-			    	index.push([l,low,high]);
-			    	first=false;
-			    }
+			    
 
 			    if (l >= h) {
 			    	
@@ -30,19 +27,22 @@ define(["../support"], function(support) {
 
 			    var mid = Math.floor((l + h) / 2);
 
+			    var end_lo = mid;
+			    var start_hi = mid + 1;
 			    
-			    //console.log(l,mid);
-			    //console.log(mid+1,h);
-			    
-			    //index.push([low,height]);
+			    if(first) {
+			    	index.push([l,start_hi,start_hi,start_hi+1]);
+			    	first=false;
+			    }
 
 			    mergeSort(a, l, mid);
 			    mergeSort(a, mid + 1, h);
 
-			    var end_lo = mid;
-			    var start_hi = mid + 1;
-
 			    
+
+
+
+			    //
 
 			    while ((l <= end_lo) && (start_hi <= h)) {
 			    	//index.push([l,start_hi]);
@@ -59,7 +59,7 @@ define(["../support"], function(support) {
 			            for (var k = start_hi - 1; k >= l; k--) {
 			            	cmp++;
 
-			            	index.push([k,low,high]); //here the index k decrease until it goes on l, then it takes element l+1 and move it to k
+			            	index.push([l,start_hi,k,k+1]); //here the index k decrease until it goes on l, then it takes element l+1 and move it to k
 			            	comparisons.push({
 			            		cmp:cmp,
 			            		index:support.cloneArray(index)
@@ -74,14 +74,15 @@ define(["../support"], function(support) {
 
 
 			            }
-			            steps.push([]);
-			            index.push([start_hi,low,high]);
+			            
+			            index.push([l,start_hi,start_hi,start_hi+1]);
 				    	comparisons.push({
 		            		cmp:cmp,
 		            		index:support.cloneArray(index)
 		            	});
-			            index=[];
+			            //index=[];
 		            	//console.log("SWAAAAAAAAAAAAAAAAAAAAP");
+			            steps.push([]);
 			            addStep(steps,temp,start_hi,l,comparisons[comparisons.length-1])
 			            a[l] = temp;
 
@@ -92,11 +93,13 @@ define(["../support"], function(support) {
 			           
 			        }
 			        cmp++;
-			        index.push([l,low,high]);
+			        index.push([l,start_hi,start_hi,start_hi+1]);
+			    	/*
 			    	comparisons.push({
 	            		cmp:cmp,
 	            		index:support.cloneArray(index)
 	            	});
+					*/
 			        //index=[];
 		        	
 			    }

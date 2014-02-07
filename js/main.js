@@ -50,7 +50,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		{
 			name:"Quick Sort",
 			file:"QuickSort",
-			active:false
+			active:true
 		},
 		{
 			name:"Quick Sort w/Partition",
@@ -65,7 +65,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		{
 			name:"Merge Sort",
 			file:"MergeSort",
-			active:false
+			active:true
 		},
 		{
 			name:"Smooth Sort",
@@ -75,7 +75,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		{
 			name:"Radix Sort",
 			file:"RadixSort",
-			active:false
+			active:true
 		},
 		{
 			name:"Shell Sort",
@@ -95,7 +95,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		{
 			name:"Insertion Sort",
 			file:"InsertionSort",
-			active:true
+			active:false
 		},
 		{
 			name:"Gnome Sort",
@@ -110,12 +110,12 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		{
 			name:"Bubble Sort",
 			file:"BubbleSort",
-			active:true
+			active:false
 		},
 		{
 			name:"Cocktail Sort",
 			file:"CocktailSort",
-			active:true
+			active:false
 		},
 		{
 			name:"OddEven Sort",

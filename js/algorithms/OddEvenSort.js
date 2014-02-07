@@ -6,45 +6,47 @@ define(["../support"], function(support) {
 		"complexity":"O(n&sup2;)",
 	    "code":function() {
 			var steps=[];
+			var comparisons=[];
+			var index=[];
+ 			var cmp=0;
 
 			function oddevensort(array) {
 			    var sorted = false;
 			    while (!sorted) {
 			        sorted = true;
 			        for (var i = 1; i < array.length - 1; i += 2) {
+			        	index.push([i,i+1]);
 			            if(array[i].value>array[i+1].value) {
-			            //if (((IComparable)arrayToSort[i]).CompareTo(arrayToSort[i + 1]) > 0) {
-			                /*
-			                object temp = arrayToSort[i];
-			                arrayToSort[i] = arrayToSort[i + 1];
-			                RedrawItem(i);
-			                arrayToSort[i + 1] = temp;
-			                RedrawItem(i+1);
-			                pnlSamples.Refresh();
-			                if (chkCreateAnimation.Checked)
-			                    SavePicture();
-			                */
-			                swap(steps,array,i,i+1);
+
+			            	
+
+			            	comparisons.push({
+			            		cmp:cmp,
+			            		index:support.cloneArray(index)
+			            	});
+			            	index=[];
+
+			                swap(steps,array,i,i+1,comparisons[comparisons.length-1]);
 			                sorted = false;
 			            }
+			            cmp++;
 			        }
 
 			        for (var i = 0; i < array.length - 1; i += 2) {
+			        	index.push([i,i+1]);
 			            if(array[i].value>array[i+1].value) {
-			            //if (((IComparable)arrayToSort[i]).CompareTo(arrayToSort[i + 1]) > 0) {
-			            	/*
-			                object temp = arrayToSort[i];
-			                arrayToSort[i] = arrayToSort[i + 1];
-			                arrayToSort[i + 1] = temp;
-			                RedrawItem(i);
-			                RedrawItem(i+1);
-			                pnlSamples.Refresh();
-			                if (chkCreateAnimation.Checked)
-			                    SavePicture();
-			                */
-			                swap(steps,array,i,i+1);
+			            	
+
+			            	comparisons.push({
+			            		cmp:cmp,
+			            		index:support.cloneArray(index)
+			            	});
+			            	index=[];
+
+			                swap(steps,array,i,i+1,comparisons[comparisons.length-1]);
 			                sorted = false;
 			            }
+			            cmp++;
 			        }
 			    }
 			    return array;
@@ -53,6 +55,12 @@ define(["../support"], function(support) {
 			return function(array) {
 				steps=[];
 				oddevensort(array);
+
+				console.log("SWAPS",steps.filter(function(d){
+					return d.length>0;
+				}))
+				console.log("COMPARISONS",(comparisons))
+				console.log("COMPLEXITY",comparisons[comparisons.length-1],steps[steps.length-1][0].cmp)
 				return steps.filter(function(d){
 					return d.length>0;
 				});

@@ -9,13 +9,13 @@ define(["../support"], function(support) {
 			var comparisons=[];
 			var index=[];
  			var cmp=0;
- 			
+
 			function bubblesort(array) {
 			    var n = array.length - 1;
 			   
 			    for (var i = 0; i < n; i++) {
 			        for (var j = n; j > i; j--) {
-			        	cmp++;
+			        	
 			        	index.push([j,j-1]);
 			        	//console.log("j",j)
 			        	if(array[j-1].value > array[j].value) {
@@ -26,6 +26,7 @@ define(["../support"], function(support) {
 			            	index=[];
 			                swap(steps,array,j-1,j,comparisons[comparisons.length-1]);
 			                //console.log("----------------");
+			                cmp++;
 			            }
 			        }
 			    }

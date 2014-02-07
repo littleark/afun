@@ -6,32 +6,33 @@ define(["../support"], function(support) {
 		"complexity":"O(n&sup2;)",
 	    "code":function() {
 			var steps=[];
+			var comparisons=[];
+			var index=[];
+ 			var cmp=0;
 
 			function gnomesort(array) {
 			    var pos = 1;
+			    index.push([pos,pos-1]);
+
 			    while (pos < array.length) {
 			    	if (array[pos].value>=array[pos - 1].value) {
-			        //if (((IComparable)arrayToSort[pos]).CompareTo(arrayToSort[pos - 1]) >= 0) {
 			            pos++;
 			        } else {
-			            /*
-			            var temp = array[pos];
-			            array[pos] = arrayToSort[pos - 1];
-			            RedrawItem(pos);
 
-			            arrayToSort[pos - 1] = temp;
-			            RedrawItem(pos - 1);
-			            RefreshPanel(pnlSamples);
-			            if (savePicture)
-			                SavePicture();
-			            */
+			        	comparisons.push({
+		            		cmp:cmp,
+		            		index:support.cloneArray(index)
+		            	});
+		            	index=[];
 
-			            swap(steps,array,pos,pos-1);
+			            swap(steps,array,pos,pos-1,comparisons[comparisons.length-1]);
 
 			            if (pos > 1) {
 			                pos--;
 			            }
 			        }
+			        index.push([pos,pos-1]);
+			        cmp++;
 			    }
 			    return array;
 			}
@@ -39,6 +40,12 @@ define(["../support"], function(support) {
 			return function(array) {
 				steps=[];
 				gnomesort(array);
+
+				console.log("SWAPS",steps.filter(function(d){
+					return d.length>0;
+				}))
+				console.log("COMPARISONS",(comparisons))
+				console.log("COMPLEXITY",comparisons[comparisons.length-1],steps[steps.length-1][0].cmp)
 				return steps.filter(function(d){
 					return d.length>0;
 				});

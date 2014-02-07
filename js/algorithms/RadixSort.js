@@ -6,6 +6,9 @@ define(["../support"], function(support) {
 		"complexity":"O(kN)",
 	    "code":function() {
 			var steps=[];
+			var comparisons=[];
+			var index=[];
+			var cmp=0;
 
 			function radixsort(nums) {
 				// Figure out the number of binary digits we're dealing with
@@ -13,18 +16,39 @@ define(["../support"], function(support) {
 				    return Math.ceil(Math.log(i.value)/Math.log(2));
 				}));
 
+				console.log("K",k)
+				steps.push([]);
 				for (var d = 0; d < k; ++d) {
 				    for (var i = 0, p = 0, b = 1 << d, n = nums.length; i < n; ++i) {
 				        var o = nums[i];
 				        //console.log(o,"&",b)
+
+				        index.push([i,i-1,i,p]);
+
 				        if ((o.value & b) == 0) {
 				            // this number is a 0 for this digit
 				            // move it to the front of the list
+
+				            comparisons.push({
+			            		cmp:cmp,
+			            		index:support.cloneArray(index)
+			            	});
+			            	index=[];
+
 				            steps.push([]);
-				            addStep(steps,nums[i],i,p)
+				            addStep(steps,nums[i],i,p,comparisons[comparisons.length-1])
 
 				            for(var __i=i-1;__i>=p;__i--) {
-				            	addStep(steps,nums[__i],__i,__i+1);
+				            	index.push([i,__i,__i+1,p]);
+
+				            	comparisons.push({
+				            		cmp:cmp,
+				            		index:support.cloneArray(index)
+				            	});
+				            	index=[];
+
+				            	steps.push([]);
+				            	addStep(steps,nums[__i],__i,__i+1,comparisons[comparisons.length-1]);
 				            }
 				            
 
@@ -34,17 +58,27 @@ define(["../support"], function(support) {
 				           
 							
 				        }
+				        cmp++;
 				    }
-				    //super_steps.push(cloneArray(nums));
+				    
 				}
 			}
 
 			return function(array) {
 				steps=[];
 				radixsort(array);
-				return steps.filter(function(d){
+
+				steps=steps.filter(function(d){
 					return d.length>0;
 				});
+
+				console.log("SWAPS",steps.filter(function(d){
+					return d.length>0;
+				}))
+				console.log("COMPARISONS",(comparisons))
+				console.log("COMPLEXITY",comparisons[comparisons.length-1],steps[steps.length-1][0].cmp)
+
+				return steps;
 			}
 		}
 	}
