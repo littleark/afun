@@ -98,7 +98,7 @@ define(["../support"], function(support) {
 		      
 		      var val_old_pos=head;
 		      
-		      steps.push([]);
+		      
 		      while (p !== 1) {
 		        stepson = head - LP[pshift];
 
@@ -112,6 +112,8 @@ define(["../support"], function(support) {
 		          }
 		        }
 
+		        steps.push([]);
+
 		        index.push([p,head,val_old_pos,stepson,-1,-1]);
 
 		        comparisons.push({
@@ -121,7 +123,7 @@ define(["../support"], function(support) {
             	index=[];
 
 		        addStep(steps,mstepson,m.indexOf(mstepson),head,comparisons[comparisons.length-1],{
-		        	value:head.value,
+		        	value:val.value,
 		        	pos:val_old_pos
 		        });
 		        m[head] = mstepson;
@@ -136,6 +138,8 @@ define(["../support"], function(support) {
 		        cmp++;
 		      }
 		      if (!trusty) {
+
+		      	steps.push([]);
 
 		      	index.push([p,head,val_old_pos,stepson,-1,-1]);
 		      	comparisons.push({
@@ -169,11 +173,13 @@ define(["../support"], function(support) {
 		        mrt = m[rt];
 		        mlf = m[lf];
 
-		        index.push([p,head,val_old_pos,-1,lf,rt]);
+		        //
 
 		        if (compare(val, mlf) >= 0 && compare(val, mrt) >= 0) break;
-		        steps.push([]);
 		        
+
+		        
+		        index.push([p,head,val_old_pos,-1,lf,rt]);
 
 		        if (compare(mlf, mrt) >= 0) {
 		          	
@@ -185,6 +191,7 @@ define(["../support"], function(support) {
 					});
 					index=[];
 
+					steps.push([]);
 					addStep(steps,mlf,m.indexOf(mlf),head,comparisons[comparisons.length-1],{
 						value:val.value,
 						pos:val_old_pos
@@ -203,6 +210,7 @@ define(["../support"], function(support) {
 					});
 					index=[];
 
+					steps.push([]);
 					addStep(steps,mrt,m.indexOf(mrt),head,comparisons[comparisons.length-1],{
 						value:val.value,
 						pos:val_old_pos
@@ -217,7 +225,7 @@ define(["../support"], function(support) {
 		        cmp++;
 		      }
 		      
-		      steps.push([]);
+		      
 		      index.push([p,head,val_old_pos,-1,-1,-1]);
 		      comparisons.push({
 					cmp:cmp,
@@ -225,6 +233,7 @@ define(["../support"], function(support) {
 			  });
 			  index=[];
 
+			  steps.push([]);
 		      addStep(steps,val,val_old_pos,head,comparisons[comparisons.length-1]);
 		      m[head] = val;
 

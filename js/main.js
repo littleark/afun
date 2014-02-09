@@ -50,7 +50,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		{
 			name:"Quick Sort",
 			file:"QuickSort",
-			active:true
+			active:false
 		},
 		{
 			name:"Quick Sort w/Partition",
@@ -60,7 +60,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		{
 			name:"Heap Sort",
 			file:"HeapSort",
-			active:true
+			active:false
 		},
 		{
 			name:"Merge Sort",
@@ -70,7 +70,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		{
 			name:"Smooth Sort",
 			file:"SmoothSort",
-			active:false
+			active:true
 		},
 		{
 			name:"Radix Sort",

@@ -564,7 +564,7 @@ define(["./support"],function(support) {
 					})
 					.attr("transform","translate("+xscale(tmp.pos)+","+(HEIGHT/2)+")")
 					.classed("memory",function(d){
-						console.log("-------->",d)
+						console.log("-------->",d,tmp.value)
 						return true;
 					})
 					
