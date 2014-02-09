@@ -455,6 +455,8 @@ define(["./support"],function(support) {
 			//console.log("slide to",current_step,index,back)
 			//var indexes=steps[current_step][0].cmp.index;
 
+			//indicator_container.classed("hidden",current_step<steps.length-1);
+
 			var indexes=(steps[current_step].length
 							?
 							steps[current_step][0].cmp.index
@@ -713,6 +715,8 @@ define(["./support"],function(support) {
 
 						animating=false;
 
+						indicator_container.classed("hidden",current_step==steps.length-1);
+
 						if(i==steps[current_step+back].length-1 && animate) {
 							//console.log("----")
 							if(status) {
@@ -872,6 +876,8 @@ define(["./support"],function(support) {
 				.each("end",function(d,i){
 					if(i==items[current_step].length-1) {
 						//animating=false;
+
+						indicator_container.classed("hidden",current_step==steps.length-1);
 
 						if(callback) {
 							callback();

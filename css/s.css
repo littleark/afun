@@ -608,7 +608,9 @@ svg #temp text {
 	font-family: Arial;
 	text-anchor:middle;
 }
-
+svg #indicators.hidden {
+	fill-opacity:0;
+}
 .hidden #circles,
 .hidden #indicators,
 .hidden #temp {

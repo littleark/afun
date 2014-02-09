@@ -50,7 +50,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		{
 			name:"Quick Sort",
 			file:"QuickSort",
-			active:false
+			active:true
 		},
 		{
 			name:"Quick Sort w/Partition",
@@ -60,7 +60,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		{
 			name:"Heap Sort",
 			file:"HeapSort",
-			active:false
+			active:true
 		},
 		{
 			name:"Merge Sort",
@@ -75,7 +75,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		{
 			name:"Radix Sort",
 			file:"RadixSort",
-			active:true
+			active:false
 		},
 		{
 			name:"Shell Sort",
@@ -127,7 +127,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 	var options={
 		algorithm:algorithms[0].file,
 		color:"blue",
-		items:20
+		items:10
 	};
 
 	algorithms.forEach(function(d){
