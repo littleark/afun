@@ -50,12 +50,12 @@ define(["../support"], function(support) {
 		            	//console.log("SWAAAAAAAAAAAAAAAAAAAAP");
 		            	index=[];
 
-		                //swap(steps,arrayToSort,cycleStart,to,comparisons[comparisons.length-1]);
-		                console.log(comparisons)
-						addStep(steps,item,cycleStart,to,comparisons[comparisons.length-1])
-						addStep(steps,temp,to,cycleStart,comparisons[comparisons.length-1])
+		                swap(steps,arrayToSort,cycleStart,to,comparisons[comparisons.length-1]);
+		                //console.log(comparisons)
+						//addStep(steps,item,cycleStart,to,comparisons[comparisons.length-1])
+						//addStep(steps,temp,to,cycleStart,comparisons[comparisons.length-1])
 
-		                arrayToSort[to] = item;
+		                //arrayToSort[to] = item;
 		                
 		                item = temp;
 		                

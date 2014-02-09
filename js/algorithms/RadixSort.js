@@ -9,13 +9,55 @@ define(["../support"], function(support) {
 			var comparisons=[];
 			var index=[];
 			var cmp=0;
+			
+			// Figure out the number of binary digits we're dealing with
+			
+			function radixsort(a) {
+				for (var div = 1, radix = 16; div < 65536 * 65536; div *= radix) {
+				  var piles = [];
 
-			function radixsort(nums) {
-				// Figure out the number of binary digits we're dealing with
+				  for (var i = 0; i < a.length; ++i) {
+				    var p = Math.floor(a[i].value / div) % radix;
+				    (piles[p] || (piles[p] = [])).push(a[i]);
+				    index.push([i,-1,-1]);
+				  }
+
+				  console.log(div,piles)
+				  var tmpA=support.cloneArray(a);
+				  for (var i = 0, ai = 0; i < piles.length; ++i) {
+				    if (!piles[i]) continue;
+				    
+
+				    for (var pi = 0; pi < piles[i].length; ++pi) {
+
+				    	var ii=support.indexOf(tmpA,piles[i][pi].id,"id");
+
+				    	index.push([-1,ai,ii]);
+				    	comparisons.push({
+		            		cmp:cmp,
+		            		index:support.cloneArray(index)
+		            	});
+				    	index=[];
+
+				    	steps.push([]);
+				    	
+				    	//console.log("-------->",ii,tmpA)
+				        addStep(steps,tmpA[ii],ii,ai,comparisons[comparisons.length-1])
+
+				      	a[ai++] = piles[i][pi];
+				    }
+
+				    index.push([-1,-1,-1])
+				  }
+				}
+				console.log(a)
+			}
+
+			function radixsort2(nums) {
+				
 				var k = Math.max.apply(null, nums.map(function(i) {
 				    return Math.ceil(Math.log(i.value)/Math.log(2));
 				}));
-
 				
 				steps.push([]);
 				for (var d = 0; d < k; ++d) {
@@ -53,7 +95,7 @@ define(["../support"], function(support) {
 				            
 
 				            nums.splice(p++, 0, nums.splice(i, 1)[0]);
-				            //console.log(p,i,nums)
+				            console.log(p,i,nums)
 				            
 				           
 							

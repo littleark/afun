@@ -55,32 +55,41 @@ define(["../support"], function(support) {
 			            l++;
 			        } else {
 			            var temp = a[start_hi];
-			            steps.push([]);
+			            //steps.push([]);
 			            for (var k = start_hi - 1; k >= l; k--) {
-			            	cmp++;
+			            	
 
 			            	index.push([l,start_hi,k,k+1]); //here the index k decrease until it goes on l, then it takes element l+1 and move it to k
+			            	
 			            	comparisons.push({
 			            		cmp:cmp,
 			            		index:support.cloneArray(index)
 			            	});
-
+							
 			            	//console.log("SWAAAAAAAAAAAAAAAAAAAAP");
 			            	index=[];
-
+							
 			            	steps.push([])
-			                addStep(steps,a[k],k,k+1,comparisons[comparisons.length-1])
+			            	
+			            	//delete a[k].tmp;
+			            	
+				        	
+			                addStep(steps,a[k],k,k+1,comparisons[comparisons.length-1],{
+			                	value:temp.value,
+				        		pos:start_hi
+			                })
 			                a[k + 1] = a[k];
 
-
+			                cmp++;
 			            }
-			            
+			            index=[];
+
 			            index.push([l,start_hi,-1,-1]);
 				    	comparisons.push({
 		            		cmp:cmp,
 		            		index:support.cloneArray(index)
 		            	});
-			            //index=[];
+			            index=[];
 		            	//console.log("SWAAAAAAAAAAAAAAAAAAAAP");
 			            steps.push([]);
 			            addStep(steps,temp,start_hi,l,comparisons[comparisons.length-1])

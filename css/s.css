@@ -71,7 +71,7 @@ body {
 	display: inline-block;
 	color:#fff;
 	font-family: 'Exo 2', sans-serif;
-	font-size: 1.4em;
+	font-size: 24px;
 	font-weight: 100;
 	line-height: 25px;
 	text-transform: uppercase;
@@ -590,9 +590,28 @@ svg .circle text {
 	font-size: 9px;
 	font-family: Arial;
 	fill-opacity:0.5;
+	text-anchor:middle;
 }
+svg .circle.memory circle,
+svg .circle.memory text {
+	fill-opacity:0;
+}
+svg #temp g * {
+	fill-opacity:0;
+}
+svg #temp g.visible * {
+	fill-opacity:0.6;
+}
+svg #temp text {
+	fill:#ddd;
+	font-size: 9px;
+	font-family: Arial;
+	text-anchor:middle;
+}
+
 .hidden #circles,
-.hidden #indicators {
+.hidden #indicators,
+.hidden #temp {
 	display: none;
 }
 /**

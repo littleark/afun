@@ -7,17 +7,18 @@ define(
 		    return array;
 		}
 
-		function addStep(steps,index,from,to, cmp) {
+		function addStep(steps,index,from,to, cmp,tmp) {
 			//console.log(index,from,"->",to)
 			if(from==to)
 				return;
-			
+
 			steps[steps.length-1].push({
 	        	index:index.value,
 	        	id:index.id,
 	        	from:from,
 	        	to:to,
-	        	cmp:cmp
+	        	cmp:cmp,
+	        	tmp:tmp
 	        });
 		}
 		
@@ -47,6 +48,7 @@ define(
 
 		//var pos=items[current_step].map(function(e) { return e.id; }).indexOf(d.id);
 		function arrayObjectIndexOf(A, searchTerm, property) {
+			//console.log("searching for",property,searchTerm,"in",A)
 		    for(var i = 0, len = A.length; i < len; i++) {
 		        if (A[i][property] === searchTerm) return i;
 		    }

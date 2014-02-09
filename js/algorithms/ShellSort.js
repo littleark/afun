@@ -33,7 +33,7 @@ define(["../support"], function(support) {
 			    while (gaps.length) {
 			        for (var i = h; i < n; i++) {
 
-			        	steps.push([]);
+			        	
 
 			            c = nums[i];
 			            j = i;
@@ -46,7 +46,10 @@ define(["../support"], function(support) {
 			            		index:support.cloneArray(index)
 			            	});
 			            	index=[];
-			            	addStep(steps,nums[j - h],j-h,j,comparisons[comparisons.length-1])
+			            	addStep(steps,nums[j - h],j-h,j,comparisons[comparisons.length-1],{
+			            		value:c.value,
+				        		pos:i
+			            	})
 
 
 			                nums[j] = nums[j - h];
@@ -55,6 +58,7 @@ define(["../support"], function(support) {
 			            }
 			            nums[j] = c;
 
+			            steps.push([]);
 			            index.push([i,j,j-h]);
 		            	comparisons.push({
 		            		cmp:cmp,

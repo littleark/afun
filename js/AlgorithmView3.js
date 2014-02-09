@@ -129,6 +129,10 @@ define(["./support"],function(support) {
 		var circles=null;
 		var traces=null;
 
+		var temp_container=svg.append("g")
+							.attr("id","temp")
+							.attr("transform","translate("+margins.left+","+(margins.top+(HEIGHT/2))+")");
+
 		var indicator_container=svg.append("g")
 							.attr("id","indicators")
 							.attr("transform","translate("+margins.left+","+(margins.top+(HEIGHT/2))+")");
@@ -193,7 +197,6 @@ define(["./support"],function(support) {
 						.attr("y",function(d){
 							return 0+1+ radius(d.value)+10;
 						})
-						.attr("text-anchor","middle")
 						.text(function(d){
 							return d.value;
 						})
@@ -207,9 +210,7 @@ define(["./support"],function(support) {
 
 					return "translate("+x+","+y+")";
 				})
-				.style("fill",function(d){
-					return color(d.value);
-				})
+
 
 		}
 		
@@ -259,10 +260,6 @@ define(["./support"],function(support) {
 							return i>=count && i<=count+delta;
 						})
 						.selectAll("path")
-
-							//.data(function(d){
-							//	return d;
-							//})
 							.attr("d",function(d,i){
 								//console.log("adding",i,d);
 							
@@ -293,27 +290,6 @@ define(["./support"],function(support) {
 					return count>=total;
 				})
 				
-						
-				/*
-				console.log(tmp_svg.innerHTML);
-
-				traces_container=svg.append("g")
-						.attr("id","traces2")
-						.attr("transform","translate("+margins.left+","+margins.top+")");
-				traces_container.node().innerHTML=tmp_svg.innerHTML;
-
-				traces=traces_container.selectAll("g.step");
-				trace.selectAll("path")
-						.attr("stroke-dashoffset",function(d){
-							return d3.select(this).node().getTotalLength();
-						})
-						.attr("stroke-dasharray",function(d){
-							var len=d3.select(this).node().getTotalLength();
-							return len+" "+len;
-						});
-				
-				delete tmp_svg;
-				*/
 		}
 
 		function removeLoading() {
@@ -436,6 +412,7 @@ define(["./support"],function(support) {
 					})
 
 			indicator_container.attr("transform","translate("+margins.left+","+(margins.top+(HEIGHT/2))+")");
+			temp_container.attr("transform","translate("+margins.left+","+(margins.top+(HEIGHT/2))+")");
 		}
 
 		
@@ -457,12 +434,12 @@ define(["./support"],function(support) {
 				return "translate("+x+","+y+")";
 			})
 			.append("path")
-				.attr("d","M0,0L5,-10L-5,-10,Z")
+				.attr("d","M0,0L3,-7L-3,-7,Z")
 				.attr("transform",function(d,i){
 					if(i>0) {
-						return "rotate(180)translate(0,-5)";
+						return "rotate(0)translate(0,-5)";
 					} else {
-						return "rotate(180)translate(0,-5)";
+						return "rotate(0)translate(0,-5)";
 					}
 				})
 				.style("fill",function(d,i){
@@ -522,6 +499,83 @@ define(["./support"],function(support) {
 			return current_step == steps.length-1;
 		}
 
+		var temp_indicator=temp_container.append("g");
+
+		temp_indicator.append("circle")
+				.attr("cx",0)
+				.attr("cy",0)
+				.attr("r",5)
+				.style("fill","#ffff00");
+		
+		temp_indicator.append("text")
+				.attr("x",0)
+				.attr("y",0);
+		
+
+		function showTemp() {
+			
+			var tmp={
+				value:0,
+				pos:-1
+			};
+			if(steps[current_step][0]) {
+				tmp=steps[current_step][0].tmp || tmp;
+			}
+			
+			
+			//console.log("###################");
+			//console.log(tmp);//,current_step,steps)
+			//console.log("###################");
+
+
+
+			temp_indicator
+				.classed("visible",(tmp.pos>-1))
+
+			if(tmp.pos>-1) {
+				temp_indicator
+					.attr("transform","translate("+xscale(tmp.pos)+","+0+")")
+			}
+
+			var r=radius(tmp.value);
+			
+			temp_indicator
+				.select("circle")
+					//.attr("cy",0)
+					.attr("r",r)
+					//.transition()
+					//	.duration(DURATION/2)
+						.attr("cy",-r*3);
+			
+			temp_indicator
+				.select("text")
+					.attr("y",-r*4-2)
+					.text(tmp.value)
+
+			//return;
+			
+			if(tmp.pos>-1) {
+				circles
+					.filter(function(d){
+						
+						return d.value==tmp.value || d.index==tmp.value;
+					})
+					.attr("transform","translate("+xscale(tmp.pos)+","+(HEIGHT/2)+")")
+					.classed("memory",function(d){
+						console.log("-------->",d)
+						return true;
+					})
+					
+			} else {
+				
+				//console.log("tmp.pos",tmp.pos)
+				circles
+					.classed("memory",false)
+					
+			}
+			
+		}
+
 		this.show=function(n,animate) {
 			if(animating) {
 				console.log("already animating")
@@ -548,6 +602,9 @@ define(["./support"],function(support) {
 			current_step=n;
 
 			//console.log("CURRENT STEP",current_step,steps[current_step])
+
+			
+			showTemp();
 
 			slideIndicator(0,animate,back);
 
@@ -665,6 +722,7 @@ define(["./support"],function(support) {
 							//do nothing ciao
 						}
 					})
+						
 
 		}
 
@@ -673,7 +731,7 @@ define(["./support"],function(support) {
 
 		
 		this.goToPerc=function(p,callback) {
-			console.log(p,Math.round((steps.length-1)*p));
+			console.log("goToPerc",p,Math.round((steps.length-1)*p));
 			//this.goTo(slider_scale(p),callback);
 			this.goTo(Math.round((steps.length-1)*p),callback)
 		}
@@ -687,7 +745,7 @@ define(["./support"],function(support) {
 			d3.select(container).classed("hidden",!d3.select(container).classed("hidden"));
 		}
 		function slideIndicatorGoTo(n,callback) {
-			console.log(n,steps[n],steps)
+			//console.log(n,steps[n],steps)
 
 			var indexes=(steps[n].length
 								?
@@ -696,7 +754,7 @@ define(["./support"],function(support) {
 								[d3.range(indicator.data().length).map(function(d){return -1})]
 							);
 
-			console.log("indexes",indexes);
+			//console.log("indexes",indexes);
 
 			indicator
 				.data(indexes[indexes.length-1],function(d,i){
@@ -738,6 +796,8 @@ define(["./support"],function(support) {
 			}
 
 			current_step=n;
+
+			showTemp();
 
 			slideIndicatorGoTo(current_step,function(){
 				self.goTo2(n,callback);
@@ -795,17 +855,18 @@ define(["./support"],function(support) {
 					.attr("stroke-dashoffset",function(d){
 						return 0;//d3.select(this).node().getTotalLength();
 					})
-			//console.log("!!!!!!!!!!!",items[current_step])
+			console.log("!!!!!!!!!!!",items,current_step)
 			circles
 				.data(items[current_step],function(d,i){
 					return d.id;
 				})
+				//.classed("memory",false)
 				.transition()
 				.duration(DURATION)
 				.attr("transform",function(d,i){
 					var x=xscale(i),
 						y=HEIGHT/2;
-
+					//console.log("move",d,"to",i)
 					return "translate("+x+","+y+")";
 				})
 				.each("end",function(d,i){

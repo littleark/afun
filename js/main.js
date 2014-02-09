@@ -50,7 +50,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		{
 			name:"Quick Sort",
 			file:"QuickSort",
-			active:true
+			active:false
 		},
 		{
 			name:"Quick Sort w/Partition",
@@ -75,7 +75,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		{
 			name:"Radix Sort",
 			file:"RadixSort",
-			active:false
+			active:true
 		},
 		{
 			name:"Shell Sort",
@@ -110,7 +110,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		{
 			name:"Bubble Sort",
 			file:"BubbleSort",
-			active:true
+			active:false
 		},
 		{
 			name:"Cocktail Sort",
@@ -135,6 +135,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 			sorting.addAlgorithm(
 				d.file,
 				//[15,4,23,12,56,2],
+				//[2,0,4,3,1],
 				data[options.items],
 				options.color
 				

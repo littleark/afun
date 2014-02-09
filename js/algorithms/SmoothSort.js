@@ -120,7 +120,10 @@ define(["../support"], function(support) {
             	});
             	index=[];
 
-		        addStep(steps,mstepson,m.indexOf(mstepson),head,comparisons[comparisons.length-1]);
+		        addStep(steps,mstepson,m.indexOf(mstepson),head,comparisons[comparisons.length-1],{
+		        	value:head.value,
+		        	pos:val_old_pos
+		        });
 		        m[head] = mstepson;
 		        
 
@@ -156,7 +159,7 @@ define(["../support"], function(support) {
 		          mlf,
 		          val = m[head];
 		      var val_old_pos=head;
-		      steps.push([]);
+		      
 		      while (pshift > 1) {
 		      	
 		      	
@@ -182,7 +185,10 @@ define(["../support"], function(support) {
 					});
 					index=[];
 
-					addStep(steps,mlf,m.indexOf(mlf),head,comparisons[comparisons.length-1]);
+					addStep(steps,mlf,m.indexOf(mlf),head,comparisons[comparisons.length-1],{
+						value:val.value,
+						pos:val_old_pos
+					});
 					m[head] = mlf;
 
 					head = lf;
@@ -197,7 +203,10 @@ define(["../support"], function(support) {
 					});
 					index=[];
 
-					addStep(steps,mrt,m.indexOf(mrt),head,comparisons[comparisons.length-1]);
+					addStep(steps,mrt,m.indexOf(mrt),head,comparisons[comparisons.length-1],{
+						value:val.value,
+						pos:val_old_pos
+					});
 
 					m[head] = mrt;
 
@@ -207,7 +216,8 @@ define(["../support"], function(support) {
 		        
 		        cmp++;
 		      }
-		      	
+		      
+		      steps.push([]);
 		      index.push([p,head,val_old_pos,-1,-1,-1]);
 		      comparisons.push({
 					cmp:cmp,
