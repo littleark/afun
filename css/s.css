@@ -1,25 +1,3 @@
-/* this is how a font-face rule usually looks like */
-@font-face {
-    font-family: 'Alegreya';
-    
-	src: url('../font/Exo 2/Exo 2.0-Thin-webfont.eot'); /* IE9 Compat Modes */
-	src: url('../font/Exo 2/Exo 2.0-Thin-webfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-		url('../font/Exo 2/Exo 2.0-Thin-webfont.woff') format('woff'), /* Modern Browsers */
-		url('../font/Exo 2/Exo 2.0-Thin-webfont.ttf')  format('truetype'), /* Safari, Android, iOS */
-		url('../font/Exo 2/Exo 2.0-Light-webfont.svg#exo_2.0light') format('svg'); /* Legacy iOS */
-    font-weight: normal;
-    font-style: normal;
-}
-
-/* the fix ! simply ADD this block BELOW the above block */
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-    @font-face {
-        font-family: 'Alegreya';
-            src: url('../font/Exo 2/Exo 2.0-Light-webfont.svg#exo_2.0light') format('svg');
-    }
-}
-
-
 *:focus {
     outline: 0;
 }
@@ -70,9 +48,9 @@ body {
 #header h1 {
 	display: inline-block;
 	color:#fff;
-	font-family: 'Exo 2', sans-serif;
+	font-family: 'Raleway', sans-serif;
 	font-size: 24px;
-	font-weight: 100;
+	font-weight: 300;
 	line-height: 25px;
 	text-transform: uppercase;
 	text-align: left;
@@ -85,7 +63,7 @@ body {
 }
 #footer h5 {
 	color:#fff;
-	font-family: 'Exo 2', sans-serif;
+	font-family: 'Raleway', sans-serif;
 	font-size: 1.3em;
 	text-align: center;
 	text-transform: uppercase;
@@ -142,8 +120,8 @@ body {
 	text-align:center;
 	text-transform: uppercase;
 	color: #fff;
-	font-family: 'Exo 2', sans-serif;
-	font-weight: 100;
+	font-family: 'Raleway', sans-serif;
+	font-weight: 300;
 	font-size: 1.55em;
 	margin: 0;
 	padding: 0;
@@ -170,9 +148,9 @@ body {
 /***************** ADD **********************/
 /*
 #algorithms div#add.algorithm {
-	font-family: 'Exo 2', sans-serif;
+	font-family: 'Raleway', sans-serif;
 	font-size: 18px;
-	font-weight: 100;
+	font-weight: 300;
 	border: 1px solid #111;
 	min-height: 166px;
 }
@@ -272,7 +250,7 @@ body {
 	text-align: right;
 }
 #add ul#algs li a.selected {
-	font-weight: 100;
+	font-weight: 300;
 	border:2px solid #fff;
 }
 #add ul#colors li,
@@ -304,8 +282,8 @@ body {
 */
 /***************** ADD **********************/
 #add {
-	font-family: 'Exo 2', sans-serif;
-	font-weight: 100;
+	font-family: 'Raleway', sans-serif;
+	font-weight: 300;
 	font-size: 1.05em;
 	position: relative;
 }
@@ -395,8 +373,8 @@ body {
 	font-size:1.2em;
 	text-align: center;
 	color:gold;
-	font-family: 'Exo 2', sans-serif;
-	font-weight: 100;
+	font-family: 'Raleway', sans-serif;
+	font-weight: 300;
 }
 
 #add a.generate h4 {
@@ -557,7 +535,12 @@ svg path {
 	stroke-width: 1.3;
 	fill: none;
 	stroke: #ffffff;
-	shape-rendering: optimizeSpeed;
+	/*shape-rendering: geometricPrecision;*/
+}
+@-moz-document url-prefix() { 
+	svg path {
+		stroke-width: 1;
+	}
 }
 svg .visible path {
 	stroke-opacity:0.6;
@@ -573,11 +556,11 @@ svg circle {
 	stroke-opacity:0;
 	stroke-width:0;
 
-	-webkit-transition: fill 0.25s linear,fill-opacity 0.25s linear;
-	-moz-transition: fill 0.25s linear,fill-opacity 0.25s linear;
-	-ms-transition: fill 0.25s linear,fill-opacity 0.25s linear;
-	-o-transition: fill 0.25s linear,fill-opacity 0.25s linear;
-	transition: fill 0.25s linear,fill-opacity 0.25s linear;
+	-webkit-transition: fill 0.25s linear,fill-opacity 0.25s linear,stroke-opacity 0.25s linear;
+	-moz-transition: fill 0.25s linear,fill-opacity 0.25s linear,stroke-opacity 0.25s linear;
+	-ms-transition: fill 0.25s linear,fill-opacity 0.25s linear,stroke-opacity 0.25s linear;
+	-o-transition: fill 0.25s linear,fill-opacity 0.25s linear,stroke-opacity 0.25s linear;
+	transition: fill 0.25s linear,fill-opacity 0.25s linear,stroke-opacity 0.25s linear;
 
 }
 svg .swap circle {
@@ -601,6 +584,15 @@ svg #temp g * {
 }
 svg #temp g.visible * {
 	fill-opacity:0.6;
+}
+svg #temp circle {
+	stroke-opacity:0;
+	fill:#000000;
+	stroke-width:2;
+	stroke:#ffffff;	
+}
+svg #temp g.visible circle {
+	stroke-opacity:0.5;
 }
 svg #temp text {
 	fill:#ddd;
@@ -630,6 +622,7 @@ svg #indicators.hidden {
 	background: #000;
 	width: 80%;
 	margin:0 auto;
+	
 }
 .algorithm .dragdealer {
 	opacity: 0.1;
@@ -686,8 +679,11 @@ svg #indicators.hidden {
 }
 
 #mainslider {
-	width:200px;
+	width:170px;
 	height: 20px;
+	margin: 0;
+	float: right;
+	display: none;
 }
 #mainslider .bar {
 	width: 16px;
@@ -713,19 +709,29 @@ svg #indicators.hidden {
 	text-align: center;
 }
 
-
+#playSlider {
+	width: 200px;
+	height:40px;
+	margin:0 auto;
+}
+#playSlider #play {
+	width:30px;
+	float:left;
+	margin:0;
+	font-size: 16px;
+}
 #controls {
 	position: fixed;
 	bottom:0;
 	left:0;
 	right:0;
-	height:80px;
+	height:55px;
 	background-color:rgba(0,0,0,0.8);
 	color:#fff;
 	border-top: 1px solid rgba(255,255,255,0.2);
 	text-align: center;
 }
-#controls div {
+#controls > div {
 	margin: 5px auto;
 }
 #controls span {
@@ -738,50 +744,66 @@ svg #indicators.hidden {
 	list-style: none;
 	padding: 0;
 	margin: 0 auto;
-	width:150px;
+	
 	display: block;
-	height: 32px;
+	height: 50px;
+}
+#controls ul#c1 {
+	width: 200px;
+}
+#controls ul#c2 {
+	width: 80px;
 }
 #controls ul li {
 	float: left;
 }
-#controls a {
-	color:#fff;
+#controls ul li a {
+	color:#666;
 	text-decoration: none;
 	float: left;
 	display: block;
-	width:50px;
+	width:40px;
 	font-size: 22px;
 }
-#controls a:hover {
+#controls li.c2 a {
+	font-size: 18px;
+}
+#controls ul li a:hover {
 	color:gold;
 }
-#controls a#play i.icon-play,
-#controls a#play.play i.icon-pause {
+#controls ul#c1 li a i {
+	line-height: 36px;
+}
+#controls ul li a#play i.icon-play,
+#controls ul li a#play.play i.icon-pause {
 	display: inline-block;
+	font-size: 36px;
+	margin-left: -5px;
 }
-#controls a#play.play i.icon-play,
-#controls a#play i.icon-pause {
+#controls ul li a#play.play i.icon-play,
+#controls ul li a#play i.icon-pause {
 	display: none;
 }
-#controls a#play.play span.play,
-#controls a#play span.pause{
+#controls ul li a#play.play span.play,
+#controls ul li a#play span.pause{
 	display: none;
 }
-#controls a#play span.play,
-#controls a#play.play span.pause {
+#controls ul li a#play span.play,
+#controls ul li a#play.play span.pause {
 	display: block;
 }
-#controls a span {
+#controls ul li a span {
 	display: block;
 	font-size: 9px;
 	text-align: center;
 	width: 100%;
 	text-transform: uppercase;
 	color:#666;
+	visibility: hidden;
 }
-#controls a:hover span {
+#controls ul li a:hover span {
 	color:gold;
+	visibility: visible;
 }
 #controls ul.colors {
 	list-style: none;
@@ -800,7 +822,7 @@ svg #indicators.hidden {
 #header ul#layout {
 	list-style: none;
 	float: right;
-	margin: 6px 12px 0 0;
+	margin: 8px 12px 0 0;
 	padding: 0;
 }
 #header ul#layout li {

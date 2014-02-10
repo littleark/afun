@@ -202,12 +202,36 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 				a.start();
 			})
 		}
-		this.pause=function(status){
+			
+		this.isAnimating=function() {
+			var isAnimating=false;
+			d3.values(algoviz).forEach(function(a){
+				isAnimating= a.isAnimating() || isAnimating;
+			});
+			return isAnimating;
+		}
+
+		this.pause=function(status,callback){
 			running= status || 0;
 			//console.log("pause","setting running to",running,"status is",status)
 			d3.values(algoviz).forEach(function(a){
 				a.pause();
-			})
+			});
+			if(callback) {
+
+
+
+				d3.timer(function(_elapsed){
+					var isAnimating=self.isAnimating();
+					//console.log("isAnimating",isAnimating)
+					if(!isAnimating) {
+						callback();
+					}
+					return !isAnimating;
+				})
+
+
+			}
 		}
 		this.nextStep=function(){
 			this.pause();

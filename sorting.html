@@ -3,9 +3,8 @@
 <head>
 	<meta charset="UTF-8">
 	<title>sorting.at</title>
-	<!--<link href='http://fonts.googleapis.com/css?family=Alegreya+Sans:100,300' rel='stylesheet' type='text/css'>-->
-	<link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
-	<link href='http://fonts.googleapis.com/css?family=Exo+2:100,300,400' rel='stylesheet' type='text/css'>
+	<!--<link href='http://fonts.googleapis.com/css?family=Exo+2:100,300,400' rel='stylesheet' type='text/css'>-->
+	<link href='http://fonts.googleapis.com/css?family=Raleway:400,300,200,100' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="css/normalize.css">
 	<link rel="stylesheet" href="css/s.css">
 	<link rel="stylesheet" href="css/afun.css">
@@ -70,10 +69,12 @@
 	</div>
 	<div id="controls">
 		<div>
-			
-			<ul>
+			<ul id="c1">
+				<li class="c2">
+					<a href="#" id="fastback"><i class="icon-fast-backward"></i><span>unsorted</span></a>
+				</li>
 				<li>
-					<a href="#" id="back"><i class="icon-left-open"></i><span>back</span></a>
+					<a href="#" id="back"><i class="icon-left-open"></i><span>backward</span></a>
 				</li>
 				<li>
 					<a href="#" id="play"><i class="icon-play"></i><i class="icon-pause"></i><span class="play">play</span><span class="pause">pause</span></a>
@@ -81,10 +82,20 @@
 				<li>
 					<a href="#" id="forward"><i class="icon-right-open"></i><span>forward</span></a>
 				</li>
+				<li class="c2">
+					<a href="#" id="fastforward"><i class="icon-fast-forward"></i><span>sorted</span></a>
+				</li>
 			</ul>
-			<div id="mainslider" class="dragdealer">
-				<div class="bg-dragdealer"></div>
-				<div class="handle bar"><span class="value"></span></div>
+		
+			<ul id="c2">
+				
+				
+			</ul>
+			<div id="playSlider">
+				<div id="mainslider" class="dragdealer">
+					<div class="bg-dragdealer"></div>
+					<div class="handle bar"><span class="value"></span></div>
+				</div>
 			</div>
 		</div>
 	</div>

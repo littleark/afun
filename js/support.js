@@ -50,7 +50,7 @@ define(
 		function arrayObjectIndexOf(A, searchTerm, property) {
 			//console.log("searching for",property,searchTerm,"in",A)
 		    for(var i = 0, len = A.length; i < len; i++) {
-		        if (A[i][property] === searchTerm) return i;
+		        if (A[i] && (A[i][property] === searchTerm)) return i;
 		    }
 		    return -1;
 		}

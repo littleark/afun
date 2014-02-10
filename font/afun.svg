@@ -6,6 +6,8 @@
 <font id="afun" horiz-adv-x="1000" >
 <font-face font-family="afun" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
 <missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="fast-forward" unicode="&#xe807;" d="m866 374q14-10 14-24t-14-22l-372-248q-22-14-37-6t-15 36l0 482q0 28 15 36t37-6z m-454 0q14-10 14-24t-14-22l-360-248q-20-14-36-6t-16 36l0 482q0 28 16 36t36-6z" horiz-adv-x="880" />
+<glyph glyph-name="fast-backward" unicode="&#xe808;" d="m0 350q0 14 14 24l374 248q20 14 36 6t16-36l0-482q0-28-16-36t-36 6l-374 248q-14 8-14 22z m454 0q0 14 14 24l360 248q20 14 36 6t16-36l0-482q0-28-16-36t-36 6l-360 248q-14 8-14 22z" horiz-adv-x="880" />
 <glyph glyph-name="th-large" unicode="&#xe800;" d="m0-150l0 438l438 0l0-438l-438 0z m0 563l0 437l438 0l0-437l-438 0z m563-563l0 438l437 0l0-438l-437 0z m0 563l0 437l437 0l0-437l-437 0z" horiz-adv-x="1000" />
 <glyph glyph-name="th" unicode="&#xe801;" d="m0-150l0 250l250 0l0-250l-250 0z m0 375l0 250l250 0l0-250l-250 0z m0 375l0 250l250 0l0-250l-250 0z m375-750l0 250l250 0l0-250l-250 0z m0 375l0 250l250 0l0-250l-250 0z m0 375l0 250l250 0l0-250l-250 0z m375-750l0 250l250 0l0-250l-250 0z m0 375l0 250l250 0l0-250l-250 0z m0 375l0 250l250 0l0-250l-250 0z" horiz-adv-x="1000" />
 <glyph glyph-name="left-open" unicode="&#xe805;" d="m0 350l148 149l352 351l148-148l-351-352l351-352l-148-148l-352 352z" horiz-adv-x="648" />

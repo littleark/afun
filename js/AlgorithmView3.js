@@ -43,13 +43,18 @@ define(["./support"],function(support) {
 				items.push(support.cloneArray(items[items.length-1]));
 				substeps.forEach(function(d){
 					items[items.length-1][d.to]=d;//.index;
+					if(items[items.length-1][d.from]['id']==d['id']) {
+						items[items.length-1][d.from]=null;
+					}
 				})
 			})
 			steps=([[]]).concat(steps);
 		}
 		setStatuses();
+
 		console.log("ITEMS",items.length,"STEPS",steps.length);
 		console.log(items)
+
 
 		var xscale=d3.scale.linear().domain([0,items[0].length-1]).range([0,WIDTH-margins.left-margins.right]);
 		
@@ -396,10 +401,14 @@ define(["./support"],function(support) {
 			radius.range([RADIUS.min, Math.ceil(RADIUS.max/factor)]);
 			console.log("items",items)
 			circles
+				//.transition()
+				//.duration(1000)
 				.attr("transform",function(d,i){
 					
+					console.log("----------->",d,i)
+
 					var pos=support.indexOf(items[current_step],d.id,"id"),
-						x=xscale(pos),
+						x=xscale(d.position || pos),
 						y=HEIGHT/2;
 
 					//console.log(i,x,xscale.range(),xscale.domain())
@@ -411,8 +420,25 @@ define(["./support"],function(support) {
 						return radius(d.value);
 					})
 
-			indicator_container.attr("transform","translate("+margins.left+","+(margins.top+(HEIGHT/2))+")");
+			indicator_container
+				.attr("transform","translate("+margins.left+","+(margins.top+(HEIGHT/2))+")");
+			indicator
+				.attr("transform",function(d,i){
+							
+					var x=xscale(d),
+						y=0;
+
+					return "translate("+x+","+y+")";
+				});
+
 			temp_container.attr("transform","translate("+margins.left+","+(margins.top+(HEIGHT/2))+")");
+			temp_indicator
+					.attr("transform",function(d){
+
+						console.log("MOVING TEMP INDICATOR",d,"TO",xscale(d.pos))
+
+						return "translate("+xscale(d.pos)+","+0+")";
+					})
 		}
 
 		
@@ -506,8 +532,7 @@ define(["./support"],function(support) {
 		temp_indicator.append("circle")
 				.attr("cx",0)
 				.attr("cy",0)
-				.attr("r",5)
-				.style("fill","#ffff00");
+				.attr("r",5);
 		
 		temp_indicator.append("text")
 				.attr("x",0)
@@ -532,11 +557,12 @@ define(["./support"],function(support) {
 
 
 			temp_indicator
+				.datum(tmp)
 				.classed("visible",(tmp.pos>-1))
 
 			if(tmp.pos>-1) {
 				temp_indicator
-					.attr("transform","translate("+xscale(tmp.pos)+","+0+")")
+						.attr("transform","translate("+xscale(tmp.pos)+","+0+")")
 			}
 
 			var r=radius(tmp.value);
@@ -672,6 +698,7 @@ define(["./support"],function(support) {
 			circles
 				.data(steps[current_step+back].map(function(d){
 					//return d.index;
+					d.position=d.to;
 					return d;
 				}),function(d){
 					return d.id;
@@ -740,7 +767,7 @@ define(["./support"],function(support) {
 			this.goTo(Math.round((steps.length-1)*p),callback)
 		}
 		this.setSlider=function(p) {
-			//console.log("----->",name,p);
+			console.log("----->",name,p);
 			//this.goTo(slider_scale(p),callback);
 			slider.setStep(p,0);
 			//slider.setValue(Math.round((steps.length-1)*p),0,true);
@@ -801,7 +828,7 @@ define(["./support"],function(support) {
 
 			current_step=n;
 
-			showTemp();
+			
 
 			slideIndicatorGoTo(current_step,function(){
 				self.goTo2(n,callback);
@@ -838,10 +865,11 @@ define(["./support"],function(support) {
 			//animating=true;
 			current_step=n;
 
+			
+
 			//options.step_callback(current_step);
 
 			//if(slider.getStep()[0]-1!=current_step) {
-				//slider.setStep(current_step+1);
 				self.setSlider(current_step+1);
 			//}
 
@@ -860,17 +888,34 @@ define(["./support"],function(support) {
 						return 0;//d3.select(this).node().getTotalLength();
 					})
 			console.log("!!!!!!!!!!!",items,current_step)
+			
 			circles
-				.data(items[current_step],function(d,i){
+				.data(items[current_step].filter(function(d){
+					return d!=null;
+				}),function(d,i){
 					return d.id;
 				})
-				//.classed("memory",false)
+				.classed("memory",false)
 				.transition()
 				.duration(DURATION)
+				/*
 				.attr("transform",function(d,i){
 					var x=xscale(i),
 						y=HEIGHT/2;
 					//console.log("move",d,"to",i)
+					return "translate("+x+","+y+")";
+				})
+				*/
+				.attr("transform",function(d,i){
+					
+					//console.log("----------->",d,i)
+
+					var pos=support.indexOf(items[current_step],d.id,"id"),
+						x=xscale(pos),
+						y=HEIGHT/2;
+
+					//console.log(i,x,xscale.range(),xscale.domain())
+
 					return "translate("+x+","+y+")";
 				})
 				.each("end",function(d,i){
@@ -884,6 +929,9 @@ define(["./support"],function(support) {
 						}
 					}
 				})
+
+			showTemp();
+
 		}
 
 		
@@ -938,7 +986,9 @@ define(["./support"],function(support) {
 		this.getStatus=function() {
 			return status;
 		}
-
+		this.isAnimating=function() {
+			return animating;
+		}
 		this.getName=function() {
 			return name;
 		}

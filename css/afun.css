@@ -50,6 +50,8 @@
   /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
  
+.icon-fast-forward:before { content: '\e807'; } /* '' */
+.icon-fast-backward:before { content: '\e808'; } /* '' */
 .icon-th-large:before { content: '\e800'; } /* '' */
 .icon-th:before { content: '\e801'; } /* '' */
 .icon-left-open:before { content: '\e805'; } /* '' */

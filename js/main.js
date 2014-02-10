@@ -50,7 +50,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		{
 			name:"Quick Sort",
 			file:"QuickSort",
-			active:false
+			active:true
 		},
 		{
 			name:"Quick Sort w/Partition",
@@ -60,7 +60,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		{
 			name:"Heap Sort",
 			file:"HeapSort",
-			active:false
+			active:true
 		},
 		{
 			name:"Merge Sort",
@@ -70,7 +70,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		{
 			name:"Smooth Sort",
 			file:"SmoothSort",
-			active:true
+			active:false
 		},
 		{
 			name:"Radix Sort",
@@ -136,7 +136,8 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 				d.file,
 				//[15,4,23,12,56,2],
 				//[2,0,4,3,1],
-				data[options.items],
+				//data[options.items],
+				[7,6,0,2,1,4,5,8,9,3],
 				options.color
 				
 			);	
@@ -320,6 +321,34 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 			}
 			
 		});
+
+	d3.select("#controls #fastback")
+		.on("click",function(d,i){
+			d3.event.preventDefault();
+
+			sorting.pause(null,function(){
+				sorting.goTo(0);
+			});
+			var running=sorting.getStatus();
+			d3.select("#controls #play").classed("play",running);
+
+			
+			
+		});
+
+	d3.select("#controls #fastforward")
+		.on("click",function(d,i){
+			d3.event.preventDefault();
+
+			sorting.pause(null,function(){
+				sorting.goTo(sorting.getSteps()-1);
+			});
+			var running=sorting.getStatus();
+			d3.select("#controls #play").classed("play",running);
+			
+			
+		});
+
 	d3.selectAll("#layout a.size")
 		.on("click",function(d,i){
 			d3.event.preventDefault();
