@@ -42,16 +42,23 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 		}
 
 		this.removeAlgorithm=function(name) {
-
+			console.log("REMOVE",name)
+			console.log(algoviz)
 			sorting=sorting.filter(function(d){
 				return d.name!=name;
 			})
 			algorithms_container
-				.selectAll("div.algorithm")
+				.selectAll("div.algorithm:not(#add)")
 					.filter(function(d){
 						return d.name==name;
 					})
-					.remove();
+					.transition()
+					.duration(1000)
+					.style("opacity",0)
+						.each("end",function(d){
+							self.detectScrollTop();
+						})
+						.remove();
 			delete(algoviz[name]);
 
 			console.log(sorting,algoviz)
@@ -68,6 +75,8 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 				if(!functions[fn]) {
 					functions[fn]=algorithm["code"]();	
 				}
+				
+
 				data= setData(data||data.options);
 				var algorithms=algorithms_container
 					.selectAll("div.algorithm:not(#add)")
@@ -85,8 +94,8 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 						*/
 
 				var new_algorithms=algorithms.enter()
-							.append("div")
-							//.insert("div","div#add")
+							//.append("div")
+							.insert("div","div#add")
 							.attr("class","algorithm")
 							.attr("id",function(d,i){
 								return d.name;
@@ -112,6 +121,17 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 				
 				//console.log(fn,new_algorithms)
 
+				var close=new_algorithms
+						.append("a")
+							.attr("class","close")
+							.attr("href","#")
+							.attr("title","Remove "+name)
+							.html("<span>remove</span> <i class=\"icon-cancel\"></i>")
+							.on("click",function(d){
+								d3.event.preventDefault();
+								self.removeAlgorithm(d.name);
+							})
+
 				console.log("running:",running)
 				self.pause(running?-1:0);
 				
@@ -122,6 +142,8 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 					console.log("using data",data.length)
 
 					steps[d.name]=functions[d.fn](support.cloneArray(data));
+
+					
 					var items=[];
 					items.push(support.cloneArray(data));
 
@@ -138,6 +160,7 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 							steps:steps[d.name],
 							step:STEP,
 							items:items,
+							items_visible:d3.select("#layout .items").classed("selected"),
 							color:color,
 							//step_callback:function(n) {},
 							sortedCallback:function(){
@@ -273,12 +296,12 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 			return steps;
 		}
 		this.resize=function(s) {
-			SIZE_FACTOR=s;
+			SIZE_FACTOR=support.sizes[s];
 			algorithms_container
 				.classed("size1",false)
 				.classed("size2",false)
 				.classed("size3",false)
-				.classed("size"+SIZE_FACTOR,true);
+				.classed("size"+(s+1),true);
 			
 			d3.values(algoviz).forEach(function(a){
 				a.resize(SIZE_FACTOR);
@@ -309,7 +332,7 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 
 			require(["support"],function(support){
 				algorithms_container
-					.selectAll("div.algorithm")
+					.selectAll("div.algorithm:not(#add)")
 						.filter(function(d){
 							return !name || name==d.name;
 						})
@@ -325,7 +348,7 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 						})
 
 				algorithms_container
-					.selectAll("div.algorithm")
+					.selectAll("div.algorithm:not(#add)")
 						.filter(function(d){
 							return !name || name==d.name;
 						})
@@ -336,6 +359,28 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 						})
 			})
 			
+		};
+		var	body=d3.select("body");
+
+		this.detectScrollTop=function(){
+			
+			//if(is_touch_device)
+			//	return;
+
+			var	top=window.scrollY || window.pageYOffset,
+			   	fixed=body.classed("fixed");
+
+			var position=support.findPos(d3.select("#active_margin").node());
+
+			if(top+innerHeight > position[1]+65) {
+				if(fixed) {
+					body.classed("fixed",false)
+				}
+			} else {
+				if(!fixed) {
+					body.classed("fixed",true)
+				}
+			}
 		}
 	};
 

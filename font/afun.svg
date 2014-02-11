@@ -10,6 +10,7 @@
 <glyph glyph-name="fast-backward" unicode="&#xe808;" d="m0 350q0 14 14 24l374 248q20 14 36 6t16-36l0-482q0-28-16-36t-36 6l-374 248q-14 8-14 22z m454 0q0 14 14 24l360 248q20 14 36 6t16-36l0-482q0-28-16-36t-36 6l-360 248q-14 8-14 22z" horiz-adv-x="880" />
 <glyph glyph-name="th-large" unicode="&#xe800;" d="m0-150l0 438l438 0l0-438l-438 0z m0 563l0 437l438 0l0-437l-438 0z m563-563l0 438l437 0l0-438l-437 0z m0 563l0 437l437 0l0-437l-437 0z" horiz-adv-x="1000" />
 <glyph glyph-name="th" unicode="&#xe801;" d="m0-150l0 250l250 0l0-250l-250 0z m0 375l0 250l250 0l0-250l-250 0z m0 375l0 250l250 0l0-250l-250 0z m375-750l0 250l250 0l0-250l-250 0z m0 375l0 250l250 0l0-250l-250 0z m0 375l0 250l250 0l0-250l-250 0z m375-750l0 250l250 0l0-250l-250 0z m0 375l0 250l250 0l0-250l-250 0z m0 375l0 250l250 0l0-250l-250 0z" horiz-adv-x="1000" />
+<glyph glyph-name="cancel" unicode="&#xe809;" d="m0 71l279 279l-279 279l221 221l279-279l279 279l221-221l-279-279l279-279l-221-221l-279 279l-279-279z" horiz-adv-x="1000" />
 <glyph glyph-name="left-open" unicode="&#xe805;" d="m0 350l148 149l352 351l148-148l-351-352l351-352l-148-148l-352 352z" horiz-adv-x="648" />
 <glyph glyph-name="right-open" unicode="&#xe804;" d="m0-2l352 352l-352 352l148 148l352-351l148-149l-148-148l-352-352z" horiz-adv-x="648" />
 <glyph glyph-name="play" unicode="&#xe802;" d="m0-25l0 750l625-375z" horiz-adv-x="625" />

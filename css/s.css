@@ -2,6 +2,9 @@
     outline: 0;
 }
 
+::-webkit-scrollbar-thumb:vertical { width:10px; height:10px; background-color: #666; }
+::-webkit-scrollbar { width:10px; height:5px; background: #000; margin-right:5px; }
+
 .clearfix:after {
 	content: ".";
 	display: block;
@@ -36,6 +39,15 @@ html {
 }
 body {
 	min-height: 100%;
+
+	scrollbar-base-color: #000;
+	scrollbar-base-color: #666;
+	scrollbar-3dlight-color: #000;
+	scrollbar-highlight-color: #000;
+	scrollbar-track-color: #000;
+	scrollbar-arrow-color: #666;
+	scrollbar-shadow-color: #000;
+	scrollbar-dark-shadow-color: #000;
 }
 #wrapper {
 	width: 960px;
@@ -71,9 +83,15 @@ body {
 	padding: 0;
 	text-rendering: optimizelegibility;
 }
+/**************** CONTENTS *****************/
+#contents {
+
+}
+
 /**************** ALGORITHM ****************/
 #algorithms {
 	width:960px;
+	min-height: 2000px;
 }
 
 
@@ -83,24 +101,58 @@ body {
 	/*border:1px solid #333;*/
 	position: relative;
 	float: left;
-	margin: 20px 0;
+	margin: 10px 5px;
 	border: 1px solid #000;
-	padding: 10px 0 20px;
+	padding: 5px 0;
 }
 #algorithms div.algorithm:hover {
-	border: 1px solid #111;
+	border: 1px solid #666;
 }
 #algorithms.size1 div.algorithm {
-	width: 99%;
+	width: 948px;
+	min-height: 358px;
 }
 #algorithms.size2 div.algorithm {
-	width: 49%;
+	width: 468px;
+	min-height:280px;
 }
 #algorithms.size3 div.algorithm {
-	width: 32%;
+	width: 308px;
+	min-height:203px;
 }
 #algorithms.size5 div.algorithm {
 	width: 20%;
+}
+#algorithms div.algorithm a.close{
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	text-align: right;
+	text-transform: uppercase;
+	font-size: 16px;
+	color: #666;
+	display: block;
+	width: 62px;
+	height: 20px;
+	text-decoration: none;
+	white-space: nowrap;
+	display: none;
+}
+#algorithms div.algorithm a.close span{
+	display: none;
+	font-size: 9px;
+	line-height: 10px;
+	margin-top: 6px;
+	float: left;
+}
+#algorithms div.algorithm a.close:hover{
+	color:gold;
+}
+#algorithms div.algorithm:hover a.close {
+	display: block;
+}
+#algorithms div.algorithm a.close:hover span{
+	display: inline-block;
 }
 #algorithms div.algorithm div.loading {
 	position: absolute;
@@ -146,14 +198,77 @@ body {
 	margin:0 auto;
 }
 /***************** ADD **********************/
-/*
+
 #algorithms div#add.algorithm {
 	font-family: 'Raleway', sans-serif;
 	font-size: 18px;
 	font-weight: 300;
-	border: 1px solid #111;
-	min-height: 166px;
+	border: 1px solid #000;
+	background: #0f0f0f;
+	overflow: hidden;
 }
+#algorithms div#add:hover {
+	border: 1px solid #666;
+	background: #000;
+}
+#algorithms div#add.algorithm a.plus {
+	position: relative;
+
+	display: block;
+	width: 100%;
+	height:100%;
+	min-height: inherit;
+
+	font-family: sans-serif;
+	display: block;
+	margin: 0;
+	text-align: center;
+	text-decoration: none;
+}
+
+
+
+#algorithms div#add a.plus div {
+	position: absolute;
+	width: 100%;
+	margin-top: 15%;
+}
+#algorithms.size2 div#add.algorithm a.plus div{
+	margin-top: 24%;
+}
+#algorithms.size3 div#add.algorithm a.plus div{
+	margin-top: 23%;
+}
+#algorithms div#add.algorithm a.plus span {
+	display: block;
+	margin: 0 auto;
+	width:40px;
+	height: 40px;
+	border: 3px solid #666;
+	-webkit-border-radius: 22px;
+	border-radius: 22px;
+	color:#666;
+	font-size: 20px;
+	text-align: center;
+	line-height: 40px;
+}
+#algorithms div#add:hover a.plus span {
+	color:gold;
+	border: 3px solid gold;
+}
+#add h4 {
+	display: block;
+	visibility: hidden;
+	width: 100%;
+	font-size:1em;
+	text-align: center;
+	color:gold;
+	font-family: 'Raleway', sans-serif;
+	font-weight: 300;
+	text-transform: uppercase;
+	margin: 0;
+}
+/*
 #algorithms div#add.algorithm.collapsed {
 	border: 1px solid #000;
 }
@@ -281,13 +396,13 @@ body {
 }
 */
 /***************** ADD **********************/
-#add {
+#formContainer {
 	font-family: 'Raleway', sans-serif;
 	font-weight: 300;
 	font-size: 1.05em;
 	position: relative;
 }
-#add #form {
+#formContainer #form {
 	overflow: hidden;
 	height: 800px;
 	border: 1px solid #666;
@@ -298,16 +413,16 @@ body {
 	transition: height 500ms;
 	padding:0px;
 }
-#add #form>div {
+#formContainer #form>div {
 	margin:10px;
 	position: relative;
 }
-#add.collapsed #form {
+#formContainer.collapsed #form {
 	height: 0px;
 	border: 1px solid transparent;
 }
-#add h5,
-#add h4 {
+#formContainer h5,
+#formContainer h4 {
 	font-family: inherit;
 	font-size: inherit;
 	font-weight: inherit;
@@ -316,22 +431,22 @@ body {
 	padding: 0;
 	color:gold;
 }
-#add h5 {
+#formContainer h5 {
 	font-size: 1.2em;
 	margin-bottom: 15px;
 	border-bottom: 1px solid #333;
 }
 
-#add a {
+#formContainer a {
 	color:#fff;
 	text-decoration: none;
 }
-#add a:hover {
+#formContainer a:hover {
 	color:gold;
 	text-decoration: none;
 }
 
-#add #form a.close{
+#formContainer #form a.close{
 	position: absolute;
 	top:0px;
 	right:0px;
@@ -339,9 +454,7 @@ body {
 	text-transform: uppercase;
 }
 
-#add a.plus,
-#add.collapsed a.plus,
-#add a.generate {
+a.generate {
 	font-family: sans-serif;
 	display: block;
 	width: 300px;
@@ -351,77 +464,62 @@ body {
 	padding-top: 2px;
 }
 
-#add a.plus {
-	overflow: hidden;
-	height: 0;
-	-webkit-transition: height 500ms linear;
-	-moz-transition: height 500ms linear;
-	-ms-transition: height 500ms linear;
-	-o-transition: height 500ms linear;
-	transition: height 500ms linear;
-}
-#add.collapsed a.plus {
-	height:100px;
-}
-
-#add a.plus h4,
-#add a.generate h4,
-#add a.generate:hover h4 {
+a.generate h4,
+a.generate:hover h4 {
 	display: block;
 	visibility: hidden;
 	width: 100%;
-	font-size:1.2em;
+	font-size:1em;
 	text-align: center;
 	color:gold;
 	font-family: 'Raleway', sans-serif;
 	font-weight: 300;
 }
 
-#add a.generate h4 {
+a.generate h4 {
 	visibility: visible !important;
 	color:#666;
 }
-#add.collapsed a:hover h4 {
+/*#add.collapsed a:hover h4 {*/
+a:hover h4 {
 	visibility: visible !important;
 }
-#add a.plus span,
-#add a.generate span {
+a.generate span {
 	display: block;
 	margin: 5px auto;
-	width:30px;
-	height: 30px;
-	padding:10px;
-	border: 4px solid #333;
-	-webkit-border-radius: 30px;
-	border-radius: 30px;
-	color:#333;
-	font-size: 30px;
+	width:20px;
+	height: 20px;
+	padding:0px;
+	border: 3px solid #666;
+	-webkit-border-radius: 15px;
+	border-radius: 15px;
+	color:#666;
+	font-size: 20px;
 	text-align: center;
-	line-height: 30px;
+	line-height: 20px;
 }
-#add a.generate span i {
+a.generate span i {
 	margin-left:-5px;
 }
-#add.collapsed a.generate {
+.collapsed a.generate {
 	display: none;
 }
-#add a.plus:hover span,
-#add a.generate:hover span {
+a.generate:hover span {
 	color:gold;
-	border: 4px solid gold;
+	border: 3px solid gold;
 }
-#add ul {
+#formContainer ul {
 	list-style: none;
 	margin: 0 auto;
 	padding: 0;
 	width: 100%;
 }
 
-#add ul#algs {
+#formContainer ul#algs {
 	width: 100%;
 	padding: 10px 0;
 }
-#add ul#algs li {
+#formContainer ul#algs li {
 	float: left;
 	width: 19.8%;
 	text-align: center;
@@ -430,7 +528,7 @@ body {
 	margin: 2px 0.1%;
 
 }
-#add ul#algs li a {
+#formContainer ul#algs li a {
 	display: block;
 	text-align:center;
 	border:2px solid #000;
@@ -440,22 +538,22 @@ body {
 	font-size: 12px;
 	color:#f0f0f0;
 }
-#add ul#algs li a:hover {
+#formContainer ul#algs li a:hover {
 	border:2px solid #fff;
 }
-#add ul#algs li a.selected {
+#formContainer ul#algs li a.selected {
 	color:#fff;
 	border:2px solid #fff;
 }
-#add ul#algs li span {
+#formContainer ul#algs li span {
 	width:142px;
 	height:74px;
 	display: block;
 	margin: 0 auto;
 	background: transparent url(../img/charts.png) no-repeat;
 }
-#add ul#colors li,
-#add ul#items li {
+#formContainer ul#colors li,
+#formContainer ul#items li {
 	float:left;
 	margin:0 10px;
 	display: block;
@@ -463,8 +561,8 @@ body {
 	height: 40px;
 	line-height: 30px;
 }
-#add ul#colors li a,
-#add ul#items li a {
+#formContainer ul#colors li a,
+#formContainer ul#items li a {
 	display: block;
 	min-width:36px;
 	height: 36px;
@@ -473,66 +571,66 @@ body {
 	border:2px solid #000;
 	font-size: 1.2em;
 }
-#add ul#colors li a:hover,
-#add ul#items li a:hover {
+#formContainer ul#colors li a:hover,
+#formContainer ul#items li a:hover {
 	border:2px solid #fff;
 }
-#add ul#colors li a.selected,
-#add ul#items li a.selected {
+#formContainer ul#colors li a.selected,
+#formContainer ul#items li a.selected {
 	color:#fff;
 	border:2px solid #fff;
 }
 /***************** ALGS FOR MENU *********************/
 
-#add ul#algs li a.QuickSort span {
+#formContainer ul#algs li a.QuickSort span {
 	background-position: 0 0;
 }
-#add ul#algs li a.QuickSort2 span {
+#formContainer ul#algs li a.QuickSort2 span {
 	background-position: 25% 0;
 }
-#add ul#algs li a.HeapSort span {
+#formContainer ul#algs li a.HeapSort span {
 	background-position: 50% 0;
 }
-#add ul#algs li a.MergeSort span {
+#formContainer ul#algs li a.MergeSort span {
 	background-position: 75% 0;
 }
-#add ul#algs li a.SmoothSort span {
+#formContainer ul#algs li a.SmoothSort span {
 	background-position: 100% 0;
 }
-#add ul#algs li a.RadixSort span {
+#formContainer ul#algs li a.RadixSort span {
 	background-position: 0 50%;
 }
-#add ul#algs li a.ShellSort span {
+#formContainer ul#algs li a.ShellSort span {
 	background-position: 25% 50%;
 }
-#add ul#algs li a.CycleSort span {
+#formContainer ul#algs li a.CycleSort span {
 	background-position: 50% 50%;
 }
-#add ul#algs li a.SelectionSort span {
+#formContainer ul#algs li a.SelectionSort span {
 	background-position: 75% 50%;
 }
-#add ul#algs li a.InsertionSort span {
+#formContainer ul#algs li a.InsertionSort span {
 	background-position: 100% 50%;
 }
-#add ul#algs li a.GnomeSort span {
+#formContainer ul#algs li a.GnomeSort span {
 	background-position: 0 100%;
 }
-#add ul#algs li a.CombSort span {
+#formContainer ul#algs li a.CombSort span {
 	background-position: 25% 100%;
 }
-#add ul#algs li a.BubbleSort span {
+#formContainer ul#algs li a.BubbleSort span {
 	background-position: 50% 100%;
 }
-#add ul#algs li a.CocktailSort span {
+#formContainer ul#algs li a.CocktailSort span {
 	background-position: 75% 100%;
 }
-#add ul#algs li a.OddEvenSort span {
+#formContainer ul#algs li a.OddEvenSort span {
 	background-position: 100% 100%;
 }
 /***************** SVG *********************/
 svg path {
 	stroke-opacity: 0.6;
-	stroke-width: 1.3;
+	stroke-width: 1.5;
 	fill: none;
 	stroke: #ffffff;
 	/*shape-rendering: geometricPrecision;*/
@@ -542,6 +640,8 @@ svg path {
 		stroke-width: 1;
 	}
 }
+
+
 svg .visible path {
 	stroke-opacity:0.6;
 }
@@ -608,128 +708,27 @@ svg #indicators.hidden {
 .hidden #temp {
 	display: none;
 }
-/**
- * Dragdealer.js 0.9.6
- * http://github.com/skidding/dragdealer
- *
- * (c) 2010+ Ovidiu Cherecheș
- * http://skidding.mit-license.org
- */
 
-.dragdealer {
-	position: relative;
-	height: 16px;
-	background: #000;
-	width: 80%;
-	margin:0 auto;
-	
+.fixed #active_margin {
+	height: 65px;
 }
-.algorithm .dragdealer {
-	opacity: 0.1;
-	-webkit-transition: opacity 500ms linear;
-	-moz-transition: opacity 500ms linear;
-	-ms-transition: opacity 500ms linear;
-	-o-transition: opacity 500ms linear;
-	transition: opacity 500ms linear;
-}
-.algorithm:hover .dragdealer {
-	opacity: 0.8;
-}
-.dragdealer .bg-dragdealer {
-	position: absolute;
-	top:8px;
-	width: 100%;
-	height:1px;
-	background: #f0f0f0;
-}
-.dragdealer .handle {
-	position: absolute;
-	top: 0;
-	left: 0;
-	cursor: pointer;
-}
-.dragdealer .bar {
-	width: 12px;
-	height: 12px;
-
-	background: #CC0000;
-	color: #FFF;
-	font-size: 14px;
-	line-height: 30px;
-	text-align: center;
-
-	-webkit-border-radius: 16px;
-	-moz-border-radius: 16px;
-	border-radius: 16px;
-	background-color:#000;
-	border:2px solid #f0f0f0;
-}
-
-.dragdealer .disabled {
-	background: #898989;
-}
-.dragdealer .handle span {
-	position: absolute;
-	font-size: 11px;
-	text-transform: uppercase;
-	top: 8px;
-	left: -29px;
-	width: 70px;
-	text-align: center;
-}
-
-#mainslider {
-	width:170px;
-	height: 20px;
-	margin: 0;
-	float: right;
-	display: none;
-}
-#mainslider .bar {
-	width: 16px;
-	height: 16px;
-	-webkit-border-radius: 20px;
-	-moz-border-radius: 20px;
-	border-radius: 20px;
-}
-#mainslider .bg-dragdealer {
-	position: absolute;
-	top:10px;
-	width: 100%;
-	height:1px;
-	background: #f0f0f0;
-}
-#mainslider .handle span {
-	position: absolute;
-	font-size: 9px;
-	text-transform: uppercase;
-	top:10px;
-	left:-25px;
-	width: 70px;
-	text-align: center;
-}
-
-#playSlider {
-	width: 200px;
-	height:40px;
-	margin:0 auto;
-}
-#playSlider #play {
-	width:30px;
-	float:left;
-	margin:0;
-	font-size: 16px;
+#active_margin {
+	height: 0px;
+	background-color: transparent;
 }
 #controls {
-	position: fixed;
-	bottom:0;
+	position: relative;
+	width:100%;
 	left:0;
-	right:0;
-	height:55px;
-	background-color:rgba(0,0,0,0.8);
+	right: 0;
+	bottom: 0;
+	height:60px;
+	background-color:rgba(0,0,0,0.7);
 	color:#fff;
-	border-top: 1px solid rgba(255,255,255,0.2);
 	text-align: center;
+}
+.fixed #controls {
+	position: fixed;
 }
 #controls > div {
 	margin: 5px auto;
@@ -871,12 +870,13 @@ svg #indicators.hidden {
 #header ul#layout li.sep span{
 	border-left:1px solid #666;
 }
-#header ul#layout li a.items {
+#header ul#layout li a.items.selected {
 	font-size: 21px;
 	line-height: 18px;
-	color:#666;
+	color:gold;
 }
-#header ul#layout li a.items.selected {
+#header ul#layout li a.items {
 	line-height: 17px;
 	font-weight: bold;
+	color:#666;
 }

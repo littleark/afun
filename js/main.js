@@ -60,7 +60,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		{
 			name:"Heap Sort",
 			file:"HeapSort",
-			active:true
+			active:false
 		},
 		{
 			name:"Merge Sort",
@@ -130,19 +130,14 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		items:10
 	};
 
-	algorithms.forEach(function(d){
-		if(d.active)
-			sorting.addAlgorithm(
-				d.file,
-				//[15,4,23,12,56,2],
-				//[2,0,4,3,1],
-				//data[options.items],
-				[7,6,0,2,1,4,5,8,9,3],
-				options.color
-				
-			);	
-	})
 	
+	
+	
+
+
+	sorting.detectScrollTop();
+	d3.select("#algorithms").style("min-height",(window.innerHeight-25+100)+"px")
+	d3.select(window).on("scroll",sorting.detectScrollTop);
 
 	function scrollTween(offset) {
 	  return function() {
@@ -160,11 +155,12 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 
 	d3.select("#add a.plus").on("click",function(){
 		d3.event.preventDefault();
-		d3.select("#add").classed("collapsed",!d3.select("#add").classed("collapsed"))
+		//d3.select("#formContainer").classed("collapsed",!d3.select("#formContainer").classed("collapsed"))
+		d3.select("#formContainer").classed("collapsed",false);
 
 		//return;
 		
-		var position=support.findPos(d3.select("#add").node());
+		var position=support.findPos(d3.select("#formContainer").node());
 
 		
 		d3.transition()
@@ -177,9 +173,17 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		
 		
 	});
-	d3.select("#add a.close").on("click",function(){
+	d3.select("#formContainer a.close").on("click",function(){
 		d3.event.preventDefault();
-		d3.select("#add").classed("collapsed",!d3.select("#add").classed("collapsed"))
+		d3.select("#formContainer").classed("collapsed",!d3.select("#formContainer").classed("collapsed"))
+
+		d3.transition()
+		    .duration(1000)
+		    .tween(
+		        "scroll",
+		        scrollTween(0)
+		    );
+
 	})	
 
 	d3.select("ul#algs").selectAll("li")
@@ -202,14 +206,14 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 
 					console.log(d);
 
-					d3.selectAll("#add ul#algs li a").classed("selected",false);
+					d3.selectAll("#formContainer ul#algs li a").classed("selected",false);
 					d3.select(this).classed("selected",true)
 
 					options.algorithm=d.file;
 				})
 				.append("span")
 
-	d3.select("#add ul#colors").selectAll("li")
+	d3.select("#formContainer ul#colors").selectAll("li")
 		.data(d3.entries(support.colors))
 		.enter()
 		.append("li")
@@ -229,13 +233,13 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 
 					console.log(d);
 					
-					d3.selectAll("#add ul#colors li a").classed("selected",false);
+					d3.selectAll("#formContainer ul#colors li a").classed("selected",false);
 					d3.select(this).classed("selected",true)
 
 					options.color=d.key;
 				});
 
-	d3.select("#add ul#items").selectAll("li")
+	d3.select("#formContainer ul#items").selectAll("li")
 		.data(support.items)
 		.enter()
 		.append("li")
@@ -255,13 +259,13 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 
 					console.log(d,this,this.parentNode);
 
-					d3.selectAll("#add ul#items li a").classed("selected",false);
+					d3.selectAll("#formContainer ul#items li a").classed("selected",false);
 					d3.select(this).classed("selected",true);
 
 					options.items=d;
 				});
 
-	d3.select("#add .generate")
+	d3.select("#formContainer .generate")
 		.on("click",function(d,i){
 			d3.event.preventDefault();
 
@@ -353,43 +357,32 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		.on("click",function(d,i){
 			d3.event.preventDefault();
 
-			d3.selectAll("#layout a").classed("selected",function(l,j){
+			d3.selectAll("#layout a.size").classed("selected",function(l,j){
 				return i==j;
 			});
 			
-			sorting.resize(support.sizes[i]);
+			sorting.resize(i);
 			
 		});
 	d3.select("#layout a.items")
 		.on("click",function(d,i){
 			d3.event.preventDefault();
 
-			sorting.toggleItems();
 			d3.select(this).classed("selected",!d3.select(this).classed("selected"));
+			sorting.toggleItems();
+			
 		});
 
-	var to=null;
-	var slider=new Dragdealer("mainslider",{
-			snap:true,
-			steps:5,
-			x:1,
-			callback:function(x,y) {
-				if(to){
-					clearTimeout(to);
-					to=null;
-				}
-				sorting.pause();
-				var running=sorting.getStatus();
-				d3.select("#controls #play").classed("play",running);
-				var dd=this;
-				(function(s){
-					to=setTimeout(function(){
-						sorting.goTo(dd.getValue()[0]);
-					},200);
-				}());
-			},
-			animationCallback: function(x, y) {
-		    	d3.select("#mainslider").select('.value').text((x*100)+"%");;
-		  	}
-		});
+	algorithms.forEach(function(d){
+		if(d.active)
+			sorting.addAlgorithm(
+				d.file,
+				//[15,4,23,12,56,2],
+				//[2,0,4,3,1],
+				data[options.items],
+				//[7,6,0,2,1,4,5,8,9,3],
+				options.color
+				
+			);	
+	})
 });

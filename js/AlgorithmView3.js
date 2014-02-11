@@ -1,6 +1,35 @@
 define(["./support"],function(support) {
 	
-	
+	function DistanceChart(items) {
+
+		var goal=items[items.length-1].map(function(d){
+			if(typeof d.index != 'undefined') {
+				d.value=d.index;
+			}
+			return d;
+		});
+		//console.log("GOAL",goal)
+		var steps=[];
+
+		items.forEach(function(d,i){
+			steps[i]=0;
+			d.forEach(function(item,index){
+				if(item) {
+					//console.log(item)
+					var value=item.value || item.index;
+					//console.log(value,"==",goal[index].value)
+					if(value==goal[index].value) {
+						steps[i]++;
+						//console.log("OK")
+					}
+				}
+				
+			})
+		});
+
+		console.log("DISTANCE STEPS",steps)
+
+	}
 
 	function AlgorithmView(options){
 
@@ -17,8 +46,8 @@ define(["./support"],function(support) {
 		};
 
 		var margins={
-			left:RADIUS.max/options.size_factor,
-			right:RADIUS.max/options.size_factor,
+			left:Math.ceil(RADIUS.max/options.size_factor+RADIUS.max/2),
+			right:Math.ceil(RADIUS.max/options.size_factor+RADIUS.max/2),
 			top:0,
 			bottom:0
 		};
@@ -52,6 +81,8 @@ define(["./support"],function(support) {
 		}
 		setStatuses();
 
+		//var distanceChart=new DistanceChart(items);
+
 		console.log("ITEMS",items.length,"STEPS",steps.length);
 		console.log(items)
 
@@ -63,10 +94,11 @@ define(["./support"],function(support) {
 		var	code=options.code,
 			container=options.container;
 
-
+		//alert(options.items_visible)
 
 		var div=d3.select(container)
 					.attr("class","algorithm")
+					.classed("hidden",!options.items_visible)
 					.append("div")
 						.style("width",WIDTH+"px");
 		var svg=div
@@ -80,53 +112,6 @@ define(["./support"],function(support) {
 				.attr("class","loading");
 
 		var to=null;
-
-		var slider_scale=d3.scale.linear().domain([0,100]).rangeRound([0,steps.length-1]);
-		var slider_container=div
-			.append("div")
-				.attr("id","slider_"+options.name)
-				.attr("class","dragdealer");
-
-		slider_container
-				.append("div")
-					.attr("class","bg-dragdealer");
-
-		slider_container
-				.append("div")
-					.attr("class","handle bar")
-						.append("span")
-						.attr("class","value")
-							.text("drag me");
-
-		var slider=new Dragdealer("slider_"+options.name,{
-			steps:steps.length,
-			snap:true,
-			x:(steps.length/current_step),
-			callback:function(x,y) {
-				if(to){
-					clearTimeout(to);
-					to=null;
-				}
-				var dd=this;
-				(function(s){
-					to=setTimeout(function(){
-						//console.log(steps.length-1,dragdealer.getStep()[0]-1);
-						var step=Math.round(dd.getStep()[0]-1);
-						//console.log("!!!!!",name,current_step,step)
-						var delta=Math.abs(current_step-step);
-						if(delta>0) {
-							self[delta===1?"show":"goTo"](step)
-							//self.goTo(step);
-							return;
-						}
-					},200);
-				}());
-			},
-			animationCallback: function(x, y) {
-		    	slider_container.select('.value').text(Math.round(this.getStep()[0]-1));
-		  	}
-		});
-
 
 		var circles_container=svg.append("g")
 							.attr("id","circles")
@@ -323,7 +308,7 @@ define(["./support"],function(support) {
 			color.domain(value_extents);
 			//color.domain([0, max_value]);
 
-			slider.setSteps(steps.length);
+			//slider.setSteps(steps.length);
 
 			updateCircles();
 			updateTraces();
@@ -361,7 +346,7 @@ define(["./support"],function(support) {
 				.select("div")
 					.style("width",WIDTH+"px")
 
-			slider.reflow();
+			//slider.reflow();
 
 			svg
 				.attr("width",WIDTH)
@@ -738,7 +723,7 @@ define(["./support"],function(support) {
 						//options.step_callback(current_step);
 						
 						//slider.setStep(current_step+1);
-						self.setSlider(current_step+1);
+						//self.setSlider(current_step+1);
 
 						animating=false;
 
@@ -766,12 +751,12 @@ define(["./support"],function(support) {
 			//this.goTo(slider_scale(p),callback);
 			this.goTo(Math.round((steps.length-1)*p),callback)
 		}
+		/*
 		this.setSlider=function(p) {
 			console.log("----->",name,p);
-			//this.goTo(slider_scale(p),callback);
 			slider.setStep(p,0);
-			//slider.setValue(Math.round((steps.length-1)*p),0,true);
 		}
+		*/
 		this.toggleItems=function() {
 			d3.select(container).classed("hidden",!d3.select(container).classed("hidden"));
 		}
@@ -870,7 +855,7 @@ define(["./support"],function(support) {
 			//options.step_callback(current_step);
 
 			//if(slider.getStep()[0]-1!=current_step) {
-				self.setSlider(current_step+1);
+				//self.setSlider(current_step+1);
 			//}
 
 			traces
