@@ -1,6 +1,8 @@
 define(["./support"],function(support) {
 	
-	function DistanceChart(items) {
+	function DistanceChart(items,options) {
+
+		var container=options.container;
 
 		var goal=items[items.length-1].map(function(d){
 			if(typeof d.index != 'undefined') {
@@ -29,6 +31,158 @@ define(["./support"],function(support) {
 
 		console.log("DISTANCE STEPS",steps)
 
+		console.log(options)
+
+		var xscale=d3.scale.linear().domain([0,steps.length-1]).rangeRound([0,options.width-options.margins.left-options.margins.right]),
+			yscale=d3.scale.linear().domain([0,d3.max(steps)]).range([0,50])
+
+		var svg=container.append("div")
+					.attr("class","distance-chart")
+					.classed("over",steps.length>options.width/2)
+					.append("svg")
+						.attr("width",options.width)
+						.attr("height",80);
+
+		var chart=svg.append("g")
+						.attr("transform","translate("+options.margins.left+",60)")
+
+		
+		var bars=chart.selectAll("g.bar")
+				.data(steps)
+				.enter()
+				.append("g")
+					.attr("class","bar")
+					.classed("last",function(d,i){
+						return i==steps.length-1;
+					})
+					.classed("first",function(d,i){
+						return i===0;
+					})
+					.attr("transform",function(d,i){
+						return "translate("+xscale(i)+","+(-yscale(d))+")";
+					});
+		
+		/*bars.append("rect")
+				.attr("x",0)
+				.attr("y",0)
+				.attr("width",1)
+				.attr("height",function(d){
+					return yscale(d);
+				})*/
+		bars.append("line")
+				.attr("x0",0)
+				.attr("y0",0)
+				.attr("x1",0)
+				.attr("y1",function(d){
+					return yscale(d);
+				})
+		/*bars.append("circle")
+				.attr("cx",0)
+				.attr("cy",0)
+				.attr("r",1)
+		*/
+		var line = d3.svg.line()
+			    .x(function(d,i) { return xscale(i); })
+			    .y(function(d,i) { return -yscale(d); })
+			    //.interpolate("basis");
+		var area=d3.svg.area()
+				.x(function(d,i) { return xscale(i); })
+			    .y0(function(d,i){return 0;})
+			    .y1(function(d,i) { return -yscale(d); })
+
+		chart
+			.append("path")
+			.attr("class","line")
+			.attr("d",area(steps))
+		
+
+		var xAxis = d3.svg.axis()
+					    .scale(xscale)
+					    .orient("bottom")
+					    .tickFormat(d3.format(",.0f"));
+
+		var xaxis=chart.append("g")
+			    .attr("class", "xaxis")
+			    .attr("transform", "translate(0," + 0 + ")");
+
+			    
+
+		xaxis
+			.call(xAxis)
+			.selectAll(".tick")
+		    .filter(function(d){
+		    	return d % 1 !== 0;
+		    })
+		    	.remove();
+		    	//.classed("minor", true);
+
+		var current=xaxis.append("g")
+				.attr("class","current")
+				.attr("transform", "translate(0," + 0 + ")");
+
+		current
+			.append("line")
+				.attr("x0",0)
+				.attr("x1",0)
+				.attr("y0",0)
+				.attr("y1",6);
+
+		current
+			.append("text")
+			.attr("y",16)
+
+
+		this.resize=function(__options) {
+
+			options.width=__options.width;
+
+			svg.attr("width",options.width);
+
+			xscale.rangeRound([0,options.width-options.margins.left-options.margins.right]);
+
+			bars.attr("transform",function(d,i){
+				return "translate("+xscale(i)+","+(-yscale(d))+")";
+			});
+			
+			chart.select("path.line")
+				.attr("d",area(steps))
+			
+			xaxis
+				.call(xAxis)
+					.selectAll(".tick")
+				    .filter(function(d){
+				    	return d % 1 !== 0;
+				    })
+				    	.remove();
+		};
+
+		this.highlightStep=function(n) {
+			
+			chart.selectAll("g.bar.highlight")
+				.classed("highlight",false);
+			bars
+				.classed("highlight",function(d,i){
+					return i==n;
+				})
+			
+			xaxis
+				.selectAll(".tick.highlight")
+				.classed("highlight",false);
+			xaxis
+				.selectAll(".tick")
+				.classed("highlight",function(d){
+					return d==n;
+				})
+			
+			current
+				.attr("transform", "translate("+xscale(n)+"," + 0 + ")");
+			current
+				.select("text")
+				.text(d3.format(",.0f")(n))
+
+		}
+
+		this.highlightStep(0);
 	}
 
 	function AlgorithmView(options){
@@ -57,6 +211,8 @@ define(["./support"],function(support) {
 		var animating=false;
 		var status=0;
 
+		
+
 		var steps=options.steps || [],
 			current_steps=0,
 			current_step=Math.round((steps.length)*options.step);
@@ -73,15 +229,13 @@ define(["./support"],function(support) {
 				substeps.forEach(function(d){
 					items[items.length-1][d.to]=d;//.index;
 					if(items[items.length-1][d.from]['id']==d['id']) {
-						items[items.length-1][d.from]=null;
+						//items[items.length-1][d.from]=null;
 					}
 				})
 			})
 			steps=([[]]).concat(steps);
 		}
 		setStatuses();
-
-		//var distanceChart=new DistanceChart(items);
 
 		console.log("ITEMS",items.length,"STEPS",steps.length);
 		console.log(items)
@@ -94,13 +248,16 @@ define(["./support"],function(support) {
 		var	code=options.code,
 			container=options.container;
 
-		//alert(options.items_visible)
+		
 
 		var div=d3.select(container)
 					.attr("class","algorithm")
 					.classed("hidden",!options.items_visible)
 					.append("div")
 						.style("width",WIDTH+"px");
+
+		
+
 		var svg=div
 				.append("svg")
 					.attr("width",WIDTH)
@@ -110,6 +267,12 @@ define(["./support"],function(support) {
 		var loading=div
 				.append("div")
 				.attr("class","loading");
+
+		var distanceChart=new DistanceChart(items,{
+			container:div,
+			width:WIDTH,
+			margins:margins
+		});
 
 		var to=null;
 
@@ -348,6 +511,10 @@ define(["./support"],function(support) {
 
 			//slider.reflow();
 
+			distanceChart.resize({
+				width:WIDTH
+			})
+
 			svg
 				.attr("width",WIDTH)
 				.attr("height",HEIGHT)
@@ -427,10 +594,10 @@ define(["./support"],function(support) {
 		}
 
 		
-
+		//console.log("MERDA",steps)
 		var indicator=indicator_container
 							.selectAll("g.indicator")
-							.data(steps[1][0].cmp.index[0],function(d,i){
+							.data(steps.length>1?steps[1][0].cmp.index[0]:[{}],function(d,i){
 								return i;
 							})
 							.enter()
@@ -479,32 +646,32 @@ define(["./support"],function(support) {
 				index=indexes.length-1;
 			}
 
-			try {
-				indicator
-					.data(indexes[index],function(d,i){
-						return i;
-					})
-					.transition()
-					.duration(DURATION/2)
-					.attr("transform",function(d,i){
-						//console.log("index",index,"element",i,"go to",d)
-						var x=xscale(d),
-							y=0;
-						return "translate("+x+","+y+")";
-					})
-					.each("end",function(d,i){
-						if(i==indexes[index].length-1) {
-							index++;
-							if(index<indexes.length) {
-								slideIndicator(index,animate,back);
-							} else {
-								self.swap(current_step,animate,back);
-							}	
-						}
-					});
-			} catch(e){
-				console.error("slideIndicator",e)
-			}
+			
+			indicator
+				.data(indexes[index],function(d,i){
+					return i;
+				})
+				.classed("visible",function(d){
+					return d>-1;
+				})
+				.transition()
+				.duration(DURATION/2)
+				.attr("transform",function(d,i){
+					//console.log("index",index,"element",i,"go to",d)
+					var x=xscale(d),
+						y=0;
+					return "translate("+x+","+y+")";
+				})
+				.each("end",function(d,i){
+					if(i==indexes[index].length-1) {
+						index++;
+						if(index<indexes.length) {
+							slideIndicator(index,animate,back);
+						} else {
+							self.swap(current_step,animate,back);
+						}	
+					}
+				});
 			
 		}
 
@@ -570,12 +737,13 @@ define(["./support"],function(support) {
 			if(tmp.pos>-1) {
 				circles
 					.filter(function(d){
-						
-						return d.value==tmp.value || d.index==tmp.value;
+						//console.log("MEMORYYYYYYYY",d,tmp)
+						return d.id==tmp.id;
+						//return d.value==tmp.value || d.index==tmp.value;
 					})
 					.attr("transform","translate("+xscale(tmp.pos)+","+(HEIGHT/2)+")")
 					.classed("memory",function(d){
-						console.log("-------->",d,tmp.value)
+						//console.log("-------->",d,tmp.value)
 						return true;
 					})
 					
@@ -602,7 +770,9 @@ define(["./support"],function(support) {
 			}
 
 			
+			
 			if(n+back<=0 || n>steps.length-1){
+
 				if(n>steps.length-1 && animate) {
 					if(options.sortedCallback) {
 						options.sortedCallback();
@@ -614,6 +784,7 @@ define(["./support"],function(support) {
 			animating=true;
 			current_step=n;
 
+			
 			//console.log("CURRENT STEP",current_step,steps[current_step])
 
 			
@@ -728,6 +899,8 @@ define(["./support"],function(support) {
 						animating=false;
 
 						indicator_container.classed("hidden",current_step==steps.length-1);
+						
+						distanceChart.highlightStep(current_step);
 
 						if(i==steps[current_step+back].length-1 && animate) {
 							//console.log("----")
@@ -776,6 +949,9 @@ define(["./support"],function(support) {
 				.data(indexes[indexes.length-1],function(d,i){
 					return i;
 				})
+				.classed("visible",function(d){
+					return d>-1;
+				})
 				.transition()
 				.duration(DURATION/2)
 				.attr("transform",function(d,i){
@@ -806,6 +982,7 @@ define(["./support"],function(support) {
 			if(n<0){
 				n=0;
 			}
+
 			if(n>steps.length-1){
 				console.log(n,">",steps.length-1)
 				n=steps.length-1;
@@ -830,6 +1007,8 @@ define(["./support"],function(support) {
 				n=steps.length-1;
 			}
 
+
+
 			if((current_step==0 && n<0)||(current_step==steps.length-1 && n>steps.length-1)) {
 				return;
 			}
@@ -849,6 +1028,8 @@ define(["./support"],function(support) {
 
 			//animating=true;
 			current_step=n;
+
+
 
 			
 
@@ -907,6 +1088,8 @@ define(["./support"],function(support) {
 					if(i==items[current_step].length-1) {
 						//animating=false;
 
+						distanceChart.highlightStep(current_step);
+
 						indicator_container.classed("hidden",current_step==steps.length-1);
 
 						if(callback) {
@@ -949,8 +1132,15 @@ define(["./support"],function(support) {
 
 		this.start=function() {
 			
+			if(steps.length===1) {
+				status=0;
+				options.sortedCallback();
+				return;
+			}
+
 			if(!status) {
 				status=1;
+				 
 				if(current_step==steps.length-1) {
 					this.goTo(0,function(){
 						self.pause();
@@ -966,7 +1156,7 @@ define(["./support"],function(support) {
 		}
 		this.pause=function() {
 			if(status)
-				status=0;
+				status=0; //status=0 means it's not playing
 		}
 		this.getStatus=function() {
 			return status;

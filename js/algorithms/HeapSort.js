@@ -77,7 +77,8 @@ define(["../support"], function(support) {
 			        	steps.push([]);
 			        	addStep(steps,list[j],j,i,comparisons[comparisons.length-1],{
 			        		value:temp.value,
-			        		pos:temp_i
+			        		pos:temp_i,
+			        		id:temp.id
 			        	});
 			            list[i] = list[j];
 			            i = j;

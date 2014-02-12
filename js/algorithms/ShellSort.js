@@ -48,7 +48,8 @@ define(["../support"], function(support) {
 			            	index=[];
 			            	addStep(steps,nums[j - h],j-h,j,comparisons[comparisons.length-1],{
 			            		value:c.value,
-				        		pos:i
+				        		pos:i,
+				        		id:c.id
 			            	})
 
 
@@ -89,7 +90,7 @@ define(["../support"], function(support) {
 					return d.length>0;
 				}))
 				console.log("COMPARISONS",(comparisons))
-				console.log("COMPLEXITY",comparisons[comparisons.length-1],steps[steps.length-1][0].cmp)
+				//console.log("COMPLEXITY",comparisons[comparisons.length-1],steps[steps.length-1][0].cmp)
 
 				return steps;
 			}

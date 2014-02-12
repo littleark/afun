@@ -35,8 +35,8 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		//data:shuffle([0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9])
 		//data:shuffle([0,1,2,3,3,4,5,1,1,1,1,1,1,1,2,2,2,2,3,3,3])
 		//data:shuffle(d3.range(10))
-		//data:[0,1,2,3,4]
-		data:data[10]
+		data:[1,1,1,1,1,1,1,1]
+		//data:data[10]
 	});
 
 	
@@ -80,7 +80,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		{
 			name:"Shell Sort",
 			file:"ShellSort",
-			active:false
+			active:true
 		},
 		{
 			name:"Cycle Sort",
@@ -138,6 +138,9 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 	sorting.detectScrollTop();
 	d3.select("#algorithms").style("min-height",(window.innerHeight-25+100)+"px")
 	d3.select(window).on("scroll",sorting.detectScrollTop);
+	d3.select(window).on("resize",function(){
+		d3.select("#algorithms").style("min-height",(window.innerHeight-25+100)+"px")
+	});
 
 	function scrollTween(offset) {
 	  return function() {
@@ -289,7 +292,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 
 	document.addEventListener('paused', function start(e) {
 		var running=sorting.getStatus();
-		d3.select("#controls #play").classed("play",!running);
+		d3.select("#controls #play").classed("play",running);
 		sorting.pause();
 	});
 	d3.select("#controls #back")
@@ -379,6 +382,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 				d.file,
 				//[15,4,23,12,56,2],
 				//[2,0,4,3,1],
+				//[1,1,1,1,1,1,1,1],
 				data[options.items],
 				//[7,6,0,2,1,4,5,8,9,3],
 				options.color

@@ -23,12 +23,9 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 		
 		var running=0;
 
-		var functions={
-			/*"quicksort":QuickSort(),
-			"mergesort":MergeSort(),
-			"smoothsort":SmoothSort(),
-			"heapsort":HeapSort()*/
-		}
+		var evt = new CustomEvent("paused");
+
+		var functions={}
 
 		function setData(data) {
 			
@@ -65,7 +62,7 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 		}
 
 		this.addAlgorithm=function(fn,data,color,callback) {
-			
+			//data=[1,2,0,22,1,2,4,35,1,2,0,1]
 			require(["algorithms/"+fn,"support"], function(algorithm,support) {
 				
 				sorting.push({
@@ -147,7 +144,7 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 					var items=[];
 					items.push(support.cloneArray(data));
 
-					var self=this;
+					//var self=this;
 					algoviz[d.name]=
 
 					//algoviz.push(
@@ -158,14 +155,17 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 							height:HEIGHT,
 							size_factor:SIZE_FACTOR,
 							steps:steps[d.name],
-							step:STEP,
+							step:1,
 							items:items,
 							items_visible:d3.select("#layout .items").classed("selected"),
 							color:color,
 							//step_callback:function(n) {},
 							sortedCallback:function(){
+								console.log("CHECKING ALL SORTED",allSorted())
 								if (allSorted()) {
-									var evt = new CustomEvent("paused");
+									
+									//self.pause();
+									running=0;									
 									document.dispatchEvent(evt);
 								}
 							},
@@ -218,12 +218,18 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 			console.log("------------->",running)
 			if(running>0)
 				return;
-			running=1;
-			console.log("start","setting running to",running)
-			d3.values(algoviz).forEach(function(a,i){
-				console.log("starting",i,a.getName())
-				a.start();
-			})
+			//if(!allSorted()) {
+				running=1;
+				console.log("start","setting running to",running)
+				d3.values(algoviz).forEach(function(a,i){
+					console.log("starting",i,a.getName())
+					a.start();
+				})
+			//} else {
+			//	running=0;
+			//	document.dispatchEvent(evt);
+			//}
+			
 		}
 			
 		this.isAnimating=function() {

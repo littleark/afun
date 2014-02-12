@@ -73,10 +73,10 @@ define(["../support"], function(support) {
 			            	
 			            	//delete a[k].tmp;
 			            	
-				        	
 			                addStep(steps,a[k],k,k+1,comparisons[comparisons.length-1],{
 			                	value:temp.value,
-				        		pos:start_hi
+				        		pos:start_hi,
+				        		id:temp.id				        	
 			                })
 			                a[k + 1] = a[k];
 

@@ -213,7 +213,8 @@ define(["../support"], function(support) {
 					steps.push([]);
 					addStep(steps,mrt,m.indexOf(mrt),head,comparisons[comparisons.length-1],{
 						value:val.value,
-						pos:val_old_pos
+						pos:val_old_pos,
+						id:val.id
 					});
 
 					m[head] = mrt;

@@ -52,8 +52,7 @@ define(["../support"], function(support) {
 			            swap(steps,array,l,start,comparisons[comparisons.length-1]);
 			            l--;
 			            index.push([l,start,r]);
-			        }
-			        else{
+			        } else{
 			            l--;
 			            index.push([l,start,r]);
 			            comparisons.push({

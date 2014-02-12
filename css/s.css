@@ -464,42 +464,36 @@ a.generate {
 	padding-top: 2px;
 }
 
-a.generate h4,
-a.generate:hover h4 {
+#formContainer #form a.generate h4 {
 	display: block;
-	visibility: hidden;
 	width: 100%;
-	font-size:1em;
+	font-size: 1em;
 	text-align: center;
-	color:gold;
+	color: #fff;
 	font-family: 'Raleway', sans-serif;
 	font-weight: 300;
+	text-transform: uppercase;
+	margin: 0;
 }
-
-a.generate h4 {
-	visibility: visible !important;
-	color:#666;
-}
-/*#add.collapsed a:hover h4 {*/
-a:hover h4 {
-	visibility: visible !important;
+#formContainer #form a.generate:hover h4 {
+	color:gold;
 }
 a.generate span {
 	display: block;
 	margin: 5px auto;
-	width:20px;
-	height: 20px;
-	padding:0px;
-	border: 3px solid #666;
-	-webkit-border-radius: 15px;
-	border-radius: 15px;
-	color:#666;
-	font-size: 20px;
+	width: 40px;
+	height: 40px;
+	padding: 0px;
+	border: 3px solid #fff;
+	-webkit-border-radius: 22px;
+	border-radius: 22px;
+	color: #fff;
+	font-size: 28px;
 	text-align: center;
-	line-height: 20px;
+	line-height: 40px;
 }
 a.generate span i {
-	margin-left:-5px;
+	
 }
 .collapsed a.generate {
 	display: none;
@@ -703,6 +697,16 @@ svg #temp text {
 svg #indicators.hidden {
 	fill-opacity:0;
 }
+
+svg #indicators g.indicator path,
+svg #indicators.hidden g.indicator.visible path {
+	fill-opacity:0;
+}
+
+svg #indicators g.indicator.visible path {
+	fill-opacity:1;
+}
+
 .hidden #circles,
 .hidden #indicators,
 .hidden #temp {
@@ -879,4 +883,75 @@ svg #indicators.hidden {
 	line-height: 17px;
 	font-weight: bold;
 	color:#666;
+}
+
+.distance-chart {
+
+}
+
+.distance-chart svg {
+
+}
+
+.distance-chart svg .bar {
+
+}
+
+.distance-chart svg .bar rect {
+	fill:#666;
+	stroke:none;
+	shape-rendering: crispEdges;
+}
+.distance-chart svg .bar line {
+	stroke:#333;
+	stroke-width:1;
+	shape-rendering: crispEdges;
+	stroke-dasharray:1, 3;
+}
+.distance-chart.over svg .bar line {
+	stroke:none;
+}
+/*
+.distance-chart.over svg .bar.first line,
+.distance-chart.over svg .bar.last line {
+	stroke:#666;
+}*/
+.distance-chart svg .bar.highlight rect {
+	fill:#fff;
+}
+.distance-chart svg .bar.highlight line,
+.distance-chart.over svg .bar.highlight.first line ,
+.distance-chart.over svg .bar.highlight.last line {
+	stroke:#fff;
+}
+.distance-chart svg .xaxis line,
+.distance-chart svg .xaxis path {
+	stroke:#666;
+	stroke-width: 1;
+	shape-rendering: crispEdges;
+}
+.distance-chart svg .xaxis .tick.highlight line {
+	stroke:#fff;
+}
+.distance-chart svg .xaxis text{
+	fill:#666;
+	font-size:10px;
+}
+.distance-chart svg .xaxis .tick.highlight text {
+	fill:#fff;
+}
+.distance-chart svg .xaxis .current line {
+	stroke:#fff;
+}
+.distance-chart svg .xaxis .current text {
+	fill:#fff;
+	text-anchor:middle;
+}
+
+.distance-chart svg path.line {
+	stroke:none;
+	stroke-width: 0;
+	stroke-opacity: 0;
+	fill: #fff;
+	fill-opacity: 0.1;
 }
