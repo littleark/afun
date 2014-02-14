@@ -1,4 +1,4 @@
-define(["./support"],function(support) {
+define(["d3","./support"],function(d3,support) {
 
 	function Distribution(options) {
 

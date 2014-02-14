@@ -21,7 +21,6 @@ define(["../support"], function(support) {
 			    
 
 			    if (l >= h) {
-			    	
 			        return a;
 			    }
 
@@ -38,11 +37,7 @@ define(["../support"], function(support) {
 			    mergeSort(a, l, mid);
 			    mergeSort(a, mid + 1, h);
 
-			    
 
-
-
-			    //
 
 			    while ((l <= end_lo) && (start_hi <= h)) {
 			    	//index.push([l,start_hi]);
@@ -51,7 +46,7 @@ define(["../support"], function(support) {
 
 		        	
 
-			        if (a[l].value<a[start_hi].value) {
+			        if (a[l].value<=a[start_hi].value) {
 			            l++;
 			        } else {
 			            var temp = a[start_hi];

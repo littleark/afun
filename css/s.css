@@ -940,6 +940,23 @@ svg #indicators g.indicator.visible path {
 .distance-chart svg .xaxis .tick.highlight text {
 	fill:#fff;
 }
+.distance-chart svg .xaxis .tick.highlight line {
+	stroke:#fff;
+}
+.distance-chart svg .tick {
+	cursor: pointer;
+}
+.distance-chart svg .tick rect.hover {
+	fill:#ff0000;
+	fill-opacity:0;
+}
+.distance-chart svg .tick:hover text {
+	fill:#fff;
+}
+.distance-chart svg .tick:hover line {
+	stroke:#fff;
+}
+
 .distance-chart svg .xaxis .current line {
 	stroke:#fff;
 }
@@ -947,11 +964,18 @@ svg #indicators g.indicator.visible path {
 	fill:#fff;
 	text-anchor:middle;
 }
-
 .distance-chart svg path.line {
+	stroke:#999;
+	stroke-width: 1;
+	stroke-opacity: 1;
+	fill: none;
+	fill-opacity: 0.2;
+	shape-rendering: crispEdges;
+}
+.distance-chart svg path.area {
 	stroke:none;
 	stroke-width: 0;
 	stroke-opacity: 0;
 	fill: #fff;
-	fill-opacity: 0.1;
+	fill-opacity: 0.15;
 }

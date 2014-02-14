@@ -1,189 +1,6 @@
-define(["./support"],function(support) {
+define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 	
-	function DistanceChart(items,options) {
-
-		var container=options.container;
-
-		var goal=items[items.length-1].map(function(d){
-			if(typeof d.index != 'undefined') {
-				d.value=d.index;
-			}
-			return d;
-		});
-		//console.log("GOAL",goal)
-		var steps=[];
-
-		items.forEach(function(d,i){
-			steps[i]=0;
-			d.forEach(function(item,index){
-				if(item) {
-					//console.log(item)
-					var value=item.value || item.index;
-					//console.log(value,"==",goal[index].value)
-					if(value==goal[index].value) {
-						steps[i]++;
-						//console.log("OK")
-					}
-				}
-				
-			})
-		});
-
-		console.log("DISTANCE STEPS",steps)
-
-		console.log(options)
-
-		var xscale=d3.scale.linear().domain([0,steps.length-1]).rangeRound([0,options.width-options.margins.left-options.margins.right]),
-			yscale=d3.scale.linear().domain([0,d3.max(steps)]).range([0,50])
-
-		var svg=container.append("div")
-					.attr("class","distance-chart")
-					.classed("over",steps.length>options.width/2)
-					.append("svg")
-						.attr("width",options.width)
-						.attr("height",80);
-
-		var chart=svg.append("g")
-						.attr("transform","translate("+options.margins.left+",60)")
-
-		
-		var bars=chart.selectAll("g.bar")
-				.data(steps)
-				.enter()
-				.append("g")
-					.attr("class","bar")
-					.classed("last",function(d,i){
-						return i==steps.length-1;
-					})
-					.classed("first",function(d,i){
-						return i===0;
-					})
-					.attr("transform",function(d,i){
-						return "translate("+xscale(i)+","+(-yscale(d))+")";
-					});
-		
-		/*bars.append("rect")
-				.attr("x",0)
-				.attr("y",0)
-				.attr("width",1)
-				.attr("height",function(d){
-					return yscale(d);
-				})*/
-		bars.append("line")
-				.attr("x0",0)
-				.attr("y0",0)
-				.attr("x1",0)
-				.attr("y1",function(d){
-					return yscale(d);
-				})
-		/*bars.append("circle")
-				.attr("cx",0)
-				.attr("cy",0)
-				.attr("r",1)
-		*/
-		var line = d3.svg.line()
-			    .x(function(d,i) { return xscale(i); })
-			    .y(function(d,i) { return -yscale(d); })
-			    //.interpolate("basis");
-		var area=d3.svg.area()
-				.x(function(d,i) { return xscale(i); })
-			    .y0(function(d,i){return 0;})
-			    .y1(function(d,i) { return -yscale(d); })
-
-		chart
-			.append("path")
-			.attr("class","line")
-			.attr("d",area(steps))
-		
-
-		var xAxis = d3.svg.axis()
-					    .scale(xscale)
-					    .orient("bottom")
-					    .tickFormat(d3.format(",.0f"));
-
-		var xaxis=chart.append("g")
-			    .attr("class", "xaxis")
-			    .attr("transform", "translate(0," + 0 + ")");
-
-			    
-
-		xaxis
-			.call(xAxis)
-			.selectAll(".tick")
-		    .filter(function(d){
-		    	return d % 1 !== 0;
-		    })
-		    	.remove();
-		    	//.classed("minor", true);
-
-		var current=xaxis.append("g")
-				.attr("class","current")
-				.attr("transform", "translate(0," + 0 + ")");
-
-		current
-			.append("line")
-				.attr("x0",0)
-				.attr("x1",0)
-				.attr("y0",0)
-				.attr("y1",6);
-
-		current
-			.append("text")
-			.attr("y",16)
-
-
-		this.resize=function(__options) {
-
-			options.width=__options.width;
-
-			svg.attr("width",options.width);
-
-			xscale.rangeRound([0,options.width-options.margins.left-options.margins.right]);
-
-			bars.attr("transform",function(d,i){
-				return "translate("+xscale(i)+","+(-yscale(d))+")";
-			});
-			
-			chart.select("path.line")
-				.attr("d",area(steps))
-			
-			xaxis
-				.call(xAxis)
-					.selectAll(".tick")
-				    .filter(function(d){
-				    	return d % 1 !== 0;
-				    })
-				    	.remove();
-		};
-
-		this.highlightStep=function(n) {
-			
-			chart.selectAll("g.bar.highlight")
-				.classed("highlight",false);
-			bars
-				.classed("highlight",function(d,i){
-					return i==n;
-				})
-			
-			xaxis
-				.selectAll(".tick.highlight")
-				.classed("highlight",false);
-			xaxis
-				.selectAll(".tick")
-				.classed("highlight",function(d){
-					return d==n;
-				})
-			
-			current
-				.attr("transform", "translate("+xscale(n)+"," + 0 + ")");
-			current
-				.select("text")
-				.text(d3.format(",.0f")(n))
-
-		}
-
-		this.highlightStep(0);
-	}
+	
 
 	function AlgorithmView(options){
 
@@ -224,22 +41,65 @@ define(["./support"],function(support) {
 		var items=options.items || [];
 
 		function setStatuses() {
-			steps.forEach(function(substeps){
-				items.push(support.cloneArray(items[items.length-1]));
+			steps.forEach(function(substeps,i){
+
+				//console.log("NOW SUBSTEP",substeps)
+				//var new_items=support.cloneArray(items[items.length-1]);
+				var new_items=items[items.length-1].map(function(item){
+					var new_item={};
+					new_item.value=item.value;
+					new_item.id=item.id;
+					new_item.tmp=null;//item.tmp;
+					new_item.moved=false;
+					return new_item;
+				});
+				
+
+
+				//console.log("STEP",i,support.cloneArray(items[items.length-1]).map(function(e){return e.index||e.value}).toString());
+				
+
 				substeps.forEach(function(d){
-					items[items.length-1][d.to]=d;//.index;
-					if(items[items.length-1][d.from]['id']==d['id']) {
-						//items[items.length-1][d.from]=null;
+					//console.log("INSIDE THE SUBSTEP")
+					//console.log("SETTING",d.index,"from",d.from,"to",d.to)
+					
+					new_items[d.to]=d;//.index;
+					new_items[d.to].value=new_items[d.to].index;
+					//items[items.length-1][d.from].value=d.index+"X";
+					//console.log("step",i,"putting element",d.id,"to",d.to,"full",d);
+
+					for(var j=0;j<new_items.length;j++) {
+						if(new_items[j].id==d.id && d.tmp && !new_items[j].tmp) {
+							new_items[j].moved=true;
+						}
 					}
-				})
+
+					//console.log("ITEMS",items[items.length-1].map(function(e){return e.index}).toString());
+					//if(items[items.length-1][d.from]['id']==d['id']) {
+						//items[items.length-1][d.from].value=items[items.length-1][d.from].value+"X";
+						//items[items.length-1][d.from].index=items[items.length-1][d.from].index+"X";
+						//items[items.length-1][d.from].index="X";
+						//items[items.length-1][d.from].value="X";
+					//}
+				});
+
+				items.push(new_items);
+
 			})
 			steps=([[]]).concat(steps);
 		}
 		setStatuses();
+		/*
+		items.forEach(function(d,i){
+			console.log("ITEMS",i,d.map(function(e){return (typeof e.value !='undefined')?e.value:e.index}).toString());
+		})
+		*/
+			
+		
 
 		console.log("ITEMS",items.length,"STEPS",steps.length);
 		console.log(items)
-
+		//return;
 
 		var xscale=d3.scale.linear().domain([0,items[0].length-1]).range([0,WIDTH-margins.left-margins.right]);
 		
@@ -269,11 +129,22 @@ define(["./support"],function(support) {
 				.attr("class","loading");
 
 		var distanceChart=new DistanceChart(items,{
+			steps:steps,
 			container:div,
 			width:WIDTH,
-			margins:margins
+			margins:margins,
+			distance:options.distance,
+			onclick:function(d){
+				self.goTo(d);
+			}
 		});
 
+		if(options.distanceCallback) {
+
+			options.distanceCallback(distanceChart.getOperations(),distanceChart.getInversions());
+		}
+
+		//return;
 		var to=null;
 
 		var circles_container=svg.append("g")
@@ -313,6 +184,8 @@ define(["./support"],function(support) {
 		var radius=d3.scale.sqrt()
 						.domain([0, max_value])
 						.range([RADIUS.min, Math.ceil(RADIUS.max/options.size_factor)])
+
+
 
 		function updateCircles() {
 
@@ -478,6 +351,18 @@ define(["./support"],function(support) {
 			this.goTo(current_step)
 			return;
 
+		}
+		this.updateDistances=function(distance) {
+			//alert(name+"->"+distanceChart.getOperations()+"!="+distance.operations);
+			//if(distanceChart.getOperations()!=distance.operations) {
+				distanceChart.updateScale(distance.operations,distance.inversions);
+			//}
+		}
+		this.getDistances=function() {
+			return {
+				operations:distanceChart.getOperations(),
+				inversions:distanceChart.getInversions()
+			}
 		}
 		this.setColor=function(c) {
 			
@@ -990,7 +875,8 @@ define(["./support"],function(support) {
 
 			current_step=n;
 
-			
+			console.log("GO TO STEP",steps[n]);
+			console.log("GO TO ITEMS",items[n]);
 
 			slideIndicatorGoTo(current_step,function(){
 				self.goTo2(n,callback);
@@ -1078,7 +964,7 @@ define(["./support"],function(support) {
 
 					var pos=support.indexOf(items[current_step],d.id,"id"),
 						x=xscale(pos),
-						y=HEIGHT/2;
+						y=HEIGHT/2;/// + (d.moved?-20:0);
 
 					//console.log(i,x,xscale.range(),xscale.domain())
 

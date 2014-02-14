@@ -1,4 +1,4 @@
-define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distribution,support) {
+define(["d3","AlgorithmView3","distribution","support"],function(d3,AlgorithmView,Distribution,support) {
 	function Sorting(options) {
 
 		var self=this;
@@ -12,7 +12,10 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 		var	container=options.container || "#algorithms",
 			algorithms_container=d3.select(container).classed("size"+SIZE_FACTOR,true);;
 
-		
+		var distance={
+			operations:0,
+			inversions:0
+		}
 
 		var sorting=options.sorting || [];
 
@@ -54,15 +57,20 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 					.style("opacity",0)
 						.each("end",function(d){
 							self.detectScrollTop();
+							delete(algoviz[name]);
+							updateDistances();
 						})
 						.remove();
-			delete(algoviz[name]);
+			
 
 			console.log(sorting,algoviz)
+
+			
 		}
 
 		this.addAlgorithm=function(fn,data,color,callback) {
 			//data=[1,2,0,22,1,2,4,35,1,2,0,1]
+			
 			require(["algorithms/"+fn,"support"], function(algorithm,support) {
 				
 				sorting.push({
@@ -160,6 +168,13 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 							items_visible:d3.select("#layout .items").classed("selected"),
 							color:color,
 							//step_callback:function(n) {},
+							distance:distance,
+							distanceCallback:function(operations,inversions) {
+								
+								updateDistances(operations,inversions);
+								
+
+							},
 							sortedCallback:function(){
 								console.log("CHECKING ALL SORTED",allSorted())
 								if (allSorted()) {
@@ -170,6 +185,7 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 								}
 							},
 							callback:function(){
+								/*
 								setTimeout(function(){
 									if(running<0) {
 										self.start();
@@ -178,6 +194,8 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 										console.log("RENDER")	
 									}
 								},0);									
+								*/
+
 							}
 						});
 
@@ -208,6 +226,34 @@ define(["AlgorithmView3","distribution","support"],function(AlgorithmView,Distri
 				}
 			})
 			return sorted;
+		}
+
+		function updateDistances(operations,inversions) {
+
+			if(!operations) {
+				distance.operations=0;
+				distance.inversions=0;
+
+				d3.values(algoviz).forEach(function(a,i){
+					console.log("updateDistances",i,a.getName())
+					//alert("update("+distance.operations+","+distance.inversions+")")
+					var d=a.getDistances();
+					console.log(d)
+					distance.operations=Math.max(distance.operations,d.operations);
+					distance.inversions=Math.max(distance.inversions,d.inversions);		
+				})
+			} else {
+				distance.operations=Math.max(distance.operations,operations);
+				distance.inversions=Math.max(distance.inversions,inversions);	
+			}
+
+			
+
+			d3.values(algoviz).forEach(function(a,i){
+				console.log("updateDistances",i,a.getName())
+				//alert("update("+distance.operations+","+distance.inversions+")")
+				a.updateDistances(distance);
+			})
 		}
 
 		/* PUBLIC FUNCTIONS */

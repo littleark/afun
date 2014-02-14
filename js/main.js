@@ -1,4 +1,13 @@
-require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,support) {
+require.config({
+    urlArgs: "t=" + (new Date()).getTime(),
+	paths: {
+		d3: "http://d3js.org/d3.v3.min"
+		//d3: "js/vendors/d3.v3.min"
+	}
+});
+//require(["vendors/d3.v3.min","Sorting","support"], function(d3,Sorting,support) {
+
+require(["d3","Sorting","support"], function(d3,Sorting,support) {
 	////d3js.org/d3.v3.min.js
 	//cdnjs.cloudflare.com/ajax/libs/d3/3.3.13/d3.min.js
 
@@ -22,10 +31,16 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		return o;
 	};
 
+
+	var data100=shuffle(d3.range(100));
+
 	var data={};
 	(support.items).forEach(function(d){
-		data[d]=shuffle(d3.range(d));
+		//data[d]=shuffle(d3.range(d));
+		data[d]=data100.filter(function(el,i){return i<d;});
 	});
+	//data[10]=[38,27,43,3,9,82,10]
+	//data[10]=[5,4,3,2,1,5,4,3,2,1,5,4,3,2,1]
 
 	window.sorting=new Sorting({
 		container:"#algorithms",
@@ -65,7 +80,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		{
 			name:"Merge Sort",
 			file:"MergeSort",
-			active:false
+			active:true
 		},
 		{
 			name:"Smooth Sort",
@@ -80,7 +95,7 @@ require(["vendors/d3.v3.min","Sorting","support"], function(ignore,Sorting,suppo
 		{
 			name:"Shell Sort",
 			file:"ShellSort",
-			active:true
+			active:false
 		},
 		{
 			name:"Cycle Sort",

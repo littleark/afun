@@ -27,19 +27,25 @@ define(["../support"], function(support) {
 				var temp=[];
 
 				var mid=Math.floor((low+high)/2),
-					index1=0,
-					index2=low,
-					index3=mid+1;
+					i=0,
+					j=0;
 
-				while(index2<=mid && index3<=high) {
-					if(list[index2]<list[index3]) {
-						temp[index1]=list[index2];
-						index1++;
-						index2++;
-					} else {
-						temp[index1]
-					}
-				}
+
+				while(i<)
+
+				while i<lenA and j<lenB:
+			        if A[i]<=B[j]:
+			            C.append(A[i])
+			            i=i+1
+			        else:
+			            c=c+len(A)-i #the maggic happens here
+			            C.append(B[j])
+			            j=j+1
+			    if i==lenA:#A get to the end
+			        C.extend(B[j:])
+			    else:
+			        C.extend(A[i:])
+			    return C
 			}
 
 			/*
