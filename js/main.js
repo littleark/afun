@@ -37,11 +37,11 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 	var data={};
 	(support.items).forEach(function(d){
 		//data[d]=shuffle(d3.range(d));
-		data[d]=data100.filter(function(el,i){return i<d;});
+		data[d]=data100.slice(0,d);//filter(function(el,i){return i<d;});
 	});
 	//data[10]=[38,27,43,3,9,82,10]
 	//data[10]=[5,4,3,2,1,5,4,3,2,1,5,4,3,2,1]
-
+	//data[10]=[6, 5, 3, 1, 8, 7, 2, 4]
 	window.sorting=new Sorting({
 		container:"#algorithms",
 		//sorting:["quicksort","mergesort","smoothsort"],
@@ -75,12 +75,12 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 		{
 			name:"Heap Sort",
 			file:"HeapSort",
-			active:false
+			active:true
 		},
 		{
-			name:"Merge Sort",
+			name:"Merge Sort (in-place)",
 			file:"MergeSort",
-			active:true
+			active:false
 		},
 		{
 			name:"Smooth Sort",

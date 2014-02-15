@@ -11,105 +11,87 @@ define(["../support"], function(support) {
 			var cmp=0;
 			var first=true;
 
-			function heapsort(list) {
-			    for (var i = Math.floor((list.length - 1) / 2); i >= 0; i--) {
-			        Adjust(list, i, list.length - 1);
-			    }
 
-			    for (var i = list.length - 1; i >= 1; i--) {
+			function heapsort(a) {
+			    heapify(a);
+			    var end=a.length-1;
+			    while(end>0) {
+			        //swap(a[end],a[0]);
 
-			    	steps.push([]);
+			        steps.push([]);
 
-			    	index.push([-1,-1,-1,0,i]);
-
-			    	comparisons.push({
+			        index.push([-1,end,0,-1,-1,-1])
+			        comparisons.push({
 	            		cmp:cmp,
 	            		index:support.cloneArray(index)
 	            	});
 	            	index=[];
 
-
-			    	
-
-			    	/*
-			        var temp = list[0],
-			        	temp1= list[i];
-
-			        addStep(steps,temp1,i,0,comparisons[comparisons.length-1]);
-			    	addStep(steps,temp,0,i,comparisons[comparisons.length-1]);
-
-			        list[0] = list[i];
-			        list[i] = temp;
-			        */
-			        swap(steps,list,i,0,comparisons[comparisons.length-1]);
-			        Adjust(list, 0, i - 1);
-			                
+			        swap(steps,a,end,0,comparisons[comparisons.length-1]);
+			        end--;
+			        siftDown(a,0,end);
 			    }
-
-			    return list;
 			}
 
-			function Adjust(list, i, m) {
+			function heapify(a) {
+			    var start=Math.floor((a.length-2)/2);
+			    while(start>=0) {
+			    	index.push([start,a.length-1,-1,-1,-1,-1])
+			        comparisons.push({
+	            		cmp:cmp,
+	            		index:support.cloneArray(index)
+	            	});
+			        siftDown(a,start,a.length-1);
+			        start--;
+			    }
+			}
 
-				
+			function siftDown(a,start,end) {
+			    var root=start;
+			    
+			    //steps.push([]);
+			    
+			    while((root*2+1)<=end) {
+			        var child=root*2+1;
+			        var __swap=root;
 
-			    var temp = list[i],
-			    	temp_i=i;//list.indexOf(temp);
+			        index.push([start,end,-1,root,__swap,child])
 
-			    var j = i * 2 + 1;
-			    while (j <= m) {
-			    	index.push([i,temp_i,j,-1,-1]);
-
-			        if (j < m) {
-			        	if(list[j].value < list[j + 1].value) {
-			        		j = j + 1;
-			        	}
+			        if(a[__swap].value<a[child].value) {
+			            __swap=child;
 			        }
-			        if(temp.value < list[j].value) {
+			        if(child+1<=end && a[__swap].value<a[child+1].value) {
+			            __swap=child+1;
+			        }
+			        if(__swap!=root) {
 
-			        	comparisons.push({
+			        	
+				        comparisons.push({
 		            		cmp:cmp,
 		            		index:support.cloneArray(index)
 		            	});
 		            	index=[];
 
-			        	//var temp_j=list[j];
 			        	steps.push([]);
-			        	addStep(steps,list[j],j,i,comparisons[comparisons.length-1],{
-			        		value:temp.value,
-			        		pos:temp_i,
-			        		id:temp.id
-			        	});
-			            list[i] = list[j];
-			            i = j;
-			            j = 2 * i + 1;
+
+			        	swap(steps,a,root,__swap,comparisons[comparisons.length-1]);
+			            //swap(a[root],a[__swap]);
+			            root=__swap;
 			        } else {
-			            j = m + 1;
+			            return
 			        }
-			        cmp++;
 			    }
-
-			    steps.push([]);
-
-			    index.push([i,temp_i,j,-1,-1]);
-
-
-			    comparisons.push({
-            		cmp:cmp,
-            		index:support.cloneArray(index)
-            	});
-            	index=[];
-
-
-			    addStep(steps,temp,temp_i,i,comparisons[comparisons.length-1]);
-			    list[i] = temp;
-
 			}
 
+			
 			return function(array) {
 				steps=[];
 				heapsort(array,0,array.length-1);
 				
+				console.log("IS ARRAY SORTED?",array.map(function(d){
+					return d.value;
+				}))
+
 				steps=steps.filter(function(d){
 					return d.length>0;
 				});

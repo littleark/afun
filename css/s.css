@@ -268,6 +268,9 @@ body {
 	text-transform: uppercase;
 	margin: 0;
 }
+#algorithms div#add:hover h4 {
+	visibility: visible;
+}
 /*
 #algorithms div#add.algorithm.collapsed {
 	border: 1px solid #000;
@@ -977,5 +980,13 @@ svg #indicators g.indicator.visible path {
 	stroke-width: 0;
 	stroke-opacity: 0;
 	fill: #fff;
-	fill-opacity: 0.15;
+	fill-opacity: 0.05;
+}
+
+.distance-chart svg .xaxis g.inversions-bar line{
+	stroke-dasharray:3, 5;
+	stroke-opacity:0.5;
+}
+.distance-chart svg .xaxis g.inversions-bar text{
+	text-anchor:end;
 }

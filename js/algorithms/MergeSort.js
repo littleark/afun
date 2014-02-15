@@ -2,7 +2,7 @@ define(["../support"], function(support) {
 	swap=support.swap;
 	addStep=support.addStep;
 	return {
-		"name":"Mergesort",
+		"name":"Merge sort (in-place)",
 		"complexity":"O(n log n)",
 	    "code":function() {
 			var steps=[];

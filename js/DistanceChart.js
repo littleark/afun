@@ -32,7 +32,7 @@ define(["d3","./support"],function(d3,support,DistanceChart) {
 			})
 		});
 		
-		console.log("ALL ITEMS",items)
+		//console.log("ALL ITEMS",items)
 
 		var inversions=[];
 		items.forEach(function(d,index){
@@ -66,18 +66,18 @@ define(["d3","./support"],function(d3,support,DistanceChart) {
 
 		    //console.log("INVERSIONS",inversions[index])
 		})
-		//console.log("INVERSIONS",inversions)
+		console.log("INVERSIONS",inversions)
 
 		//console.log("DISTANCE STEPS",steps)
 
-		console.log("REAL STEPS",options.steps)
+		//console.log("REAL STEPS",options.steps)
 
 		var operations=[];
 
 		options.steps.forEach(function(step,i){
 			if(step.length>0) {
 				var s=step[0];
-				console.log("::",s.cmp.index.length)
+				//console.log("::",s.cmp.index.length)
 				
 				
 
@@ -100,7 +100,7 @@ define(["d3","./support"],function(d3,support,DistanceChart) {
 			});
 		});
 
-		console.log("ALL OPERATIONS",operations)
+		//console.log("ALL OPERATIONS",operations)
 
 		steps=inversions;
 
@@ -109,7 +109,8 @@ define(["d3","./support"],function(d3,support,DistanceChart) {
 		var maxOperations=(options.distance.operations > operations.length-1)?options.distance.operations:operations.length-1;
 
 		var xscale=d3.scale.linear().domain([0,maxOperations]).rangeRound([0,width]),
-			yscale=d3.scale.linear().domain([0,d3.max(inversions)]).range([0,50])
+			//yscale=d3.scale.linear().domain([0,d3.max(inversions)]).range([0,50])
+			yscale=d3.scale.linear().domain([0,items[0].length*(items[0].length-1)/2]).range([0,50])
 
 		var svg=container.append("div")
 					.attr("class","distance-chart")
@@ -198,11 +199,51 @@ define(["d3","./support"],function(d3,support,DistanceChart) {
 						}));
 						*/
 
+
+
+
 		var xaxis=chart.append("g")
 			    .attr("class", "xaxis")
 			    .attr("transform", "translate(0," + 0 + ")");
 
-			    
+		var max_inversions_bar=xaxis.append("g")
+				.attr("class","inversions-bar")
+					.attr("transform","translate(0,"+(-yscale(items[0].length*(items[0].length-1)/2))+")");
+
+		max_inversions_bar.append("line")
+					.attr("x2",width)
+					
+		max_inversions_bar.append("text")
+					.attr("x",-2)
+					.attr("dy","0.4em")
+					.text(items[0].length*(items[0].length-1)/2);
+
+		var starting_inversions_bar=xaxis.append("g")
+				.attr("class","inversions-bar")
+					.attr("transform","translate(0,"+(-yscale(operations[0].inversions))+")");
+
+		//starting_inversions_bar.append("line")
+		//			.attr("x2",width)
+		
+
+
+		starting_inversions_bar.append("text")
+					.attr("x",-2)
+					.attr("dy","0.4em")
+					.text(operations[0].inversions);
+
+		var zero_inversions_bar=xaxis.append("g")
+				.attr("class","inversions-bar")
+					.attr("transform","translate(0,"+(-yscale(0))+")");
+
+		//starting_inversions_bar.append("line")
+		//			.attr("x2",width)
+		
+		
+
+		zero_inversions_bar.append("text")
+					.attr("x",-2)
+					.text(0);
 
 		xaxis
 			.call(xAxis)
@@ -217,6 +258,7 @@ define(["d3","./support"],function(d3,support,DistanceChart) {
 		    	//.classed("minor", true);
 
 		var current=xaxis.append("g")
+				.datum(0)
 				.attr("class","current")
 				.attr("transform", "translate(0," + 0 + ")");
 
@@ -265,6 +307,15 @@ define(["d3","./support"],function(d3,support,DistanceChart) {
 			
 			xaxis
 				.call(xAxis)
+
+			current
+				.attr("transform", function(d){
+					return "translate("+xscale(d.i)+"," + 0 + ")"
+				})
+				.select("text")
+					.text(function(d){
+						return d3.format(",.0f")(d.i)
+					})
 		}
 
 		this.updateScale=function(max_operations,max_inversions) {
@@ -319,6 +370,14 @@ define(["d3","./support"],function(d3,support,DistanceChart) {
 						.attr("x",-w/2)
 						.attr("width",w);*/
 
+			current
+				.attr("transform", function(d){
+					return "translate("+xscale(d.i)+"," + 0 + ")"
+				})
+				.select("text")
+					.text(function(d){
+						return d3.format(",.0f")(d.i)
+					})
 			
 		};
 
@@ -346,10 +405,14 @@ define(["d3","./support"],function(d3,support,DistanceChart) {
 			
 
 			current
-				.attr("transform", "translate("+xscale(step.i)+"," + 0 + ")");
-			current
-				.select("text")
-				.text(d3.format(",.0f")(step.i))
+				.datum(step)
+				.attr("transform", function(d){
+					return "translate("+xscale(d.i)+"," + 0 + ")"
+				})
+					.select("text")
+					.text(function(d){
+						return d3.format(",.0f")(d.i)
+					})
 			
 		}
 
