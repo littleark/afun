@@ -36,12 +36,12 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 
 	var data={};
 	(support.items).forEach(function(d){
-		//data[d]=shuffle(d3.range(d));
-		data[d]=data100.slice(0,d);//filter(function(el,i){return i<d;});
+		data[d]=shuffle(d3.range(d));
+		//data[d]=data100.slice(0,d);//filter(function(el,i){return i<d;});
 	});
-	//data[10]=[38,27,43,3,9,82,10]
-	//data[10]=[5,4,3,2,1,5,4,3,2,1,5,4,3,2,1]
-	//data[10]=[6, 5, 3, 1, 8, 7, 2, 4]
+	//data[10]=[0,1,2]
+	data[10]=[5,4,3,2,1,5,4,3,2,1]
+	//data[10]=[9,8,7,6, 5, 4, 3,  2, 1, 0]
 	window.sorting=new Sorting({
 		container:"#algorithms",
 		//sorting:["quicksort","mergesort","smoothsort"],
@@ -65,76 +65,91 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 		{
 			name:"Quick Sort",
 			file:"QuickSort",
+			O:"O(n log n)",
 			active:true
 		},
 		{
 			name:"Quick Sort w/Partition",
 			file:"QuickSort2",
+			O:"O(n log n)",
 			active:false
 		},
 		{
 			name:"Heap Sort",
 			file:"HeapSort",
-			active:true
+			O:"O(n log n)",
+			active:false
 		},
 		{
 			name:"Merge Sort (in-place)",
 			file:"MergeSort",
+			O:"O(n&sup2;)",
 			active:false
 		},
 		{
 			name:"Smooth Sort",
 			file:"SmoothSort",
+			O:"O(n log n)",
 			active:false
 		},
 		{
 			name:"Radix Sort",
 			file:"RadixSort",
+			O:"O(kN)",
 			active:false
 		},
 		{
 			name:"Shell Sort",
 			file:"ShellSort",
+			O:"O(n&sup2;)",
 			active:false
 		},
 		{
 			name:"Cycle Sort",
 			file:"CycleSort",
+			O:"O(n) - O(n&sup2;)",
 			active:false
 		},
 		{
 			name:"Selection Sort",
 			file:"SelectionSort",
+			O:"O(n&sup2;)",
 			active:false
 		},
 		{
 			name:"Insertion Sort",
 			file:"InsertionSort",
+			O:"O(n&sup2;)",
 			active:false
 		},
 		{
 			name:"Gnome Sort",
 			file:"GnomeSort",
+			O:"O(n&sup2;)",
 			active:false
 		},
 		{
 			name:"Comb Sort",
 			file:"CombSort",
+			O:"O(n&sup2;)",
 			active:false
 		},
 		{
 			name:"Bubble Sort",
 			file:"BubbleSort",
+			O:"O(n&sup2;)",
 			active:false
 		},
 		{
 			name:"Cocktail Sort",
 			file:"CocktailSort",
+			O:"O(n&sup2;)",
 			active:false
 		},
 		{
 			name:"OddEven Sort",
 			file:"OddEvenSort",
+			O:"O(n&sup2;)",
 			active:false
 		}
 	];
@@ -210,8 +225,8 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 		.append("li")
 			.append("a")
 				.attr("href","#")
-				.text(function(d){
-					return d.name;
+				.html(function(d){
+					return d.name+"<br/><i>"+d.O+"</i>";
 				})
 				.attr("class",function(d){
 					return d.file;

@@ -12,8 +12,8 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 		var name=options.name;
 
 		var RADIUS={
-			min:6,
-			max:30
+			min:3,
+			max:35
 		};
 
 		var margins={
@@ -363,6 +363,12 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 				operations:distanceChart.getOperations(),
 				inversions:distanceChart.getInversions()
 			}
+		}
+		this.getOperations=function() {
+			return distanceChart.getOperations();
+		}
+		this.getItemsLength=function() {
+			return items[0].length;
 		}
 		this.setColor=function(c) {
 			
@@ -1010,11 +1016,12 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 			return current_step;
 		}
 		this.getStepsLength=function() {
-			return steps.length-1;
+			return steps.length;
 		}
 		this.getSteps=function() {
 			return steps;
 		}
+
 
 		this.start=function() {
 			

@@ -12,10 +12,13 @@ define(["d3","AlgorithmView3","distribution","support"],function(d3,AlgorithmVie
 		var	container=options.container || "#algorithms",
 			algorithms_container=d3.select(container).classed("size"+SIZE_FACTOR,true);;
 
-		var distance={
-			operations:0,
-			inversions:0
-		}
+		var distance=[];
+		support.items.forEach(function(d){
+			distance[d]={
+				operations:0,
+				inversions:0
+			}
+		});
 
 		var sorting=options.sorting || [];
 
@@ -57,8 +60,9 @@ define(["d3","AlgorithmView3","distribution","support"],function(d3,AlgorithmVie
 					.style("opacity",0)
 						.each("end",function(d){
 							self.detectScrollTop();
+							var l=algoviz[name].getItemsLength();
 							delete(algoviz[name]);
-							updateDistances();
+							updateDistances(null,null,l);
 						})
 						.remove();
 			
@@ -120,8 +124,8 @@ define(["d3","AlgorithmView3","distribution","support"],function(d3,AlgorithmVie
 					.html(function(d){
 						return algorithm.name || d.name;
 					})
-					//.append("span")
-					//	.html(" "+(algorithm.complexity || ""))
+					.append("span")
+						.html(" "+(algorithm.complexity || ""))
 
 				
 				//console.log(fn,new_algorithms)
@@ -152,6 +156,8 @@ define(["d3","AlgorithmView3","distribution","support"],function(d3,AlgorithmVie
 					var items=[];
 					items.push(support.cloneArray(data));
 
+					console.log("DISTANCE",distance,items[0].length)
+
 					//var self=this;
 					algoviz[d.name]=
 
@@ -168,10 +174,10 @@ define(["d3","AlgorithmView3","distribution","support"],function(d3,AlgorithmVie
 							items_visible:d3.select("#layout .items").classed("selected"),
 							color:color,
 							//step_callback:function(n) {},
-							distance:distance,
+							distance:distance[items[0].length],
 							distanceCallback:function(operations,inversions) {
-								
-								updateDistances(operations,inversions);
+								//alert(items[0].length)
+								updateDistances(operations,inversions,items[0].length);
 								
 
 							},
@@ -228,31 +234,45 @@ define(["d3","AlgorithmView3","distribution","support"],function(d3,AlgorithmVie
 			return sorted;
 		}
 
-		function updateDistances(operations,inversions) {
-
+		function updateDistances(operations,inversions,length) {
+			console.log("updateDistances("+operations+","+inversions+","+length+")",algoviz)
 			if(!operations) {
-				distance.operations=0;
-				distance.inversions=0;
+				distance[length].operations=0;
+				distance[length].inversions=0;
 
 				d3.values(algoviz).forEach(function(a,i){
-					console.log("updateDistances",i,a.getName())
-					//alert("update("+distance.operations+","+distance.inversions+")")
+					var l=a.getItemsLength();
 					var d=a.getDistances();
-					console.log(d)
-					distance.operations=Math.max(distance.operations,d.operations);
-					distance.inversions=Math.max(distance.inversions,d.inversions);		
+					console.log("checking distance for ",a.getName(),l,d)
+
+					if(l==length) {
+						console.log("updateDistances",i,a.getName())
+						//alert("update("+distance.operations+","+distance.inversions+")")
+						var d=a.getDistances();
+						console.log("d",d,"l",l)
+						distance[length].operations=Math.max(distance[length].operations,d.operations);
+						distance[length].inversions=Math.max(distance[length].inversions,d.inversions);			
+					} else {
+						console.log("updateDistances NOOOO",l,"!=",length)
+					}
+					
 				})
 			} else {
-				distance.operations=Math.max(distance.operations,operations);
-				distance.inversions=Math.max(distance.inversions,inversions);	
+				distance[length].operations=Math.max(distance[length].operations,operations);
+				distance[length].inversions=Math.max(distance[length].inversions,inversions);	
 			}
 
 			
 
 			d3.values(algoviz).forEach(function(a,i){
-				console.log("updateDistances",i,a.getName())
-				//alert("update("+distance.operations+","+distance.inversions+")")
-				a.updateDistances(distance);
+				var l=a.getItemsLength();
+				console.log("checking distance for ",a.getName(),l)
+				if(l==length) {
+					console.log("updateDistances",i,a.getName())
+					//alert("update("+distance.operations+","+distance.inversions+")")
+					a.updateDistances(distance[length]);
+				}
+				
 			})
 		}
 

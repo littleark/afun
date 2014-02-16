@@ -39,6 +39,8 @@ html {
 }
 body {
 	min-height: 100%;
+	
+	font-family: 'PT Sans', sans-serif;
 
 	scrollbar-base-color: #000;
 	scrollbar-base-color: #666;
@@ -49,9 +51,12 @@ body {
 	scrollbar-shadow-color: #000;
 	scrollbar-dark-shadow-color: #000;
 }
+a:hover {
+	color:gold;
+}
 #wrapper {
 	width: 960px;
-	margin:0 auto 100px;
+	margin:0 auto;/* 100px;*/
 	position: relative;
 }
 #header {
@@ -70,24 +75,27 @@ body {
 	padding: 0;
 	text-rendering: optimizelegibility;
 }
-#footer {
-	border-top: 1px solid #333;
+/**************** CONTENTS *****************/
+#contents {
+	max-width: 860px;
+	margin: 0 auto;
+	font-family: 'PT Sans', sans-serif;
+	font-size: 15px;
+	font-weight: 400;
+	color: #ddd;
 }
-#footer h5 {
-	color:#fff;
+#contents h3 {
 	font-family: 'Raleway', sans-serif;
-	font-size: 1.3em;
-	text-align: center;
+	font-weight:300;
+	color:gold;
 	text-transform: uppercase;
 	margin: 0;
 	padding: 0;
 	text-rendering: optimizelegibility;
 }
-/**************** CONTENTS *****************/
-#contents {
-
+#contents p {
+	margin:5px 0 20px;
 }
-
 /**************** ALGORITHM ****************/
 #algorithms {
 	width:960px;
@@ -114,11 +122,11 @@ body {
 }
 #algorithms.size2 div.algorithm {
 	width: 468px;
-	min-height:280px;
+	min-height:378px;
 }
 #algorithms.size3 div.algorithm {
 	width: 308px;
-	min-height:203px;
+	min-height:298px;
 }
 #algorithms.size5 div.algorithm {
 	width: 20%;
@@ -191,8 +199,10 @@ body {
 	color: gold;
 }
 #algorithms div.algorithm h2 span {
+	display: block;
 	color:#fff;
 	text-transform: none;
+	font-size: 0.8em;
 }
 .algorithm > div {
 	margin:0 auto;
@@ -204,12 +214,24 @@ body {
 	font-size: 18px;
 	font-weight: 300;
 	border: 1px solid #000;
-	background: #0f0f0f;
+	background-color: #070707;
 	overflow: hidden;
+
+	-webkit-transition: border-color 5000ms,background-color 1000ms;
+	-moz-transition: border-color 5000ms,background-color 1000ms;
+	-ms-transition: border-color 5000ms,background-color 1000ms;
+	-o-transition: border-color 5000ms,background-color 1000ms;
+	transition: border-color 5000ms,background-color 1000ms;
 }
 #algorithms div#add:hover {
 	border: 1px solid #666;
-	background: #000;
+	background-color: #000;
+
+	-webkit-transition: background-color 1000ms,border-color 1000ms;
+	-moz-transition: background-color 1000ms,border-color 1000ms;
+	-ms-transition: background-color 1000ms,border-color 1000ms;
+	-o-transition: background-color 1000ms,border-color 1000ms;
+	transition: background-color 1000ms,border-color 1000ms;
 }
 #algorithms div#add.algorithm a.plus {
 	position: relative;
@@ -234,10 +256,10 @@ body {
 	margin-top: 15%;
 }
 #algorithms.size2 div#add.algorithm a.plus div{
-	margin-top: 24%;
+	margin-top: 34%;
 }
 #algorithms.size3 div#add.algorithm a.plus div{
-	margin-top: 23%;
+	margin-top: 39%;
 }
 #algorithms div#add.algorithm a.plus span {
 	display: block;
@@ -271,133 +293,7 @@ body {
 #algorithms div#add:hover h4 {
 	visibility: visible;
 }
-/*
-#algorithms div#add.algorithm.collapsed {
-	border: 1px solid #000;
-}
-#algorithms div#add.algorithm.collapsed:hover {
-	border: 1px solid #111;
-}
-#add.collapsed * {
-	display: none;
-}
-#add h5,
-#add h4 {
-	font-family: inherit;
-	font-size: inherit;
-	font-weight: inherit;
-	text-transform: uppercase;
-	margin: 0;
-	padding: 0;
-	color:gold;
-}
-#add h4 {
-	width: 100%;
-	font-size:1.2em;
-	text-align: center;
-	color:#fff;
-}
-#add h4,
-#add.collapsed h4 {
-	display: none;
-}
-#add.collapsed:hover h4 {
-	display: block;
-}
-#add a.plus,
-#add.collapsed a.plus,
-#add a.generate {
-	display: block;
-	width:30px;
-	height: 30px;
-	margin: 20px auto;
-	padding:10px;
-	border: 4px solid #ccc;
-	-webkit-border-radius: 30px;
-	border-radius: 30px;
-	color:#ccc;
-	font-size: 30px;
-	font-weight: 800;
-	text-align: center;
-	line-height: 30px;
-	text-decoration: none;
-}
-#add.collapsed a.generate {
-	display: none;
-}
-#add a.plus:hover,
-#add a.generate:hover {
-	color:gold;
-	border: 4px solid gold;
-}
-#add ul {
-	list-style: none;
-	margin: 0 auto;
-	padding: 0;
-	width: 100%;
-}
-#add ul a {
-	color:#fff;
-	text-decoration: none;
-}
-#add ul a:hover {
-	color:#ccc;
-	text-decoration: none;
-}
-#add ul#algs {
-	width: 94%;
-	padding: 10px 0;
-}
-#add ul#algs li {
-	float: left;
-	width: 40%;
-	text-align: center;
-	text-transform: uppercase;
-	line-height: 18px;
-	margin: 2px 10px;
-}
-#add ul#algs li:nth-child(even) {
-	float: right;
-}
-#add ul#algs li a {
-	display: block;
-	text-align:left;
-	border:2px solid #000;
-}
-#add ul#algs li:nth-child(even) a {
-	text-align: right;
-}
-#add ul#algs li a.selected {
-	font-weight: 300;
-	border:2px solid #fff;
-}
-#add ul#colors li,
-#add ul#items li {
-	float:left;
-	margin:0 10px;
-	display: block;
-	min-width:24px;
-	height: 24px;
-	line-height: 20px;
-}
-#add ul#colors li a,
-#add ul#items li a {
-	display: block;
-	min-width:20px;
-	height: 20px;
-	line-height: 20px;
-	text-align: center;
-	border:2px solid #000;
-}
-#add ul#colors li a:hover,
-#add ul#items li a:hover {
-	border:2px solid #fff;
-}
-#add ul#colors li a.selected,
-#add ul#items li a.selected {
-	border:2px solid #fff;
-}
-*/
+
 /***************** ADD **********************/
 #formContainer {
 	font-family: 'Raleway', sans-serif;
@@ -483,15 +379,14 @@ a.generate {
 }
 a.generate span {
 	display: block;
-	margin: 5px auto;
-	width: 40px;
+	margin: 0 auto;
+	width:40px;
 	height: 40px;
-	padding: 0px;
-	border: 3px solid #fff;
+	border: 3px solid #666;
 	-webkit-border-radius: 22px;
 	border-radius: 22px;
-	color: #fff;
-	font-size: 28px;
+	color:#666;
+	font-size: 20px;
 	text-align: center;
 	line-height: 40px;
 }
@@ -531,8 +426,8 @@ a.generate:hover span {
 	border:2px solid #000;
 	min-height: 101px;
 	padding:5px 0;
-	font-family: sans-serif;
-	font-size: 12px;
+	font-family: 'PT Sans',sans-serif;
+	font-size: 14px;
 	color:#f0f0f0;
 }
 #formContainer ul#algs li a:hover {
@@ -542,7 +437,12 @@ a.generate:hover span {
 	color:#fff;
 	border:2px solid #fff;
 }
-#formContainer ul#algs li span {
+#formContainer ul#algs li a i {
+	font-style: normal;
+	text-transform: none;
+	color:#999;
+}
+#formContainer ul#algs li a span {
 	width:142px;
 	height:74px;
 	display: block;
@@ -895,7 +795,15 @@ svg #indicators g.indicator.visible path {
 .distance-chart svg {
 
 }
-
+.distance-chart svg text.title {
+	fill:#666;
+	font-size:11px;
+	text-anchor:start;
+}
+.distance-chart svg text.title.x {
+	text-anchor:middle;
+	font-size:10px;
+}
 .distance-chart svg .bar {
 
 }
@@ -989,4 +897,84 @@ svg #indicators g.indicator.visible path {
 }
 .distance-chart svg .xaxis g.inversions-bar text{
 	text-anchor:end;
+}
+/***************** ADD **********************/
+#footer {
+	font-size: 13px;
+	max-width:960px;
+	width:100%;
+	margin:0 auto;
+	position: relative;
+	color:#ddd;
+	margin-top:50px;
+}
+#footer h1{
+	text-align: center;
+	font-size: 18px;
+	font-family: 'Raleway', sans-serif;
+	font-weight: 300;
+}
+#footer h1.logo {
+	margin: 0;
+}
+#footer h1 .icon-fire-station {
+	font-size:31px;
+	color:#666;
+	text-shadow: 0px 0px 1px #555;
+}
+#footer h1 span {
+	font-family: 'PT Sans', sans-serif;
+	font-weight: 300;
+	font-size: 12px;
+	font-weight: normal;
+	color: #ccc;
+	text-shadow:none;
+}
+#footer h1 a {
+	color: #fff;
+	text-decoration: none;
+}
+#footer h1 a:hover {
+	color:#4fbeff;
+}
+
+#footer .social {
+	text-align: center;
+	font-size: 23px;
+	margin-top: 10px;
+}
+#footer .social a {
+	color:#aaa;
+	text-decoration: none;
+}
+#footer .social a:hover {
+	color:gold;
+}
+#footer .social a span {
+	display: block;
+	font-size: 10px;
+	font-weight: normal;
+}
+#footer #licence {
+	font-size: 11px;
+	width:280px;
+	margin: 0 auto;
+	border-top:1px solid #444;
+	text-align: center;
+	margin-top: 20px;
+	padding-top: 10px;
+}
+#footer #licence div{
+	text-align: left;
+}
+#footer #licence a {
+	color:#aaa;
+	text-decoration: none;
+}
+#footer #licence a:hover {
+	color:#4fbeff;
+}
+#footer #licence a.cc {
+	float:left;
+	margin-right: 10px;
 }

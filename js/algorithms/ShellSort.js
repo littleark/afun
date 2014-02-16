@@ -3,7 +3,7 @@ define(["../support"], function(support) {
 	addStep=support.addStep;
 	return {
 		"name":"ShellSort",
-		"complexity":"",
+		"complexity":"O(n&sup2;)",
 	    "code":function() {
 			var steps=[];
 			var comparisons=[];

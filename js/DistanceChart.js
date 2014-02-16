@@ -6,7 +6,7 @@ define(["d3","./support"],function(d3,support,DistanceChart) {
 
 		var container=options.container;
 		var width=options.width-options.margins.left-options.margins.right,
-			height=80;
+			height=95;
 		var goal=items[items.length-1].map(function(d){
 			if(typeof d.index != 'undefined') {
 				d.value=d.index;
@@ -106,6 +106,7 @@ define(["d3","./support"],function(d3,support,DistanceChart) {
 
 		//console.log(options)
 		//alert(options.distance.operations)
+		console.log("OPTIONS.DISTANCE",options.distance)
 		var maxOperations=(options.distance.operations > operations.length-1)?options.distance.operations:operations.length-1;
 
 		var xscale=d3.scale.linear().domain([0,maxOperations]).rangeRound([0,width]),
@@ -120,7 +121,7 @@ define(["d3","./support"],function(d3,support,DistanceChart) {
 						.attr("height",height);
 
 		var chart=svg.append("g")
-						.attr("transform","translate("+options.margins.left+","+(height-20)+")")
+						.attr("transform","translate("+options.margins.left+","+(height-30)+")")
 
 		
 		var bars=chart.selectAll("g.bar")
@@ -187,6 +188,7 @@ define(["d3","./support"],function(d3,support,DistanceChart) {
 		var xAxis = d3.svg.axis()
 					    .scale(xscale)
 					    .orient("bottom")
+					    .tickFormat(d3.format(",.0f"))
 					    //.tickFormat(function(d){
 					    //	return d3.format(",.0f")(operations[d].i);
 					    //})
@@ -207,54 +209,78 @@ define(["d3","./support"],function(d3,support,DistanceChart) {
 			    .attr("transform", "translate(0," + 0 + ")");
 
 		var max_inversions_bar=xaxis.append("g")
+				.datum((-yscale(items[0].length*(items[0].length-1)/2)))
 				.attr("class","inversions-bar")
-					.attr("transform","translate(0,"+(-yscale(items[0].length*(items[0].length-1)/2))+")");
+					.attr("transform",function(d){
+						return "translate("+width+","+d+")"
+					});
 		//alert(xscale(maxOperations)+" vs "+width)
 		max_inversions_bar.append("line")
-					.attr("x2",width)
+					.attr("x2",-width)
 					
 		max_inversions_bar.append("text")
-					.attr("x",-2)
-					.attr("dy","0.4em")
-					.text(items[0].length*(items[0].length-1)/2);
+					.attr("x",0)
+					.attr("dy","-0.4em")
+					.text("MAX "+items[0].length*(items[0].length-1)/2);
+
+		chart.append("text")
+					.attr("class","title")
+					.attr("x",0)
+					.attr("y",-yscale(items[0].length*(items[0].length-1)/2))
+					.attr("dy","-0.4em")
+					.text("INVERSIONS");
+
+		chart.append("text")
+					.attr("class","title x")
+					.attr("x",width/2)
+					.attr("y",30)
+					.text("OPERATIONS");
 
 		var starting_inversions_bar=xaxis.append("g")
+				.datum(-yscale(operations[0].inversions))
 				.attr("class","inversions-bar")
-					.attr("transform","translate(0,"+(-yscale(operations[0].inversions))+")");
+					.attr("transform",function(d){
+						return "translate("+width+","+d+")"
+					});
 
-		//starting_inversions_bar.append("line")
-		//			.attr("x2",width)
+		starting_inversions_bar.append("line")
+					.attr("x2",-width)
 		
 
 
 		starting_inversions_bar.append("text")
-					.attr("x",-2)
-					.attr("dy","0.4em")
-					.text(operations[0].inversions);
+					.attr("x",0)
+					.attr("y",function(){
+						var y=(yscale(operations[0].inversions)),
+							y_max=(yscale(items[0].length*(items[0].length-1)/2)),
+							delta=0;
 
+						if(y_max-y<15) {
+							delta=16;
+						}
+
+						return delta;
+					})
+					.attr("dy","-0.4em")
+					.text("START "+operations[0].inversions);
+
+		/*
 		var zero_inversions_bar=xaxis.append("g")
 				.attr("class","inversions-bar")
-					.attr("transform","translate(0,"+(-yscale(0))+")");
-
-		//starting_inversions_bar.append("line")
-		//			.attr("x2",width)
-		
-		
+					.attr("transform","translate("+width+","+(-yscale(0))+")");
 
 		zero_inversions_bar.append("text")
-					.attr("x",-2)
+					.attr("x",4)
 					.text(0);
-
+		*/
 		xaxis
 			.call(xAxis)
-
-			/*
 			.selectAll(".tick")
 			    .filter(function(d){
 			    	console.log("------->",d)
-			    	return d.t===0;
+			    	return d%1 !== 0;
 			    })
-			    	.remove();*/
+			    	.remove();
 		    	//.classed("minor", true);
 
 		var current=xaxis.append("g")
@@ -357,21 +383,23 @@ define(["d3","./support"],function(d3,support,DistanceChart) {
 			
 			xaxis
 				.call(xAxis)
-				/*
-					.selectAll(".tick")
-				    .filter(function(d){
-				    	return d % 1 !== 0;
-				    })
-				    	.remove();*/
-			/*
-			var w=width/steps.length;
-			xaxis
-				.selectAll(".tick rect")
-						.attr("x",-w/2)
-						.attr("width",w);*/
 
-			max_inversions_bar.select("line")
-					.attr("x2",width)
+			max_inversions_bar
+				.attr("transform",function(d){
+					return "translate("+width+","+d+")"
+				})
+				.select("line")
+					.attr("x2",-width)
+
+			starting_inversions_bar
+				.attr("transform",function(d){
+					return "translate("+width+","+d+")"
+				})
+				.select("line")
+					.attr("x2",-width)
+
+			chart.select("text.x")
+					.attr("x",width/2);
 
 			current
 				.attr("transform", function(d){
