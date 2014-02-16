@@ -209,7 +209,7 @@ define(["d3","./support"],function(d3,support,DistanceChart) {
 		var max_inversions_bar=xaxis.append("g")
 				.attr("class","inversions-bar")
 					.attr("transform","translate(0,"+(-yscale(items[0].length*(items[0].length-1)/2))+")");
-
+		//alert(xscale(maxOperations)+" vs "+width)
 		max_inversions_bar.append("line")
 					.attr("x2",width)
 					
@@ -369,6 +369,9 @@ define(["d3","./support"],function(d3,support,DistanceChart) {
 				.selectAll(".tick rect")
 						.attr("x",-w/2)
 						.attr("width",w);*/
+
+			max_inversions_bar.select("line")
+					.attr("x2",width)
 
 			current
 				.attr("transform", function(d){

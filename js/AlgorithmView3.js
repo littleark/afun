@@ -540,7 +540,7 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 					return d>-1;
 				})
 				.transition()
-				.duration(DURATION/2)
+				.duration(DURATION)
 				.attr("transform",function(d,i){
 					//console.log("index",index,"element",i,"go to",d)
 					var x=xscale(d),
@@ -724,7 +724,7 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 			this_traces
 				.selectAll("path")
 					.transition()
-					.delay(250)
+					//.delay(250)
 					//.ease("linear")
 					.duration(DURATION)
 					.attrTween("stroke-dashoffset",function(d,i){
@@ -746,7 +746,7 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 				})
 				.classed("swap",true)
 				.transition()
-				.delay(250)
+				//.delay(250)
 				//.ease("linear")
 				.duration(DURATION)
 					.attrTween("transform",function(d){
@@ -838,7 +838,7 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 					return d>-1;
 				})
 				.transition()
-				.duration(DURATION/2)
+				.duration(DURATION)
 				.attr("transform",function(d,i){
 					//console.log("index",index,"element",i,"go to",d)
 					var x=xscale(d),
