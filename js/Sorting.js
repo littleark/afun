@@ -72,14 +72,15 @@ define(["d3","AlgorithmView3","distribution","support"],function(d3,AlgorithmVie
 			
 		}
 
-		this.addAlgorithm=function(fn,data,color,callback) {
+		this.addAlgorithm=function(fn,data,color,initial_condition,callback) {
 			//data=[1,2,0,22,1,2,4,35,1,2,0,1]
 			
 			require(["algorithms/"+fn,"support"], function(algorithm,support) {
 				
 				sorting.push({
 					fn:fn,
-					name:fn+"_"+sorting.length
+					name:fn+"_"+sorting.length,
+					wiki:algorithm.wiki
 				});
 				if(!functions[fn]) {
 					functions[fn]=algorithm["code"]();	
@@ -108,16 +109,21 @@ define(["d3","AlgorithmView3","distribution","support"],function(d3,AlgorithmVie
 						return algorithm.name || d.name;
 					})
 					.append("span")
-						.html(" "+(algorithm.complexity || ""))
+						.html(data.length+" "+support.initial_conditions[initial_condition]+" elements")
+						//.html(" "+(algorithm.complexity || ""))
+
+				
 
 				
 				//console.log(fn,new_algorithms)
 
 				var close=new_algorithms
 						.append("a")
-							.attr("class","close")
+							.attr("class","icon close")
 							.attr("href","#")
-							.attr("title","Remove "+name)
+							.attr("title",function(d){
+								return "Remove "+(algorithm.name || d.name);
+							})
 							.html("<span>remove</span> <i class=\"icon-cancel\"></i>")
 							.on("click",function(d){
 								d3.event.preventDefault();
@@ -127,7 +133,17 @@ define(["d3","AlgorithmView3","distribution","support"],function(d3,AlgorithmVie
 				console.log("running:",running)
 				self.pause(running?-1:0);
 				
-				
+				new_algorithms
+					.append("a")
+					.attr("class","icon wiki")
+					.attr("title",function(d){
+						return "Open "+(algorithm.name || d.name)+" on Wikipedia";
+					})
+					.attr("target","_blank")
+					.html("<span>wikipedia</span> <i class=\"icon-wikipedia\"></i>")
+					.attr("href",function(d){
+						return d.wiki;
+					})
 
 				new_algorithms.each(function(d,i){
 

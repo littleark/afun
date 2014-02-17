@@ -4,6 +4,7 @@ define(["../support"], function(support) {
 	return {
 		"name":"RadixSort",
 		"complexity":"O(kN)",
+		"wiki":"http://en.wikipedia.org/wiki/Radix_sort",
 	    "code":function() {
 			var steps=[];
 			var comparisons=[];

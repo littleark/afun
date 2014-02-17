@@ -69,6 +69,7 @@ define(
 		return {
 			addStep:addStep,
 			swap:swap,
+			swapItems:swapItems,
 			cloneArray:cloneArray,
 			findPos:findPos,
 			indexOf:arrayObjectIndexOf,
@@ -83,7 +84,13 @@ define(
 				"crimson":"346,100%,42%"
 			},
 			items:[5,10,20,50,75,100],
-			sizes:[1.5,2,3]
+			sizes:[1.5,2,3],
+			initial_conditions:{
+				"rnd": "randomly ordered",
+				"nrl": "nearly sorted",
+				"rvr": "reversed sorted",
+				"few": "few unique"
+			}
 		}
 	}
 );

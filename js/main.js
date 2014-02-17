@@ -26,19 +26,63 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 	})();
 
 	function shuffle(o){ //v1.0
-		console.log("shuffling")
+		//console.log("shuffling")
 		for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
 		return o;
 	};
 
 
+
 	var data100=shuffle(d3.range(100));
 
 	var data={};
-	(support.items).forEach(function(d){
-		data[d]=shuffle(d3.range(d));
-		//data[d]=data100.slice(0,d);//filter(function(el,i){return i<d;});
+
+	var random=[];
+	var reversed=[];
+	var few_uniques=[];
+	var nearly_sorted=[];
+	support.items.forEach(function(d){
+		random[d]=shuffle(d3.range(d));
+		reversed[d]=d3.range(d).reverse();
+		nearly_sorted[d]=d3.range(d);
+		few_uniques[d]=[];
 	});
+	
+	support.items.forEach(function(d){
+		var n=Math.ceil(d*0.4);
+		n=(n%2)?n+1:n;
+		var elements=shuffle(d3.range(d)).slice(0,n);
+
+		for(var i=1;i<elements.length;i+=1) {
+			support.swapItems(nearly_sorted[d],nearly_sorted[d].indexOf(elements[i-1]),nearly_sorted[d].indexOf(elements[i]));
+		}
+
+		
+	});
+
+	support.items.forEach(function(d){
+
+		var unique=d3.range(Math.ceil(d/5));
+
+		for(var i=0;i<d;i++) {
+			few_uniques[d].push(unique[Math.ceil(Math.random()*unique.length-1)])
+		}
+
+	})
+
+
+
+
+	data={
+		"rnd":random,
+		"nrl":nearly_sorted,
+		"rvr":reversed,
+		"few":few_uniques
+	}
+	
+	console.log(data)
+
+
 	//data[3]=[1,2,3]
 	//data[10]=[0,1,2]
 	//data[10]=[5,4,3,2,1,5,4,3,2,1]
@@ -65,13 +109,13 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 	var algorithms=[
 		{
 			name:"Quick Sort",
-			file:"QuickSort",
+			file:"QuickSort3",
 			O:"O(n log n)",
 			active:true
 		},
 		{
-			name:"Quick Sort w/Partition",
-			file:"QuickSort2",
+			name:"Quick Sort 3-way",
+			file:"QuickSort4",
 			O:"O(n log n)",
 			active:false
 		},
@@ -79,12 +123,6 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 			name:"Heap Sort",
 			file:"HeapSort",
 			O:"O(n log n)",
-			active:true
-		},
-		{
-			name:"Merge Sort (in-place)",
-			file:"MergeSort",
-			O:"O(n&sup2;)",
 			active:false
 		},
 		{
@@ -94,15 +132,22 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 			active:false
 		},
 		{
+			name:"Shell Sort",
+			file:"ShellSort",
+			O:"Ciura, 2001",
+			active:false
+		},
+		{
 			name:"Radix Sort",
 			file:"RadixSort",
 			O:"O(kN)",
 			active:false
 		},
+		
 		{
-			name:"Shell Sort",
-			file:"ShellSort",
-			O:"",
+			name:"Merge Sort (in-place)",
+			file:"MergeSort",
+			O:"O(n&sup2;)",
 			active:false
 		},
 		{
@@ -158,7 +203,8 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 	var options={
 		algorithm:algorithms[0].file,
 		color:"blue",
-		items:10
+		items:10,
+		initial_condition:"rnd"
 	};
 
 	
@@ -167,10 +213,10 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 
 
 	sorting.detectScrollTop();
-	d3.select("#algorithms").style("min-height",(window.innerHeight-25+100)+"px")
+	d3.select("#algorithms").style("min-height",(window.innerHeight-25)+"px")
 	d3.select(window).on("scroll",sorting.detectScrollTop);
 	d3.select(window).on("resize",function(){
-		d3.select("#algorithms").style("min-height",(window.innerHeight-25+100)+"px")
+		d3.select("#algorithms").style("min-height",(window.innerHeight-25)+"px")
 	});
 
 	function scrollTween(offset) {
@@ -273,6 +319,20 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 					options.color=d.key;
 				});
 
+	d3.select("#formContainer ul#initial").selectAll("li")
+			.data(d3.keys(data))
+			.select("a")
+			.on("click",function(d,i){
+				d3.event.preventDefault();
+
+				console.log(d);
+				
+				d3.selectAll("#formContainer ul#initial li a").classed("selected",false);
+				d3.select(this).classed("selected",true)
+
+				options.initial_condition=d;
+			});
+
 	d3.select("#formContainer ul#items").selectAll("li")
 		.data(support.items)
 		.enter()
@@ -305,9 +365,9 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 
 			sorting.addAlgorithm(
 				options.algorithm,
-				data[options.items],
-				options.color
-				
+				data[options.initial_condition][options.items],
+				options.color,
+				options.initial_condition
 			)
 		});
 
@@ -411,13 +471,9 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 		if(d.active)
 			sorting.addAlgorithm(
 				d.file,
-				//[15,4,23,12,56,2],
-				//[2,0,4,3,1],
-				//[1,1,1,1,1,1,1,1],
-				data[options.items],
-				//[7,6,0,2,1,4,5,8,9,3],
-				options.color
-				
+				data[options.initial_condition][options.items],
+				options.color,
+				options.initial_condition
 			);	
 	})
 });

@@ -4,6 +4,7 @@ define(["../support"], function(support) {
 	return {
 		"name":"Heapsort",
 		"complexity":"O(n log n)",
+		"wiki":"http://en.wikipedia.org/wiki/Heapsort",
 	    "code":function() {
 			var steps=[];
 			var comparisons=[];

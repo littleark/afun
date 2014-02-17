@@ -77,8 +77,8 @@ a:hover {
 }
 /**************** CONTENTS *****************/
 #contents {
-	max-width: 860px;
-	margin: 0 auto;
+	/*max-width: 860px;*/
+	margin: 50px auto 0;
 	font-family: 'PT Sans', sans-serif;
 	font-size: 15px;
 	font-weight: 400;
@@ -131,7 +131,7 @@ a:hover {
 #algorithms.size5 div.algorithm {
 	width: 20%;
 }
-#algorithms div.algorithm a.close{
+#algorithms div.algorithm a.icon{
 	position: absolute;
 	top: 5px;
 	right: 5px;
@@ -146,22 +146,27 @@ a:hover {
 	white-space: nowrap;
 	display: none;
 }
-#algorithms div.algorithm a.close span{
+#algorithms div.algorithm a.icon span{
 	display: none;
 	font-size: 9px;
 	line-height: 10px;
 	margin-top: 6px;
 	float: left;
 }
-#algorithms div.algorithm a.close:hover{
+#algorithms div.algorithm a.icon:hover{
 	color:gold;
 	background-color: #000;
 }
-#algorithms div.algorithm:hover a.close {
+#algorithms div.algorithm:hover a.icon {
 	display: block;
 }
-#algorithms div.algorithm a.close:hover span{
+#algorithms div.algorithm a.icon:hover span{
 	display: inline-block;
+}
+#algorithms div.algorithm a.icon.wiki {
+	top:25px;
+	right:6px;
+	width:67px;
 }
 #algorithms div.algorithm div.loading {
 	position: absolute;
@@ -203,11 +208,12 @@ a:hover {
 	display: block;
 	color:#fff;
 	text-transform: none;
-	font-size: 0.8em;
+	font-size: 0.75em;
 }
 .algorithm > div {
 	margin:0 auto;
 }
+
 /***************** ADD **********************/
 
 #algorithms div#add.algorithm {
@@ -215,7 +221,7 @@ a:hover {
 	font-size: 18px;
 	font-weight: 300;
 	border: 1px solid #000;
-	background-color: #070707;
+	background-color: #111;
 	overflow: hidden;
 
 	-webkit-transition: border-color 5000ms,background-color 1000ms;
@@ -304,7 +310,7 @@ a:hover {
 }
 #formContainer #form {
 	overflow: hidden;
-	height: 800px;
+	/*height: 800px;*/
 	border: 1px solid #666;
 	-webkit-transition: height 500ms;
 	-moz-transition: height 500ms;
@@ -333,7 +339,7 @@ a:hover {
 }
 #formContainer h5 {
 	font-size: 1.2em;
-	margin-bottom: 15px;
+	margin-bottom: 5px;
 	border-bottom: 1px solid #333;
 }
 
@@ -403,7 +409,7 @@ a.generate:hover span {
 }
 #formContainer ul {
 	list-style: none;
-	margin: 0 auto;
+	margin: 0 auto 30px;
 	padding: 0;
 	width: 100%;
 }
@@ -451,7 +457,8 @@ a.generate:hover span {
 	background: transparent url(../img/charts.png) no-repeat;
 }
 #formContainer ul#colors li,
-#formContainer ul#items li {
+#formContainer ul#items li,
+#formContainer ul#initial li {
 	float:left;
 	margin:0 10px;
 	display: block;
@@ -460,7 +467,8 @@ a.generate:hover span {
 	line-height: 30px;
 }
 #formContainer ul#colors li a,
-#formContainer ul#items li a {
+#formContainer ul#items li a,
+#formContainer ul#initial li a {
 	display: block;
 	min-width:36px;
 	height: 36px;
@@ -470,11 +478,13 @@ a.generate:hover span {
 	font-size: 1.2em;
 }
 #formContainer ul#colors li a:hover,
-#formContainer ul#items li a:hover {
+#formContainer ul#items li a:hover,
+#formContainer ul#initial li a:hover {
 	border:2px solid #fff;
 }
 #formContainer ul#colors li a.selected,
-#formContainer ul#items li a.selected {
+#formContainer ul#items li a.selected,
+#formContainer ul#initial li a.selected {
 	color:#fff;
 	border:2px solid #fff;
 }
@@ -631,7 +641,7 @@ svg #indicators g.indicator.visible path {
 	right: 0;
 	bottom: 0;
 	height:60px;
-	background-color:rgba(0,0,0,0.7);
+	background-color:rgba(0,0,0,0.8);
 	color:#fff;
 	text-align: center;
 }
@@ -944,7 +954,7 @@ div.algorithm:first-child .distance-chart svg text.title,
 	text-decoration: none;
 }
 #footer h1 a:hover {
-	color:#4fbeff;
+	color:gold;
 }
 
 #footer .social {
@@ -981,7 +991,7 @@ div.algorithm:first-child .distance-chart svg text.title,
 	text-decoration: none;
 }
 #footer #licence a:hover {
-	color:#4fbeff;
+	color:gold;
 }
 #footer #licence a.cc {
 	float:left;

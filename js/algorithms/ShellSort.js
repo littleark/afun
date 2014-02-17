@@ -4,6 +4,7 @@ define(["../support"], function(support) {
 	return {
 		"name":"Shell Sort",
 		"complexity":"Ciura, 2001",
+		"wiki":"http://en.wikipedia.org/wiki/Shellsort",
 	    "code":function() {
 			var steps=[];
 			var comparisons=[];

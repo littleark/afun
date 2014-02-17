@@ -4,6 +4,7 @@ define(["../support"], function(support) {
 	return {
 		"name":"Merge sort (in-place)",
 		"complexity":"O(n&sup2;)",
+		"wiki":"http://en.wikipedia.org/wiki/Merge_sort",
 	    "code":function() {
 			var steps=[];
 			var comparisons=[];

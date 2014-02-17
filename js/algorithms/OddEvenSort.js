@@ -4,6 +4,7 @@ define(["../support"], function(support) {
 	return {
 		"name":"OddEvensort",
 		"complexity":"O(n&sup2;)",
+		"wiki":"http://en.wikipedia.org/wiki/Odd–even_sort",
 	    "code":function() {
 			var steps=[];
 			var comparisons=[];

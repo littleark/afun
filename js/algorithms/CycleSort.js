@@ -4,6 +4,7 @@ define(["../support"], function(support) {
 	return {
 		"name":"CycleSort",
 		"complexity":"O(n&sup2;)",
+		"wiki":"http://en.wikipedia.org/wiki/Cycle_sort",
 	    "code":function() {
 			var steps=[];
 			var comparisons=[];

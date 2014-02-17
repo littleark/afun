@@ -4,6 +4,7 @@ define(["../support"], function(support) {
 	return {
 		"name":"Gnomesort",
 		"complexity":"O(n&sup2;)",
+		"wiki":"http://en.wikipedia.org/wiki/Gnome_sort",
 	    "code":function() {
 			var steps=[];
 			var comparisons=[];

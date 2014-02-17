@@ -243,7 +243,7 @@ define(["d3","./support"],function(d3,support,DistanceChart) {
 		max_inversions_bar.append("text")
 					.attr("x",-2)
 					.attr("dy","0.4em")
-					.text("MAX "+max_inversions);
+					.text(((max_inversions/100>1)?"":"MAX ")+max_inversions);
 
 		var starting_inversions_bar=xaxis.append("g")
 				.datum(-yscale(start_inversions))

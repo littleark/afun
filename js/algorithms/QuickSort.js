@@ -4,6 +4,7 @@ define(["../support"], function(support) {
 	return {
 		"name":"Quick Sort",
 		"complexity":"O(n log n)",
+		"wiki":"http://en.wikipedia.org/wiki/Quicksort",
 	    "code":function() {
 			var steps=[];
 			var comparisons=[];
