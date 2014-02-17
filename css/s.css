@@ -155,6 +155,7 @@ a:hover {
 }
 #algorithms div.algorithm a.close:hover{
 	color:gold;
+	background-color: #000;
 }
 #algorithms div.algorithm:hover a.close {
 	display: block;
@@ -799,6 +800,14 @@ svg #indicators g.indicator.visible path {
 	fill:#666;
 	font-size:11px;
 	text-anchor:start;
+	display: none;
+}
+div.algorithm:first-child .distance-chart svg text.title,
+#algorithms.size1 div.algorithm .distance-chart svg text.title {
+	display: block;
+}
+#algorithms.size3 div.algorithm .distance-chart svg text.title {
+	display: none !important;
 }
 .distance-chart svg text.title.x {
 	text-anchor:middle;

@@ -6,7 +6,7 @@ define(["d3","./support"],function(d3,support,DistanceChart) {
 
 		var container=options.container;
 		var width=options.width-options.margins.left-options.margins.right,
-			height=95;
+			height=100;
 		var goal=items[items.length-1].map(function(d){
 			if(typeof d.index != 'undefined') {
 				d.value=d.index;
@@ -16,6 +16,9 @@ define(["d3","./support"],function(d3,support,DistanceChart) {
 		//console.log("GOAL",goal)
 		var steps=[];
 		
+		options.margins.left=35;
+		options.margins.right=35;
+
 		items.forEach(function(d,i){
 			steps[i]=0;
 			d.forEach(function(item,index){
@@ -208,27 +211,15 @@ define(["d3","./support"],function(d3,support,DistanceChart) {
 			    .attr("class", "xaxis")
 			    .attr("transform", "translate(0," + 0 + ")");
 
-		var max_inversions_bar=xaxis.append("g")
-				.datum((-yscale(items[0].length*(items[0].length-1)/2)))
-				.attr("class","inversions-bar")
-					.attr("transform",function(d){
-						return "translate("+width+","+d+")"
-					});
-		//alert(xscale(maxOperations)+" vs "+width)
-		max_inversions_bar.append("line")
-					.attr("x2",-width)
-					
-		max_inversions_bar.append("text")
-					.attr("x",0)
-					.attr("dy","-0.4em")
-					.text("MAX "+items[0].length*(items[0].length-1)/2);
+		
 
 		chart.append("text")
 					.attr("class","title")
-					.attr("x",0)
-					.attr("y",-yscale(items[0].length*(items[0].length-1)/2))
-					.attr("dy","-0.4em")
-					.text("INVERSIONS");
+					.attr("x",0)//width/2)
+					.attr("y",-yscale(items[0].length*(items[0].length-1)/2)-10)
+					//.attr("dy","-0.4em")
+					//.style("text-anchor","middle")
+					.text("INVERSIONS CHART");
 
 		chart.append("text")
 					.attr("class","title x")
@@ -236,43 +227,61 @@ define(["d3","./support"],function(d3,support,DistanceChart) {
 					.attr("y",30)
 					.text("OPERATIONS");
 
-		var starting_inversions_bar=xaxis.append("g")
-				.datum(-yscale(operations[0].inversions))
+		var max_inversions=items[0].length*(items[0].length-1)/2,
+			start_inversions=operations[0].inversions;
+
+		var max_inversions_bar=xaxis.append("g")
+				.datum(-yscale(max_inversions))
 				.attr("class","inversions-bar")
 					.attr("transform",function(d){
-						return "translate("+width+","+d+")"
+						return "translate("+0+","+d+")"
+					});
+		//alert(xscale(maxOperations)+" vs "+width)
+		max_inversions_bar.append("line")
+					.attr("x2",width)
+					
+		max_inversions_bar.append("text")
+					.attr("x",-2)
+					.attr("dy","0.4em")
+					.text("MAX "+max_inversions);
+
+		var starting_inversions_bar=xaxis.append("g")
+				.datum(-yscale(start_inversions))
+				.attr("class","inversions-bar")
+					.attr("transform",function(d){
+						return "translate("+0+","+d+")"
 					});
 
 		starting_inversions_bar.append("line")
-					.attr("x2",-width)
-		
-
+					.attr("x2",width)
 
 		starting_inversions_bar.append("text")
-					.attr("x",0)
+					.attr("x",-2)
+					.attr("y",0)
 					.attr("y",function(){
-						var y=(yscale(operations[0].inversions)),
-							y_max=(yscale(items[0].length*(items[0].length-1)/2)),
+						var y=(yscale(start_inversions)),
+							y_max=(yscale(max_inversions)),
 							delta=0;
 
 						if(y_max-y<15) {
-							delta=16;
+							delta=10;//16;
 						}
 
 						return delta;
 					})
-					.attr("dy","-0.4em")
-					.text("START "+operations[0].inversions);
+					.attr("dy","0.4em")
+					.text((start_inversions!=max_inversions && start_inversions>0)?start_inversions:"");
 
-		/*
+		
 		var zero_inversions_bar=xaxis.append("g")
 				.attr("class","inversions-bar")
-					.attr("transform","translate("+width+","+(-yscale(0))+")");
+					.attr("transform","translate("+0+","+(-yscale(0))+")");
 
 		zero_inversions_bar.append("text")
-					.attr("x",4)
+					.attr("x",-2)
+					.attr("dy","-0.2em")
 					.text(0);
-		*/
+		
 		xaxis
 			.call(xAxis)
 			.selectAll(".tick")
@@ -384,19 +393,20 @@ define(["d3","./support"],function(d3,support,DistanceChart) {
 			xaxis
 				.call(xAxis)
 
+
 			max_inversions_bar
-				.attr("transform",function(d){
+				/*.attr("transform",function(d){
 					return "translate("+width+","+d+")"
-				})
+				})*/
 				.select("line")
-					.attr("x2",-width)
+					.attr("x2",width)
 
 			starting_inversions_bar
-				.attr("transform",function(d){
+				/*.attr("transform",function(d){
 					return "translate("+width+","+d+")"
-				})
+				})*/
 				.select("line")
-					.attr("x2",-width)
+					.attr("x2",width)
 
 			chart.select("text.x")
 					.attr("x",width/2);

@@ -2,8 +2,8 @@ define(["../support"], function(support) {
 	swap=support.swap;
 	addStep=support.addStep;
 	return {
-		"name":"ShellSort",
-		"complexity":"O(n&sup2;)",
+		"name":"Shell Sort",
+		"complexity":"Ciura, 2001",
 	    "code":function() {
 			var steps=[];
 			var comparisons=[];

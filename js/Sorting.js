@@ -20,7 +20,7 @@ define(["d3","AlgorithmView3","distribution","support"],function(d3,AlgorithmVie
 			}
 		});
 
-		var sorting=options.sorting || [];
+		var sorting=[];//options.sorting || [];
 
 		var algoviz={};
 
@@ -90,17 +90,6 @@ define(["d3","AlgorithmView3","distribution","support"],function(d3,AlgorithmVie
 				var algorithms=algorithms_container
 					.selectAll("div.algorithm:not(#add)")
 						.data(sorting);
-						/*.data(sorting,function(d,i){
-							return d+"_"+i;
-						});*/
-						/*
-						.data(sorting.map(function(d,i){
-							return {
-								fn:d,
-								name:d+"_"+i
-							}
-						}))
-						*/
 
 				var new_algorithms=algorithms.enter()
 							//.append("div")
@@ -108,16 +97,10 @@ define(["d3","AlgorithmView3","distribution","support"],function(d3,AlgorithmVie
 							.attr("class","algorithm")
 							.attr("id",function(d,i){
 								return d.name;
-								//return d+"_"+i;
 							})
 							.attr("rel",function(d){
 								return d.name;
 							});
-				/*
-				new_algorithms.each(function(d){
-					sorting.push(d.name);
-				})
-				*/
 
 				new_algorithms
 					.append("h2")

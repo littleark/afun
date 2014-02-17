@@ -39,18 +39,19 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 		data[d]=shuffle(d3.range(d));
 		//data[d]=data100.slice(0,d);//filter(function(el,i){return i<d;});
 	});
+	//data[3]=[1,2,3]
 	//data[10]=[0,1,2]
-	data[10]=[5,4,3,2,1,5,4,3,2,1]
+	//data[10]=[5,4,3,2,1,5,4,3,2,1]
 	//data[10]=[9,8,7,6, 5, 4, 3,  2, 1, 0]
 	window.sorting=new Sorting({
 		container:"#algorithms",
 		//sorting:["quicksort","mergesort","smoothsort"],
-		sorting:[],
+		//sorting:[],
 		//data:([0,2,3,4,5,6,19,7,8,9,10,12,16,13,14,15,17,18,20,21,11,22,23,24,25,26,27,28,29,1,30])
 		//data:shuffle([0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9])
 		//data:shuffle([0,1,2,3,3,4,5,1,1,1,1,1,1,1,2,2,2,2,3,3,3])
 		//data:shuffle(d3.range(10))
-		data:[1,1,1,1,1,1,1,1]
+		//data:[1,1,1,1,1,1,1,1]
 		//data:data[10]
 	});
 
@@ -78,7 +79,7 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 			name:"Heap Sort",
 			file:"HeapSort",
 			O:"O(n log n)",
-			active:false
+			active:true
 		},
 		{
 			name:"Merge Sort (in-place)",
@@ -101,13 +102,13 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 		{
 			name:"Shell Sort",
 			file:"ShellSort",
-			O:"O(n&sup2;)",
+			O:"",
 			active:false
 		},
 		{
 			name:"Cycle Sort",
 			file:"CycleSort",
-			O:"O(n) - O(n&sup2;)",
+			O:"O(n&sup2;)",
 			active:false
 		},
 		{
