@@ -1,8 +1,8 @@
 require.config({
     urlArgs: "t=" + (new Date()).getTime(),
 	paths: {
-		d3: "http://d3js.org/d3.v3.min"
-		//d3: "js/vendors/d3.v3.min"
+		//d3: "http://d3js.org/d3.v3.min"
+		d3: "js/vendors/d3.v3.min"
 	}
 });
 //require(["vendors/d3.v3.min","Sorting","support"], function(d3,Sorting,support) {
@@ -123,7 +123,7 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 			name:"Heap Sort",
 			file:"HeapSort",
 			O:"O(n log n)",
-			active:false
+			active:true
 		},
 		{
 			name:"Smooth Sort",
