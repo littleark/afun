@@ -814,7 +814,7 @@ svg #indicators g.indicator.visible path {
 #header ul#layout {
 	list-style: none;
 	float: right;
-	margin: 8px 12px 0 0;
+	margin: 8px 20px 0 0;
 	padding: 0;
 }
 #header ul#layout li {
