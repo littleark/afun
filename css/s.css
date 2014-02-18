@@ -87,6 +87,7 @@ div#logo {
 
 }
 div#logo span {
+	font-family: Arial,sans-serif;
 	position: absolute;
 	width:1px;
 	text-align: center;
@@ -101,27 +102,26 @@ div#logo span {
 	transition: left 500ms;
 }
 div#logo span.s1 {
-	font-size: 37px;
+	font-size: 27px;
 	left: 5px;
-	margin-left: -7px;
+	margin-left: -10px;
 }
 div#logo span.s2 {
-	font-size: 59px;
-	left: 20px;
-	margin-left: -11px;
-	color:khaki;
+	font-size: 46px;
+	left: 19px;
+	margin-left: -12px;
+	color: khaki
 }
 div#logo span.s3 {
-	font-size: 94px;
+	font-size: 66px;
 	left: 39px;
-	margin-left: -17px;
-	margin-top: -1px;
-	color:gold;
+	margin-left: -16px;
+	color: gold;
 }
 
 h1:hover div#logo span.s1,
 h1.init div#logo span.s1 {
-	left: 22px;
+	left: 24px;
 }
 h1:hover div#logo span.s2,
 h1.init div#logo span.s2 {
@@ -1054,6 +1054,7 @@ div.algorithm:first-child .distance-chart svg text.title,
 }
 #footer #logo span {
 	font-family: inherit;
+	font-family: Arial,sans-serif;
 }
 #footer h1{
 	text-align: center;
