@@ -87,7 +87,7 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 			name:"Quick Sort",
 			file:"QuickSort3",
 			O:"O(n log n)",
-			active:false
+			active:true
 		},
 		{
 			name:"Quick Sort 3-way",
@@ -99,13 +99,13 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 			name:"Heap Sort",
 			file:"HeapSort",
 			O:"O(n log n)",
-			active:false
+			active:true
 		},
 		{
 			name:"Smooth Sort",
 			file:"SmoothSort",
 			O:"O(n log n)",
-			active:true
+			active:false
 		},
 		{
 			name:"Shell Sort",
