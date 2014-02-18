@@ -467,12 +467,6 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 			
 		});
 
-	if(touch) {
-		d3.selectAll("a")
-			.on("click",function(d,i){
-				d3.event.preventDefault();
-			}
-	}
 
 	algorithms.forEach(function(d){
 		if(d.active) {
