@@ -996,7 +996,7 @@ div.algorithm:first-child .distance-chart svg text.title,
 	stroke-width: 0;
 	stroke-opacity: 0;
 	fill: #fff;
-	fill-opacity: 0.05;
+	fill-opacity: 0.1;
 }
 
 .distance-chart svg .xaxis g.inversions-bar line{

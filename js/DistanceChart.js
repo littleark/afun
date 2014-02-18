@@ -114,7 +114,7 @@ define(["d3","./support"],function(d3,support,DistanceChart) {
 
 		var xscale=d3.scale.linear().domain([0,maxOperations]).rangeRound([0,width]),
 			//yscale=d3.scale.linear().domain([0,d3.max(inversions)]).range([0,50])
-			yscale=d3.scale.linear().domain([0,items[0].length*(items[0].length-1)/2]).range([0,50])
+			yscale=d3.scale.linear().domain([0,items[0].length*(items[0].length-1)/2]).rangeRound([0,50])
 
 		var svg=container.append("div")
 					.attr("class","distance-chart")
