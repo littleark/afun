@@ -216,11 +216,11 @@ define(["d3","./support"],function(d3,support,DistanceChart) {
 
 		chart.append("text")
 					.attr("class","title")
-					.attr("x",0)//width/2)
+					.attr("x",-options.margins.left)//width/2)
 					.attr("y",-yscale(items[0].length*(items[0].length-1)/2)-10)
 					//.attr("dy","-0.4em")
 					//.style("text-anchor","middle")
-					.text("INVERSIONS CHART");
+					.text("INVERSIONS");
 
 		chart.append("text")
 					.attr("class","title x")
