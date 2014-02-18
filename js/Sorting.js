@@ -136,6 +136,20 @@ define(["d3","AlgorithmView3","support"],function(d3,AlgorithmView,support) {
 						return d.wiki;
 					})
 
+				new_algorithms
+					.append("a")
+					.attr("class","icon help")
+					.attr("title",function(d){
+						return "How to read it?";
+					})
+					.attr("target","_blank")
+					.html("<span>how to read</span> <i class=\"icon-help\"></i>")
+					.attr("href","#")
+					.on("click",function(d){
+						d3.event.preventDefault();
+						d3.select("#overlay").classed("visible",true)
+					})
+
 				new_algorithms.each(function(d,i){
 
 					console.log("using data",data.length)

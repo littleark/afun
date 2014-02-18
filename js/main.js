@@ -453,6 +453,14 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 			
 		});
 
+	d3.select("#overlay .close")
+		.on("click",function(d,i){
+			d3.event.preventDefault();
+
+			d3.select("#overlay").classed("visible",false)
+			
+		});
+
 	algorithms.forEach(function(d){
 		if(d.active) {
 			sorting.addAlgorithm(
