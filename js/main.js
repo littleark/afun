@@ -213,9 +213,7 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 	
 	var click_event=support.isTouchDevice()?"mousedown":"click";
 
-	d3.select("body").classed("touch",support.isTouchDevice());
-
-	alert(click_event)
+	d3.select("body").classed("touch",support.isTouchDevice()).classed("no-touch",!support.isTouchDevice())
 
 	d3.select("#add a.plus").on(click_event,function(){
 		d3.event.preventDefault();

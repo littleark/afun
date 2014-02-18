@@ -54,7 +54,7 @@ body {
 a {
 	color:inherit;
 }
-a:hover {
+.no-touch a:hover {
 	color:gold;
 }
 #wrapper {
@@ -119,15 +119,15 @@ div#logo span.s3 {
 	color: gold;
 }
 
-h1:hover div#logo span.s1,
+.no-touch h1:hover div#logo span.s1,
 h1.init div#logo span.s1 {
 	left: 24px;
 }
-h1:hover div#logo span.s2,
+.no-touch h1:hover div#logo span.s2,
 h1.init div#logo span.s2 {
 	left: 39px;
 }
-h1:hover div#logo span.s3,
+.no-touch h1:hover div#logo span.s3,
 h1.init div#logo span.s3 {
 	left:5px;
 }
@@ -175,7 +175,7 @@ h1.init div#logo span.s3 {
 	border: 1px solid #000;
 	padding: 5px 0;
 }
-#algorithms div.algorithm:hover {
+.no-touch #algorithms div.algorithm:hover {
 	border: 1px solid #666;
 }
 #algorithms.size1 div.algorithm {
@@ -215,14 +215,14 @@ h1.init div#logo span.s3 {
 	margin-top: 6px;
 	float: left;
 }
-#algorithms div.algorithm a.icon:hover{
+.no-touch #algorithms div.algorithm a.icon:hover{
 	color:gold;
 	background-color: #000;
 }
-#algorithms div.algorithm:hover a.icon {
+.no-touch #algorithms div.algorithm:hover a.icon {
 	display: block;
 }
-#algorithms div.algorithm a.icon:hover span{
+.no-touch #algorithms div.algorithm a.icon:hover span{
 	display: inline-block;
 }
 #algorithms div.algorithm a.icon.wiki {
@@ -268,7 +268,7 @@ h1.init div#logo span.s3 {
 #algorithms.size5 div.algorithm h2 {
 	font-size: 12px;
 }
-#algorithms div.algorithm:hover h2 {
+.no-touch #algorithms div.algorithm:hover h2 {
 	color: gold;
 }
 #algorithms div.algorithm h2 span {
@@ -297,7 +297,7 @@ h1.init div#logo span.s3 {
 	-o-transition: border-color 5000ms,background-color 1000ms;
 	transition: border-color 5000ms,background-color 1000ms;
 }
-#algorithms div#add:hover {
+.no-touch #algorithms div#add:hover {
 	border: 1px solid #666;
 	background-color: #000;
 
@@ -348,7 +348,7 @@ h1.init div#logo span.s3 {
 	text-align: center;
 	line-height: 40px;
 }
-#algorithms div#add:hover a.plus span {
+.no-touch #algorithms div#add:hover a.plus span {
 	color:gold;
 	border: 3px solid gold;
 }
@@ -364,7 +364,7 @@ h1.init div#logo span.s3 {
 	text-transform: uppercase;
 	margin: 0;
 }
-#algorithms div#add:hover h4 {
+.no-touch #algorithms div#add:hover h4 {
 	visibility: visible;
 }
 
@@ -414,7 +414,7 @@ h1.init div#logo span.s3 {
 	color:#fff;
 	text-decoration: none;
 }
-#formContainer a:hover {
+.no-touch #formContainer a:hover {
 	color:gold;
 	text-decoration: none;
 }
@@ -448,7 +448,7 @@ a.generate {
 	text-transform: uppercase;
 	margin: 0;
 }
-#formContainer #form a.generate:hover h4 {
+.no-touch #formContainer #form a.generate:hover h4 {
 	color:gold;
 }
 a.generate span {
@@ -470,7 +470,7 @@ a.generate span i {
 .collapsed a.generate {
 	display: none;
 }
-a.generate:hover span {
+.no-touch a.generate:hover span {
 	color:gold;
 	border: 3px solid gold;
 }
@@ -504,7 +504,7 @@ a.generate:hover span {
 	font-size: 14px;
 	color:#f0f0f0;
 }
-#formContainer ul#algs li a:hover {
+.no-touch #formContainer ul#algs li a:hover {
 	border:2px solid #fff;
 }
 #formContainer ul#algs li a.selected {
@@ -544,9 +544,9 @@ a.generate:hover span {
 	border:2px solid #000;
 	font-size: 1.2em;
 }
-#formContainer ul#colors li a:hover,
-#formContainer ul#items li a:hover,
-#formContainer ul#initial li a:hover {
+.no-touch #formContainer ul#colors li a:hover,
+.no-touch #formContainer ul#items li a:hover,
+.no-touch #formContainer ul#initial li a:hover {
 	border:2px solid #fff;
 }
 #formContainer ul#colors li a.selected,
@@ -760,7 +760,7 @@ svg #indicators g.indicator.visible path {
 #controls li.c2 a {
 	font-size: 18px;
 }
-#controls ul li a:hover {
+.no-touch #controls ul li a:hover {
 	color:gold;
 }
 #controls ul#c1 li a i {
@@ -793,7 +793,7 @@ svg #indicators g.indicator.visible path {
 	color:#666;
 	visibility: hidden;
 }
-#controls ul li a:hover span {
+.no-touch #controls ul li a:hover span {
 	color:gold;
 	visibility: visible;
 }
@@ -838,7 +838,7 @@ svg #indicators g.indicator.visible path {
 	color:#666;
 	margin-right: 5px;
 }
-#header ul#layout a:hover {
+.no-touch #header ul#layout a:hover {
 	color:gold !important;
 }
 #header ul#layout a.selected {
@@ -951,14 +951,14 @@ div.algorithm:first-child .distance-chart svg text.title,
 .distance-chart svg .tick {
 	cursor: pointer;
 }
-.distance-chart svg .tick rect.hover {
+.no-touch .distance-chart svg .tick rect.hover {
 	fill:#ff0000;
 	fill-opacity:0;
 }
-.distance-chart svg .tick:hover text {
+.no-touch .distance-chart svg .tick:hover text {
 	fill:#fff;
 }
-.distance-chart svg .tick:hover line {
+.no-touch .distance-chart svg .tick:hover line {
 	stroke:#fff;
 }
 
@@ -1082,7 +1082,7 @@ div.algorithm:first-child .distance-chart svg text.title,
 	color: #fff;
 	text-decoration: none;
 }
-#footer h1 a:hover {
+.no-touch #footer h1 a:hover {
 	color:gold;
 }
 
@@ -1095,7 +1095,7 @@ div.algorithm:first-child .distance-chart svg text.title,
 	color:#aaa;
 	text-decoration: none;
 }
-#footer .social a:hover {
+.no-touch #footer .social a:hover {
 	color:gold;
 }
 #footer .social a span {
@@ -1119,7 +1119,7 @@ div.algorithm:first-child .distance-chart svg text.title,
 	color:#aaa;
 	text-decoration: none;
 }
-#footer #licence a:hover {
+.no-touch #footer #licence a:hover {
 	color:gold;
 }
 #footer #licence a.cc {
