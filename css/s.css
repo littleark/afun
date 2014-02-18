@@ -364,7 +364,8 @@ h1.init div#logo span.s3 {
 	text-transform: uppercase;
 	margin: 0;
 }
-.no-touch #algorithms div#add:hover h4 {
+.no-touch #algorithms div#add:hover h4,
+#algorithms div#add:active h4 {
 	visibility: visible;
 }
 
