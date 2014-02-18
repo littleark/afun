@@ -229,12 +229,12 @@ h1.init div#logo span.s3 {
 	display: inline-block;
 }
 #algorithms div.algorithm a.icon.wiki {
-	top:25px;
+	top:30px;
 	right:6px;
 	width:67px;
 }
 #algorithms div.algorithm a.icon.help {
-	top: 44px;
+	top: 54px;
 	right: 6px;
 	width: 78px;
 }

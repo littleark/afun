@@ -211,7 +211,7 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 	  };
 	}
 	var touch=support.isTouchDevice();
-	var click_event=touch?"mousedown":"click";
+	var click_event=touch?"click":"click";
 
 	d3.select("body").classed("touch",touch).classed("no-touch",!touch)
 
@@ -467,7 +467,6 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 			
 		});
 
-
 	algorithms.forEach(function(d){
 		if(d.active) {
 			sorting.addAlgorithm(
@@ -479,5 +478,7 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 			);
 		}
 	})
+
+
 
 });
