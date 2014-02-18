@@ -32,6 +32,8 @@ define(["d3","AlgorithmView3","support"],function(d3,AlgorithmView,support) {
 
 		var functions={}
 
+		var click_event=support.isTouchDevice()?"mousedown":"click";
+
 		function setData(data) {
 			
 			return data.map(function(d,i){
@@ -116,7 +118,7 @@ define(["d3","AlgorithmView3","support"],function(d3,AlgorithmView,support) {
 								return "Remove "+(algorithm.name || d.name);
 							})
 							.html("<span>remove</span> <i class=\"icon-cancel\"></i>")
-							.on("click",function(d){
+							.on(click_event,function(d){
 								d3.event.preventDefault();
 								self.removeAlgorithm(d.name);
 							})
@@ -145,7 +147,7 @@ define(["d3","AlgorithmView3","support"],function(d3,AlgorithmView,support) {
 					.attr("target","_blank")
 					.html("<span>how to read</span> <i class=\"icon-help\"></i>")
 					.attr("href","#")
-					.on("click",function(d){
+					.on(click_event,function(d){
 						d3.event.preventDefault();
 						d3.select("#overlay").classed("visible",true)
 					})

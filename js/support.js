@@ -66,6 +66,12 @@ define(
 			return [curleft,curtop];
 		}
 
+		function isTouchDevice() {
+
+		    return (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch);
+
+		};
+
 		return {
 			addStep:addStep,
 			swap:swap,
@@ -90,7 +96,8 @@ define(
 				"nrl": "nearly sorted",
 				"rvr": "reversed sorted",
 				"few": "few unique"
-			}
+			},
+			isTouchDevice:isTouchDevice
 		}
 	}
 );

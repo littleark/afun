@@ -211,8 +211,11 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 	  };
 	}
 	
+	var click_event=support.isTouchDevice()?"mousedown":"click";
 
-	d3.select("#add a.plus").on("click",function(){
+	d3.select("body").classed("touch",support.isTouchDevice());
+
+	d3.select("#add a.plus").on(click_event,function(){
 		d3.event.preventDefault();
 		d3.select("#formContainer").classed("collapsed",false);
 		
@@ -229,7 +232,7 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 		
 		
 	});
-	d3.select("#formContainer a.close").on("click",function(){
+	d3.select("#formContainer a.close").on(click_event,function(){
 		d3.event.preventDefault();
 		d3.select("#formContainer").classed("collapsed",!d3.select("#formContainer").classed("collapsed"))
 
@@ -257,7 +260,7 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 				.classed("selected",function(d,i){
 					return d.file=="QuickSort";
 				})
-				.on("click",function(d,i){
+				.on(click_event,function(d,i){
 					d3.event.preventDefault();
 
 					console.log(d);
@@ -284,7 +287,7 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 				.style("background-color",function(d){
 					return d3.rgb("hsl("+d.value+")").toString();
 				})
-				.on("click",function(d,i){
+				.on(click_event,function(d,i){
 					d3.event.preventDefault();
 
 					console.log(d);
@@ -298,7 +301,7 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 	d3.select("#formContainer ul#initial").selectAll("li")
 			.data(d3.keys(data))
 			.select("a")
-			.on("click",function(d,i){
+			.on(click_event,function(d,i){
 				d3.event.preventDefault();
 
 				console.log(d);
@@ -324,7 +327,7 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 				.text(function(d){
 					return d;
 				})
-				.on("click",function(d,i){
+				.on(click_event,function(d,i){
 					d3.event.preventDefault();
 
 					console.log(d,this,this.parentNode);
@@ -336,7 +339,7 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 				});
 
 	d3.select("#formContainer .generate")
-		.on("click",function(d,i){
+		.on(click_event,function(d,i){
 			d3.event.preventDefault();
 
 			var position=support.findPos(d3.select("#add").node());
@@ -376,7 +379,7 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 		sorting.pause();
 	});
 	d3.select("#controls #back")
-		.on("click",function(d,i){
+		.on(click_event,function(d,i){
 			d3.event.preventDefault();
 
 			sorting.prevStep();
@@ -385,7 +388,7 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 			
 		});
 	d3.select("#controls #forward")
-		.on("click",function(d,i){
+		.on(click_event,function(d,i){
 			d3.event.preventDefault();
 
 			sorting.nextStep();
@@ -395,7 +398,7 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 			
 		});
 	d3.select("#controls #play")
-		.on("click",function(d,i){
+		.on(click_event,function(d,i){
 			d3.event.preventDefault();
 			var running=sorting.getStatus();
 			
@@ -410,7 +413,7 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 		});
 
 	d3.select("#controls #fastback")
-		.on("click",function(d,i){
+		.on(click_event,function(d,i){
 			d3.event.preventDefault();
 
 			sorting.pause(null,function(){
@@ -424,7 +427,7 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 		});
 
 	d3.select("#controls #fastforward")
-		.on("click",function(d,i){
+		.on(click_event,function(d,i){
 			d3.event.preventDefault();
 
 			sorting.pause(null,function(){
@@ -437,7 +440,7 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 		});
 
 	d3.selectAll("#layout a.size")
-		.on("click",function(d,i){
+		.on(click_event,function(d,i){
 			d3.event.preventDefault();
 
 			d3.selectAll("#layout a.size").classed("selected",function(l,j){
@@ -448,7 +451,7 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 			
 		});
 	d3.select("#layout a.items")
-		.on("click",function(d,i){
+		.on(click_event,function(d,i){
 			d3.event.preventDefault();
 
 			d3.select(this).classed("selected",!d3.select(this).classed("selected"));
@@ -457,7 +460,7 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 		});
 
 	d3.select("#overlay .close")
-		.on("click",function(d,i){
+		.on(click_event,function(d,i){
 			d3.event.preventDefault();
 
 			d3.select("#overlay").classed("visible",false)
