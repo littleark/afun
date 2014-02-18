@@ -210,10 +210,10 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 	    };
 	  };
 	}
-	
-	var click_event=support.isTouchDevice()?"mousedown":"click";
+	var touch=support.isTouchDevice();
+	var click_event=touch?"mousedown":"click";
 
-	d3.select("body").classed("touch",support.isTouchDevice()).classed("no-touch",!support.isTouchDevice())
+	d3.select("body").classed("touch",touch).classed("no-touch",!touch)
 
 	d3.select("#add a.plus").on(click_event,function(){
 		d3.event.preventDefault();
@@ -466,6 +466,13 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 			d3.select("#overlay").classed("visible",false)
 			
 		});
+
+	if(touch) {
+		d3.selectAll("a")
+			.on("click",function(d,i){
+				d3.event.preventDefault();
+			}
+	}
 
 	algorithms.forEach(function(d){
 		if(d.active) {
