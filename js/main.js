@@ -215,6 +215,8 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 
 	d3.select("body").classed("touch",support.isTouchDevice());
 
+	alert(click_event)
+
 	d3.select("#add a.plus").on(click_event,function(){
 		d3.event.preventDefault();
 		d3.select("#formContainer").classed("collapsed",false);
