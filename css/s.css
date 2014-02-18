@@ -208,6 +208,9 @@ h1.init div#logo span.s3 {
 	white-space: nowrap;
 	display: none;
 }
+.touch #algorithms div.algorithm a.icon {
+	display: block;
+}
 #algorithms div.algorithm a.icon span{
 	display: none;
 	font-size: 9px;
@@ -365,8 +368,9 @@ h1.init div#logo span.s3 {
 	margin: 0;
 }
 .no-touch #algorithms div#add:hover h4,
-#algorithms div#add:active h4 {
+.touch #algorithms div#add h4 {
 	visibility: visible;
+	color:#999;
 }
 
 /***************** ADD **********************/
@@ -744,6 +748,9 @@ svg #indicators g.indicator.visible path {
 #controls ul#c1 {
 	width: 200px;
 }
+.touch #controls ul#c1 {
+	width: 250px;
+}
 #controls ul#c2 {
 	width: 80px;
 }
@@ -757,6 +764,9 @@ svg #indicators g.indicator.visible path {
 	display: block;
 	width:40px;
 	font-size: 22px;
+}
+.touch #controls ul li a {
+	width:50px;
 }
 #controls li.c2 a {
 	font-size: 18px;
@@ -793,6 +803,9 @@ svg #indicators g.indicator.visible path {
 	text-transform: uppercase;
 	color:#666;
 	visibility: hidden;
+}
+.touch #controls ul li a span {
+	visibility: visible;
 }
 .no-touch #controls ul li a:hover span {
 	color:gold;
