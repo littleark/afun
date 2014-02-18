@@ -111,7 +111,7 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 		
 
 		var div=d3.select(container)
-					.attr("class","algorithm")
+					.attr("class","algorithm i"+items[0].length)
 					.classed("hidden",!options.items_visible)
 					.append("div")
 						.style("width",WIDTH+"px");
@@ -394,9 +394,6 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 			HEIGHT=Math.floor(OHEIGHT/factor);
 
 			d3.select(container)
-				.classed("size1",factor===1)
-				.classed("size2",factor===2)
-				.classed("size3",factor===3)
 				.select("div")
 					.style("width",WIDTH+"px")
 
@@ -624,7 +621,7 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 					.text(tmp.value)
 
 			//return;
-			
+
 			if(tmp.pos>-1) {
 				circles
 					.filter(function(d){

@@ -192,6 +192,7 @@ define(["d3","./support"],function(d3,support,DistanceChart) {
 					    .scale(xscale)
 					    .orient("bottom")
 					    .tickFormat(d3.format(",.0f"))
+					    .ticks(10)
 					    //.tickFormat(function(d){
 					    //	return d3.format(",.0f")(operations[d].i);
 					    //})

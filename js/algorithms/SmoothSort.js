@@ -125,7 +125,8 @@ define(["../support"], function(support) {
 
 		        addStep(steps,mstepson,m.indexOf(mstepson),head,comparisons[comparisons.length-1],{
 		        	value:val.value,
-		        	pos:val_old_pos
+		        	pos:val_old_pos,
+				    id:val.id
 		        });
 		        m[head] = mstepson;
 		        
@@ -195,7 +196,8 @@ define(["../support"], function(support) {
 					steps.push([]);
 					addStep(steps,mlf,m.indexOf(mlf),head,comparisons[comparisons.length-1],{
 						value:val.value,
-						pos:val_old_pos
+						pos:val_old_pos,
+				    	id:val.id
 					});
 					m[head] = mlf;
 

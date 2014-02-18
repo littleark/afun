@@ -1,4 +1,4 @@
-define(["d3","AlgorithmView3","distribution","support"],function(d3,AlgorithmView,Distribution,support) {
+define(["d3","AlgorithmView3","support"],function(d3,AlgorithmView,support) {
 	function Sorting(options) {
 
 		var self=this;
@@ -8,7 +8,6 @@ define(["d3","AlgorithmView3","distribution","support"],function(d3,AlgorithmVie
 
 		var SIZE_FACTOR=2;
 
-		//var data=setData(options.data) || [],
 		var	container=options.container || "#algorithms",
 			algorithms_container=d3.select(container).classed("size"+SIZE_FACTOR,true);;
 
@@ -20,7 +19,7 @@ define(["d3","AlgorithmView3","distribution","support"],function(d3,AlgorithmVie
 			}
 		});
 
-		var sorting=[];//options.sorting || [];
+		var sorting=[];
 
 		var algoviz={};
 
@@ -73,7 +72,6 @@ define(["d3","AlgorithmView3","distribution","support"],function(d3,AlgorithmVie
 		}
 
 		this.addAlgorithm=function(fn,data,color,initial_condition,callback) {
-			//data=[1,2,0,22,1,2,4,35,1,2,0,1]
 			
 			require(["algorithms/"+fn,"support"], function(algorithm,support) {
 				
@@ -93,7 +91,6 @@ define(["d3","AlgorithmView3","distribution","support"],function(d3,AlgorithmVie
 						.data(sorting);
 
 				var new_algorithms=algorithms.enter()
-							//.append("div")
 							.insert("div","div#add")
 							.attr("class","algorithm")
 							.attr("id",function(d,i){
@@ -110,12 +107,6 @@ define(["d3","AlgorithmView3","distribution","support"],function(d3,AlgorithmVie
 					})
 					.append("span")
 						.html(data.length+" "+support.initial_conditions[initial_condition]+" elements")
-						//.html(" "+(algorithm.complexity || ""))
-
-				
-
-				
-				//console.log(fn,new_algorithms)
 
 				var close=new_algorithms
 						.append("a")
@@ -157,10 +148,7 @@ define(["d3","AlgorithmView3","distribution","support"],function(d3,AlgorithmVie
 
 					console.log("DISTANCE",distance,items[0].length)
 
-					//var self=this;
 					algoviz[d.name]=
-
-					//algoviz.push(
 						new AlgorithmView({
 							name:d.name,
 							container:"#"+d3.select(this).attr("id"),
@@ -184,35 +172,16 @@ define(["d3","AlgorithmView3","distribution","support"],function(d3,AlgorithmVie
 								console.log("CHECKING ALL SORTED",allSorted())
 								if (allSorted()) {
 									
-									//self.pause();
 									running=0;									
 									document.dispatchEvent(evt);
 								}
 							},
 							callback:function(){
-								/*
-								setTimeout(function(){
-									if(running<0) {
-										self.start();
-									};
-									if(i==new_algorithms.length-1) {
-										console.log("RENDER")	
-									}
-								},0);									
-								*/
-
+								
+								if(callback)
+									callback();
 							}
 						});
-
-						new Distribution({
-							name:d.name,
-							steps:steps[d.name]
-						});
-
-
-					//)
-
-					
 
 				});
 

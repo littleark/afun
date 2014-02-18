@@ -6,12 +6,8 @@ require.config({
 		d3: "//cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.min"
 	}
 });
-//require(["vendors/d3.v3.min","Sorting","support"], function(d3,Sorting,support) {
 
 require(["d3","Sorting","support"], function(d3,Sorting,support) {
-	////d3js.org/d3.v3.min.js
-	//cdnjs.cloudflare.com/ajax/libs/d3/3.3.13/d3.min.js
-
 
 	(function () {
 	  function CustomEvent ( event, params ) {
@@ -27,7 +23,6 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 	})();
 
 	function shuffle(o){ //v1.0
-		//console.log("shuffling")
 		for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
 		return o;
 	};
@@ -83,36 +78,16 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 	
 	console.log(data)
 
-
-	//data[3]=[1,2,3]
-	//data[10]=[0,1,2]
-	//data[10]=[5,4,3,2,1,5,4,3,2,1]
-	//data[10]=[9,8,7,6, 5, 4, 3,  2, 1, 0]
 	window.sorting=new Sorting({
-		container:"#algorithms",
-		//sorting:["quicksort","mergesort","smoothsort"],
-		//sorting:[],
-		//data:([0,2,3,4,5,6,19,7,8,9,10,12,16,13,14,15,17,18,20,21,11,22,23,24,25,26,27,28,29,1,30])
-		//data:shuffle([0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9])
-		//data:shuffle([0,1,2,3,3,4,5,1,1,1,1,1,1,1,2,2,2,2,3,3,3])
-		//data:shuffle(d3.range(10))
-		//data:[1,1,1,1,1,1,1,1]
-		//data:data[10]
+		container:"#algorithms"
 	});
-
-	
-	//sorting.addAlgorithm("MergeSort");
-
-	//d3.select("#stepper span").text(sorting.getSteps());
-
-
 
 	var algorithms=[
 		{
 			name:"Quick Sort",
 			file:"QuickSort3",
 			O:"O(n log n)",
-			active:true
+			active:false
 		},
 		{
 			name:"Quick Sort 3-way",
@@ -124,13 +99,13 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 			name:"Heap Sort",
 			file:"HeapSort",
 			O:"O(n log n)",
-			active:true
+			active:false
 		},
 		{
 			name:"Smooth Sort",
 			file:"SmoothSort",
 			O:"O(n log n)",
-			active:false
+			active:true
 		},
 		{
 			name:"Shell Sort",
@@ -236,10 +211,7 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 
 	d3.select("#add a.plus").on("click",function(){
 		d3.event.preventDefault();
-		//d3.select("#formContainer").classed("collapsed",!d3.select("#formContainer").classed("collapsed"))
 		d3.select("#formContainer").classed("collapsed",false);
-
-		//return;
 		
 		var position=support.findPos(d3.select("#formContainer").node());
 
@@ -364,16 +336,29 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 		.on("click",function(d,i){
 			d3.event.preventDefault();
 
-			sorting.addAlgorithm(
-				options.algorithm,
-				data[options.initial_condition][options.items],
-				options.color,
-				options.initial_condition
-			)
+			var position=support.findPos(d3.select("#add").node());
+
+		
+			d3.transition()
+			    .duration(1000)
+			    .each("end",function(){
+			    	sorting.addAlgorithm(
+						options.algorithm,
+						data[options.initial_condition][options.items],
+						options.color,
+						options.initial_condition
+					)
+			    })
+			    .tween(
+			        "scroll",
+			        scrollTween(position[1]-10)
+			    )
+		
+
+			
 		});
 
 	d3.select("body").on("keyup",function(){
-		//console.log(d3.event)
 		if(d3.event.keyCode==39) {
 			sorting.nextStep();
 		}
@@ -469,12 +454,15 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 		});
 
 	algorithms.forEach(function(d){
-		if(d.active)
+		if(d.active) {
 			sorting.addAlgorithm(
 				d.file,
 				data[options.initial_condition][options.items],
 				options.color,
-				options.initial_condition
-			);	
+				options.initial_condition,
+				function callback(){d3.select("#header h1").classed("init",false);}
+			);
+		}
 	})
+
 });

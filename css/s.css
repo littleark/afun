@@ -51,6 +51,9 @@ body {
 	scrollbar-shadow-color: #000;
 	scrollbar-dark-shadow-color: #000;
 }
+a {
+	color:inherit;
+}
 a:hover {
 	color:gold;
 }
@@ -74,15 +77,69 @@ a:hover {
 	margin: 0 0 0 6px;
 	padding: 0;
 	text-rendering: optimizelegibility;
+	padding-left: 10px;
 }
+div#logo {
+	float: left;
+	position: relative;
+	width: 50px;
+	height: 30px;
+
+}
+div#logo span {
+	position: absolute;
+	width:1px;
+	text-align: center;
+	height:1px;
+	overflow: visible;
+	line-height: 0px;
+	top:12px;
+	-webkit-transition: left 500ms;
+	-moz-transition: left 500ms;
+	-ms-transition: left 500ms;
+	-o-transition: left 500ms;
+	transition: left 500ms;
+}
+div#logo span.s1 {
+	font-size: 37px;
+	left: 5px;
+	margin-left: -7px;
+}
+div#logo span.s2 {
+	font-size: 59px;
+	left: 20px;
+	margin-left: -11px;
+	color:khaki;
+}
+div#logo span.s3 {
+	font-size: 94px;
+	left: 39px;
+	margin-left: -17px;
+	margin-top: -1px;
+	color:gold;
+}
+
+h1:hover div#logo span.s1,
+h1.init div#logo span.s1 {
+	left: 22px;
+}
+h1:hover div#logo span.s2,
+h1.init div#logo span.s2 {
+	left: 39px;
+}
+h1:hover div#logo span.s3,
+h1.init div#logo span.s3 {
+	left:5px;
+}
+
 /**************** CONTENTS *****************/
 #contents {
-	/*max-width: 860px;*/
+	max-width: 800px;
 	margin: 50px auto 0;
 	font-family: 'PT Sans', sans-serif;
 	font-size: 15px;
 	font-weight: 400;
-	color: #ddd;
+	color: #aaa;
 }
 #contents h3 {
 	font-family: 'Raleway', sans-serif;
@@ -94,7 +151,12 @@ a:hover {
 	text-rendering: optimizelegibility;
 }
 #contents p {
-	margin:5px 0 20px;
+	margin:5px 0 40px;
+	line-height: 20px;
+}
+#contents b {
+	color:white;
+	font-weight: inherit;
 }
 /**************** ALGORITHM ****************/
 #algorithms {
@@ -206,7 +268,7 @@ a:hover {
 }
 #algorithms div.algorithm h2 span {
 	display: block;
-	color:#fff;
+	color:#ccc;
 	text-transform: none;
 	font-size: 0.75em;
 }
@@ -587,6 +649,14 @@ svg .circle.memory circle,
 svg .circle.memory text {
 	fill-opacity:0;
 }
+
+.i75 svg .circle text,
+.i100 svg .circle text,
+.size2 .i50 svg .circle text,
+.size3 .i50 svg .circle text {
+	display: none;
+}
+
 svg #temp g * {
 	fill-opacity:0;
 }
@@ -790,7 +860,7 @@ svg #indicators g.indicator.visible path {
 }
 #header ul#layout li a.items.selected {
 	font-size: 21px;
-	line-height: 18px;
+	line-height: 14px;
 	color:gold;
 }
 #header ul#layout li a.items {
@@ -927,6 +997,13 @@ div.algorithm:first-child .distance-chart svg text.title,
 	color:#ddd;
 	margin-top:50px;
 }
+#footer #logo{
+	float:none;
+	margin:0 auto;
+}
+#footer #logo span {
+	font-family: inherit;
+}
 #footer h1{
 	text-align: center;
 	font-size: 18px;
@@ -935,6 +1012,7 @@ div.algorithm:first-child .distance-chart svg text.title,
 }
 #footer h1.logo {
 	margin: 0;
+	color:#fff;
 }
 #footer h1 .icon-fire-station {
 	font-size:31px;
@@ -943,9 +1021,8 @@ div.algorithm:first-child .distance-chart svg text.title,
 }
 #footer h1 span {
 	font-family: 'PT Sans', sans-serif;
-	font-weight: 300;
+	font-weight: 400;
 	font-size: 12px;
-	font-weight: normal;
 	color: #ccc;
 	text-shadow:none;
 }
