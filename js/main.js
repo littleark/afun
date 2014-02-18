@@ -1,3 +1,7 @@
+if(typeof(console) === 'undefined') {
+    var console = {}
+    console.log = console.error = console.info = console.debug = console.warn = console.trace = console.dir = console.dirxml = console.group = console.groupEnd = console.time = console.timeEnd = console.assert = console.profile = function() {};
+}
 require.config({
     urlArgs: "t=" + (new Date()).getTime(),
 	paths: {
@@ -6,7 +10,6 @@ require.config({
 		d3: "//cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.min"
 	}
 });
-
 require(["d3","Sorting","support"], function(d3,Sorting,support) {
 
 	(function () {
