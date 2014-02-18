@@ -218,14 +218,14 @@ h1.init div#logo span.s3 {
 	margin-top: 6px;
 	float: left;
 }
-.no-touch #algorithms div.algorithm a.icon:hover{
+#algorithms div.algorithm a.icon:hover{
 	color:gold;
 	background-color: #000;
 }
-.no-touch #algorithms div.algorithm:hover a.icon {
+#algorithms div.algorithm:hover a.icon {
 	display: block;
 }
-.no-touch #algorithms div.algorithm a.icon:hover span{
+#algorithms div.algorithm a.icon:hover span{
 	display: inline-block;
 }
 #algorithms div.algorithm a.icon.wiki {
