@@ -64,6 +64,8 @@ a {
 }
 #header {
 	height: 25px;
+	z-index: 99;
+	position: relative;
 }
 #header h1 {
 	display: inline-block;
@@ -367,7 +369,9 @@ h1.init div#logo span.s3 {
 	text-transform: uppercase;
 	margin: 0;
 }
-.no-touch #algorithms div#add:hover h4,
+.no-touch #algorithms div#add:hover h4 {
+	visibility: visible;
+}
 .touch #algorithms div#add h4 {
 	visibility: visible;
 	color:#999;
@@ -834,7 +838,7 @@ svg #indicators g.indicator.visible path {
 #header ul#layout li {
 	float: left;
 	display: block;
-	width: 18px;
+	width: 23px;
 	height: 24px;
 	text-align: center;
 }
@@ -870,22 +874,40 @@ svg #indicators g.indicator.visible path {
 	margin-top: 1px;
 }
 #header ul#layout li.sep {
-	width: 1px;
-	margin-right: 10px;
-	margin-left: 10px;
+	width: 0px;
+	margin-right: 5px;
+	margin-left: 5px;
 }
 #header ul#layout li.sep span{
 	border-left:1px solid #666;
 }
-#header ul#layout li a.items.selected {
-	font-size: 21px;
-	line-height: 14px;
-	color:gold;
-}
 #header ul#layout li a.items {
-	line-height: 17px;
-	font-weight: bold;
 	color:#666;
+}
+
+#header ul#layout li #social {
+	text-align: center;
+	font-size: 23px;
+	margin-top: 10px;
+	margin-left: -5px;
+	height:0;
+	overflow: hidden;
+
+	-webkit-transition: height 1000ms;
+	-moz-transition: height 1000ms;
+	-ms-transition: height 1000ms;
+	-o-transition: height 1000ms;
+	transition: height 1000ms;
+}
+#header ul#layout li #social.visible {
+	height:120px;	
+}
+#header ul#layout li #social a {
+	color:#aaa;
+	text-decoration: none;
+}
+.no-touch #header ul#layout li #social a:hover {
+	color:gold;
 }
 
 .distance-chart {

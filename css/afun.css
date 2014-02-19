@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'afun';
-  src: url('../font/afun.eot?99309618');
-  src: url('../font/afun.eot?99309618#iefix') format('embedded-opentype'),
-       url('../font/afun.woff?99309618') format('woff'),
-       url('../font/afun.ttf?99309618') format('truetype'),
-       url('../font/afun.svg?99309618#afun') format('svg');
+  src: url('../font/afun.eot?20714658');
+  src: url('../font/afun.eot?20714658#iefix') format('embedded-opentype'),
+       url('../font/afun.woff?20714658') format('woff'),
+       url('../font/afun.ttf?20714658') format('truetype'),
+       url('../font/afun.svg?20714658#afun') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -14,7 +14,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'afun';
-    src: url('../font/afun.svg?99309618#afun') format('svg');
+    src: url('../font/afun.svg?20714658#afun') format('svg');
   }
 }
 */
@@ -52,17 +52,19 @@
  
 .icon-help:before { content: '\e80f'; } /* '' */
 .icon-align-justify:before { content: '\e806'; } /* '' */
+.icon-fast-forward:before { content: '\e807'; } /* '' */
 .icon-fast-backward:before { content: '\e808'; } /* '' */
+.icon-dot-3:before { content: '\e811'; } /* '' */
 .icon-twitter-circled:before { content: '\e80b'; } /* '' */
 .icon-facebook-circled:before { content: '\e80c'; } /* '' */
 .icon-gplus-circled:before { content: '\e80d'; } /* '' */
 .icon-pinterest-circled:before { content: '\e80a'; } /* '' */
-.icon-wikipedia:before { content: '\e80e'; } /* '' */
-.icon-fast-forward:before { content: '\e807'; } /* '' */
+.icon-share:before { content: '\e810'; } /* '' */
+.icon-th-large:before { content: '\e800'; } /* '' */
 .icon-th:before { content: '\e801'; } /* '' */
 .icon-cancel:before { content: '\e809'; } /* '' */
 .icon-left-open:before { content: '\e805'; } /* '' */
 .icon-right-open:before { content: '\e804'; } /* '' */
 .icon-play:before { content: '\e802'; } /* '' */
 .icon-pause:before { content: '\e803'; } /* '' */
-.icon-th-large:before { content: '\e800'; } /* '' */
+.icon-wikipedia:before { content: '\e80e'; } /* '' */
