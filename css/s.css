@@ -879,15 +879,15 @@ svg #indicators g.indicator.visible path {
 	background-position: -26px top;	
 }
 .no-touch #header ul#layout li a.size[rev='1']:hover span,
-.no-touch #header ul#layout li a.size[rev='1'].selected span {
+#header ul#layout li a.size[rev='1'].selected span {
 	background-position: 0 bottom;
 }
 .no-touch #header ul#layout li a.size[rev='2']:hover span,
-.no-touch #header ul#layout li a.size[rev='2'].selected span {
+#header ul#layout li a.size[rev='2'].selected span {
 	background-position: -13px bottom;
 }
 .no-touch #header ul#layout li a.size[rev='3']:hover span,
-.no-touch #header ul#layout li a.size[rev='3'].selected span {
+#header ul#layout li a.size[rev='3'].selected span {
 	background-position: -26px bottom;	
 }
 .no-touch #header ul#layout a:hover {
