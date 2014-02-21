@@ -856,22 +856,42 @@ svg #indicators g.indicator.visible path {
 	color:#666;
 	margin-right: 5px;
 }
+#header ul#layout a.size {
+	display: block;
+	width: 23px;
+	height: 23px;
+}
+#header ul#layout a.size span {
+	width: 11px;
+	height: 11px;
+	display: block;
+	background:transparent url(../img/layout.png) top left no-repeat;
+	overflow: hidden;
+	margin:5px auto 0;
+	text-indent: -2000px;
+}
+#header ul#layout li a.size[rev='1'] span {
+}
+#header ul#layout li a.size[rev='2'] span {
+	background-position: -13px top;
+}
+#header ul#layout li a.size[rev='3'] span {
+	background-position: -26px top;	
+}
+.no-touch #header ul#layout li a.size[rev='1']:hover span,
+.no-touch #header ul#layout li a.size[rev='1'].selected span {
+	background-position: 0 bottom;
+}
+.no-touch #header ul#layout li a.size[rev='2']:hover span,
+.no-touch #header ul#layout li a.size[rev='2'].selected span {
+	background-position: -13px bottom;
+}
+.no-touch #header ul#layout li a.size[rev='3']:hover span,
+.no-touch #header ul#layout li a.size[rev='3'].selected span {
+	background-position: -26px bottom;	
+}
 .no-touch #header ul#layout a:hover {
-	color:gold !important;
-}
-#header ul#layout a.selected {
-	color: gold !important;
-}
-#header ul#layout li a.size[rev='1'] {
-	font-size: 13px;
-}
-#header ul#layout li a.size[rev='2'] {
-	font-size: 11px;
-	margin-top: 1px;
-}
-#header ul#layout li a.size[rev='3'] {
-	font-size: 11px;
-	margin-top: 1px;
+	color:gold;
 }
 #header ul#layout li.sep {
 	width: 0px;
@@ -886,10 +906,11 @@ svg #indicators g.indicator.visible path {
 }
 
 #header ul#layout li #social {
+	width:28px;
 	text-align: center;
 	font-size: 23px;
 	margin-top: 10px;
-	margin-left: -5px;
+	margin-left: 1px;
 	height:0;
 	overflow: hidden;
 
@@ -903,11 +924,20 @@ svg #indicators g.indicator.visible path {
 	height:120px;	
 }
 #header ul#layout li #social a {
-	color:#aaa;
+	color: #000;
 	text-decoration: none;
+	font-size: 14px;
+	background-color: #666;
+	margin: 4px 0;
+	width: 26px;
+	height: 26px;
+	line-height: 28px;
+	-webkit-border-radius: 14px;
+	border-radius: 14px;
 }
 .no-touch #header ul#layout li #social a:hover {
-	color:gold;
+	background-color:gold;
+	color:#000;
 }
 
 .distance-chart {
@@ -1125,14 +1155,27 @@ div.algorithm:first-child .distance-chart svg text.title,
 #footer .social {
 	text-align: center;
 	font-size: 23px;
-	margin-top: 10px;
+	position: relative;
+	width: 120px;
+	height: 23px;
+	margin: 10px auto;
 }
 #footer .social a {
-	color:#aaa;
 	text-decoration: none;
+	font-size: 16px;
+	color: #000;
+	background-color: #999;
+	-webkit-border-radius: 11px;
+	border-radius: 11px;
+	width: 23px;
+	height: 23px;
+	line-height: 23px;
+	display: block;
+	float: left;
+	margin: 0 3px;
 }
 .no-touch #footer .social a:hover {
-	color:gold;
+	background-color:gold;
 }
 #footer .social a span {
 	display: block;
