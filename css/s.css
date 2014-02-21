@@ -919,6 +919,8 @@ svg #indicators g.indicator.visible path {
 	-ms-transition: height 1000ms;
 	-o-transition: height 1000ms;
 	transition: height 1000ms;
+
+	background-color: #000;
 }
 #header ul#layout li #social.visible {
 	height:120px;	
