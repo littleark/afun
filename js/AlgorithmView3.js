@@ -73,14 +73,6 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 							new_items[j].moved=true;
 						}
 					}
-
-					//console.log("ITEMS",items[items.length-1].map(function(e){return e.index}).toString());
-					//if(items[items.length-1][d.from]['id']==d['id']) {
-						//items[items.length-1][d.from].value=items[items.length-1][d.from].value+"X";
-						//items[items.length-1][d.from].index=items[items.length-1][d.from].index+"X";
-						//items[items.length-1][d.from].index="X";
-						//items[items.length-1][d.from].value="X";
-					//}
 				});
 
 				items.push(new_items);
@@ -89,13 +81,6 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 			steps=([[]]).concat(steps);
 		}
 		setStatuses();
-		/*
-		items.forEach(function(d,i){
-			console.log("ITEMS",i,d.map(function(e){return (typeof e.value !='undefined')?e.value:e.index}).toString());
-		})
-		*/
-			
-		
 
 		console.log("ITEMS",items.length,"STEPS",steps.length);
 		console.log(items)
