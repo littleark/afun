@@ -69,7 +69,7 @@ define(["d3","./support"],function(d3,support,DistanceChart) {
 
 		    //console.log("INVERSIONS",inversions[index])
 		})
-		console.log("INVERSIONS",inversions)
+		//console.log("INVERSIONS",inversions)
 
 		//console.log("DISTANCE STEPS",steps)
 
@@ -109,7 +109,7 @@ define(["d3","./support"],function(d3,support,DistanceChart) {
 
 		//console.log(options)
 		//alert(options.distance.operations)
-		console.log("OPTIONS.DISTANCE",options.distance)
+		//console.log("OPTIONS.DISTANCE",options.distance)
 		var maxOperations=(options.distance.operations > operations.length-1)?options.distance.operations:operations.length-1;
 
 		var xscale=d3.scale.linear().domain([0,maxOperations]).rangeRound([0,width]),
@@ -287,7 +287,7 @@ define(["d3","./support"],function(d3,support,DistanceChart) {
 			.call(xAxis)
 			.selectAll(".tick")
 			    .filter(function(d){
-			    	console.log("------->",d)
+			    	//console.log("------->",d)
 			    	return d%1 !== 0;
 			    })
 			    	.remove();

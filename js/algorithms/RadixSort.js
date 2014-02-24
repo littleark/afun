@@ -23,7 +23,7 @@ define(["../support"], function(support) {
 				    index.push([i,-1,-1]);
 				  }
 
-				  console.log(div,piles)
+				  //console.log(div,piles)
 				  var tmpA=support.cloneArray(a);
 				  for (var i = 0, ai = 0; i < piles.length; ++i) {
 				    if (!piles[i]) continue;
@@ -51,7 +51,7 @@ define(["../support"], function(support) {
 				    index.push([-1,-1,-1])
 				  }
 				}
-				console.log(a)
+				//console.log(a)
 			}
 
 			function radixsort2(nums) {
@@ -96,7 +96,7 @@ define(["../support"], function(support) {
 				            
 
 				            nums.splice(p++, 0, nums.splice(i, 1)[0]);
-				            console.log(p,i,nums)
+				            //console.log(p,i,nums)
 				            
 				           
 							
@@ -115,11 +115,11 @@ define(["../support"], function(support) {
 					return d.length>0;
 				});
 
-				console.log("SWAPS",steps.filter(function(d){
-					return d.length>0;
-				}))
-				console.log("COMPARISONS",(comparisons))
-				console.log("COMPLEXITY",comparisons[comparisons.length-1],steps[steps.length-1][0].cmp)
+				//console.log("STEP vs COMPLEXITY",steps.map(function(d){
+					//return d[0].cmp.cmp;
+				//}))
+				//console.log("COMPARISONS",(comparisons))
+				//console.log("COMPLEXITY",comparisons[comparisons.length-1],steps[steps.length-1][0].cmp)
 
 				return steps;
 			}

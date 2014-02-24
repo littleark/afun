@@ -46,8 +46,8 @@ define(["d3","AlgorithmView3","support"],function(d3,AlgorithmView,support) {
 		}
 
 		this.removeAlgorithm=function(name) {
-			console.log("REMOVE",name)
-			console.log(algoviz)
+			//console.log("REMOVE",name)
+			//console.log(algoviz)
 			sorting=sorting.filter(function(d){
 				return d.name!=name;
 			})
@@ -68,7 +68,7 @@ define(["d3","AlgorithmView3","support"],function(d3,AlgorithmView,support) {
 						.remove();
 			
 
-			console.log(sorting,algoviz)
+			//console.log(sorting,algoviz)
 
 			
 		}
@@ -123,7 +123,7 @@ define(["d3","AlgorithmView3","support"],function(d3,AlgorithmView,support) {
 								self.removeAlgorithm(d.name);
 							})
 
-				console.log("running:",running)
+				//console.log("running:",running)
 				self.pause(running?-1:0);
 				
 				new_algorithms
@@ -154,7 +154,7 @@ define(["d3","AlgorithmView3","support"],function(d3,AlgorithmView,support) {
 
 				new_algorithms.each(function(d,i){
 
-					console.log("using data",data.length)
+					//console.log("using data",data.length)
 
 					steps[d.name]=functions[d.fn](support.cloneArray(data));
 
@@ -162,7 +162,7 @@ define(["d3","AlgorithmView3","support"],function(d3,AlgorithmView,support) {
 					var items=[];
 					items.push(support.cloneArray(data));
 
-					console.log("DISTANCE",distance,items[0].length)
+					//console.log("DISTANCE",distance,items[0].length)
 
 					algoviz[d.name]=
 						new AlgorithmView({
@@ -185,7 +185,7 @@ define(["d3","AlgorithmView3","support"],function(d3,AlgorithmView,support) {
 
 							},
 							sortedCallback:function(){
-								console.log("CHECKING ALL SORTED",allSorted())
+								//console.log("CHECKING ALL SORTED",allSorted())
 								if (allSorted()) {
 									
 									running=0;									
@@ -219,7 +219,7 @@ define(["d3","AlgorithmView3","support"],function(d3,AlgorithmView,support) {
 		}
 
 		function updateDistances(operations,inversions,length) {
-			console.log("updateDistances("+operations+","+inversions+","+length+")",algoviz)
+			//console.log("updateDistances("+operations+","+inversions+","+length+")",algoviz)
 			if(!operations) {
 				distance[length].operations=0;
 				distance[length].inversions=0;
@@ -227,17 +227,17 @@ define(["d3","AlgorithmView3","support"],function(d3,AlgorithmView,support) {
 				d3.values(algoviz).forEach(function(a,i){
 					var l=a.getItemsLength();
 					var d=a.getDistances();
-					console.log("checking distance for ",a.getName(),l,d)
+					//console.log("checking distance for ",a.getName(),l,d)
 
 					if(l==length) {
-						console.log("updateDistances",i,a.getName())
+						//console.log("updateDistances",i,a.getName())
 						//alert("update("+distance.operations+","+distance.inversions+")")
 						var d=a.getDistances();
-						console.log("d",d,"l",l)
+						//console.log("d",d,"l",l)
 						distance[length].operations=Math.max(distance[length].operations,d.operations);
 						distance[length].inversions=Math.max(distance[length].inversions,d.inversions);			
 					} else {
-						console.log("updateDistances NOOOO",l,"!=",length)
+						//console.log("updateDistances NOOOO",l,"!=",length)
 					}
 					
 				})
@@ -250,9 +250,9 @@ define(["d3","AlgorithmView3","support"],function(d3,AlgorithmView,support) {
 
 			d3.values(algoviz).forEach(function(a,i){
 				var l=a.getItemsLength();
-				console.log("checking distance for ",a.getName(),l)
+				//console.log("checking distance for ",a.getName(),l)
 				if(l==length) {
-					console.log("updateDistances",i,a.getName())
+					//console.log("updateDistances",i,a.getName())
 					//alert("update("+distance.operations+","+distance.inversions+")")
 					a.updateDistances(distance[length]);
 				}
@@ -265,14 +265,14 @@ define(["d3","AlgorithmView3","support"],function(d3,AlgorithmView,support) {
 			return running;
 		}
 		this.start=function(){
-			console.log("------------->",running)
+			//console.log("------------->",running)
 			if(running>0)
 				return;
 			//if(!allSorted()) {
 				running=1;
-				console.log("start","setting running to",running)
+				//console.log("start","setting running to",running)
 				d3.values(algoviz).forEach(function(a,i){
-					console.log("starting",i,a.getName())
+					//console.log("starting",i,a.getName())
 					a.start();
 				})
 			//} else {
@@ -327,7 +327,7 @@ define(["d3","AlgorithmView3","support"],function(d3,AlgorithmView,support) {
 		this.goTo=function(p){
 			STEP=p;
 			d3.values(algoviz).forEach(function(a){
-				console.log("setting position for",a.getName(),p)
+				//console.log("setting position for",a.getName(),p)
 				a.goToPerc(p);
 			})
 		}
@@ -346,7 +346,7 @@ define(["d3","AlgorithmView3","support"],function(d3,AlgorithmView,support) {
 		this.getSteps=function(){
 			var steps=0;
 			d3.values(algoviz).forEach(function(a){
-				console.log("!!!!!!!!!",a)
+				//console.log("!!!!!!!!!",a)
 				steps=Math.max(a.getStepsLength(),steps);
 			})
 			return steps;
@@ -364,18 +364,18 @@ define(["d3","AlgorithmView3","support"],function(d3,AlgorithmView,support) {
 			})	
 		}
 		function shuffle(o){ //v1.0
-			console.log("shuffling")
+			//console.log("shuffling")
 			for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
 			return o;
 		};
 		this.setColor=function(color,name) {
 			d3.entries(algoviz)
 				.filter(function(d){
-					console.log("!!!!!!!",d)
+					//console.log("!!!!!!!",d)
 					return !name || d.key==name;
 				})
 				.forEach(function(d){
-					console.log("color for",d.key)
+					//console.log("color for",d.key)
 					d.value.setColor(color);	
 				})
 				

@@ -65,11 +65,11 @@ define(["../support"], function(support) {
 				steps=[];
 				cocktailsort(array);
 
-				console.log("SWAPS",steps.filter(function(d){
-					return d.length>0;
-				}))
-				console.log("COMPARISONS",(comparisons))
-				console.log("COMPLEXITY",comparisons[comparisons.length-1],steps[steps.length-1][0].cmp)
+				//console.log("STEP vs COMPLEXITY",steps.map(function(d){
+					//return d[0].cmp.cmp;
+				//}))
+				//console.log("COMPARISONS",(comparisons))
+				//console.log("COMPLEXITY",comparisons[comparisons.length-1],steps[steps.length-1][0].cmp)
 				return steps.filter(function(d){
 					return d.length>0;
 				});

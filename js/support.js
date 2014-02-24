@@ -94,7 +94,7 @@ define(
 			initial_conditions:{
 				"rnd": "randomly ordered",
 				"nrl": "nearly sorted",
-				"rvr": "reversed sorted",
+				"rvr": "reverse sorted",
 				"few": "few unique"
 			},
 			isTouchDevice:isTouchDevice

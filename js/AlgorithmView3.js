@@ -34,7 +34,7 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 			current_steps=0,
 			current_step=Math.round((steps.length)*options.step);
 
-		console.log("STEPS",name,steps)
+		//console.log("STEPS",name,steps)
 
 		var callback=options.callback || function(){};
 
@@ -82,8 +82,8 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 		}
 		setStatuses();
 
-		console.log("ITEMS",items.length,"STEPS",steps.length);
-		console.log(items)
+		//console.log("ITEMS",items.length,"STEPS",steps.length);
+		//console.log(items)
 		//return;
 
 		var xscale=d3.scale.linear().domain([0,items[0].length-1]).range([0,WIDTH-margins.left-margins.right]);
@@ -170,7 +170,78 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 						.domain([0, max_value])
 						.range([RADIUS.min, Math.ceil(RADIUS.max/options.size_factor)])
 
+		var radius1=d3.scale.sqrt()
+						.domain([0, max_value])
+						.range([RADIUS.min, Math.ceil(RADIUS.max/1.5)])
 
+
+		
+
+		
+		var howto=d3.select("#howtoread")
+						.selectAll("svg")
+						.data(["legend"])
+						.enter()
+						.append("svg")
+							.attr("id","legend")
+							.attr("width",100)
+							.attr("height",100)
+							.append("g")
+							.attr("transform","translate("+(radius1(9)+1)+",95)");
+
+		howto.append("circle")
+				.attr("cx",0)
+				.attr("cy",-radius1(9))
+				.attr("r",radius1(9))
+				.style("fill",color(9))
+		
+
+		howto.append("circle")
+				.attr("cx",0)
+				.attr("cy",-radius1(4.5))
+				.attr("r",radius1(4.5))
+				.style("fill",color(4.5))
+
+		
+		howto.append("circle")
+				.attr("cx",0)
+				.attr("cy",-radius1(0))
+				.attr("r",radius1(0))
+				.style("fill",color(0))
+
+		howto.append("text")
+				.attr("x",radius1(9)+50)
+				.attr("y",-radius1(9)*2-2)
+				.text("last item")
+
+		howto.append("text")
+				.attr("x",radius1(9)+50)
+				.attr("y",-radius1(4.5)*2-2)
+				.text("mid item")
+
+		howto.append("text")
+				.attr("x",radius1(9)+50)
+				.attr("y",-radius1(0)*2-2)
+				.text("first item")
+
+		howto.append("line")
+				.attr("x1",0)
+				.attr("y1",-radius1(9)*2)
+				.attr("x2",radius1(9)+50)
+				.attr("y2",-radius1(9)*2)
+
+		howto.append("line")
+				.attr("x1",0)
+				.attr("y1",-radius1(4.5)*2)
+				.attr("x2",radius1(9)+50)
+				.attr("y2",-radius1(4.5)*2)
+
+		howto.append("line")
+				.attr("x1",0)
+				.attr("y1",-radius1(0)*2)
+				.attr("x2",radius1(9)+50)
+				.attr("y2",-radius1(0)*2)
+		
 
 		function updateCircles() {
 
@@ -314,8 +385,8 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 			items=__items;
 
 			setStatuses();
-			console.log("ITEMS",items.length,"STEPS",steps.length);
-			console.log(items)
+			//console.log("ITEMS",items.length,"STEPS",steps.length);
+			//console.log(items)
 
 			xscale.domain([0,items[0].length-1]);
 			//color.domain([0, items[0].length-1]);
@@ -369,7 +440,7 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 
 			circles.selectAll("circle")
 				.style("fill",function(d){
-					console.log(d,color(d.value))
+					//console.log(d,color(d.value))
 					return color(d.value);
 				});
 
@@ -424,13 +495,13 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 					})
 			
 			radius.range([RADIUS.min, Math.ceil(RADIUS.max/factor)]);
-			console.log("items",items)
+			//console.log("items",items)
 			circles
 				//.transition()
 				//.duration(1000)
 				.attr("transform",function(d,i){
 					
-					console.log("----------->",d,i)
+					//console.log("----------->",d,i)
 
 					var pos=support.indexOf(items[current_step],d.id,"id"),
 						x=xscale(d.position || pos),
@@ -460,7 +531,7 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 			temp_indicator
 					.attr("transform",function(d){
 
-						console.log("MOVING TEMP INDICATOR",d,"TO",xscale(d.pos))
+						//console.log("MOVING TEMP INDICATOR",d,"TO",xscale(d.pos))
 
 						return "translate("+xscale(d.pos)+","+0+")";
 					})
@@ -632,7 +703,7 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 
 		this.show=function(n,animate) {
 			if(animating) {
-				console.log("already animating")
+				//console.log("already animating")
 				return;
 			}
 			var n=(typeof n == "undefined")?steps.length-1:n;
@@ -668,41 +739,6 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 		}
 
 		this.swap=function(n,animate,back){
-			//console.log("show",n,animate)
-			/*
-			if(animating) {
-				console.log("already animating")
-				return;
-			}
-			
-			var n=(typeof n == "undefined")?steps.length-1:n;
-
-			var back=0;
-			if(current_step>n) {
-				back=1;
-			}
-
-			
-			if(n+back<=0 || n>steps.length-1){
-				return;
-			}
-			
-
-
-			animating=true;
-
-			
-
-			current_step=n;
-			*/
-
-			//console.log(name,"N",n)
-
-			
-
-			
-			//console.log("GOING TO",current_step)
-
 
 			var this_traces=traces
 				.filter(function(d,i){
@@ -712,8 +748,6 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 			this_traces
 				.selectAll("path")
 					.transition()
-					//.delay(250)
-					//.ease("linear")
 					.duration(DURATION)
 					.attrTween("stroke-dashoffset",function(d,i){
 						var len = this.getTotalLength();
@@ -726,7 +760,6 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 
 			circles
 				.data(steps[current_step+back].map(function(d){
-					//return d.index;
 					d.position=d.to;
 					return d;
 				}),function(d){
@@ -734,8 +767,6 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 				})
 				.classed("swap",true)
 				.transition()
-				//.delay(250)
-				//.ease("linear")
 				.duration(DURATION)
 					.attrTween("transform",function(d){
 						return function(t){
@@ -793,13 +824,13 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 
 		
 		this.goToPerc=function(p,callback) {
-			console.log("goToPerc",p,Math.round((steps.length-1)*p));
+			//console.log("goToPerc",p,Math.round((steps.length-1)*p));
 			//this.goTo(slider_scale(p),callback);
 			this.goTo(Math.round((steps.length-1)*p),callback)
 		}
 		/*
 		this.setSlider=function(p) {
-			console.log("----->",name,p);
+			//console.log("----->",name,p);
 			slider.setStep(p,0);
 		}
 		*/
@@ -857,14 +888,14 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 			}
 
 			if(n>steps.length-1){
-				console.log(n,">",steps.length-1)
+				//console.log(n,">",steps.length-1)
 				n=steps.length-1;
 			}
 
 			current_step=n;
 
-			console.log("GO TO STEP",steps[n]);
-			console.log("GO TO ITEMS",items[n]);
+			//console.log("GO TO STEP",steps[n]);
+			//console.log("GO TO ITEMS",items[n]);
 
 			slideIndicatorGoTo(current_step,function(){
 				self.goTo2(n,callback);
@@ -891,7 +922,7 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 				n=0;
 			}
 			if(n>steps.length-1){
-				console.log(n,">",steps.length-1)
+				//console.log(n,">",steps.length-1)
 				n=steps.length-1;
 			}
 
@@ -927,7 +958,7 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 					.attr("stroke-dashoffset",function(d){
 						return 0;//d3.select(this).node().getTotalLength();
 					})
-			console.log("!!!!!!!!!!!",items,current_step)
+			//console.log("!!!!!!!!!!!",items,current_step)
 			
 			circles
 				.data(items[current_step].filter(function(d){
@@ -980,7 +1011,7 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 
 		this.stepNext=function(animate) {
 			if(animating) {
-				console.log("already animating")
+				//console.log("already animating")
 				return;
 			}
 			this.show(current_step+1,animate);
@@ -988,7 +1019,7 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 		}
 		this.stepPrev=function() {
 			if(animating) {
-				console.log("already animating")
+				//console.log("already animating")
 				return;
 			}
 			this.show(current_step-1);
@@ -1026,7 +1057,7 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 				}
 				
 			} else {
-				console.log(name,"not starting because",status)
+				//console.log(name,"not starting because",status)
 			}
 		}
 		this.pause=function() {

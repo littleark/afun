@@ -2,6 +2,11 @@ if(typeof(console) === 'undefined') {
     var console = {}
     console.log = console.error = console.info = console.debug = console.warn = console.trace = console.dir = console.dirxml = console.group = console.groupEnd = console.time = console.timeEnd = console.assert = console.profile = function() {};
 }
+console.log("Welcome to SORTING.");
+console.log("Ver 0.1");
+console.log("Thanks for playing with SORTING!");
+console.log("carlo zapponi");
+console.log("me@carlo.im");
 require.config({
     urlArgs: "t=" + (new Date()).getTime(),
 	paths: {
@@ -79,7 +84,7 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 		"few":few_uniques
 	}
 	
-	console.log(data)
+	//console.log(data)
 
 	window.sorting=new Sorting({
 		container:"#algorithms"
@@ -262,7 +267,7 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 				.on("click",function(d,i){
 					d3.event.preventDefault();
 
-					console.log(d);
+					//console.log(d);
 
 					d3.selectAll("#formContainer ul#algs li a").classed("selected",false);
 					d3.select(this).classed("selected",true)
@@ -289,7 +294,7 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 				.on("click",function(d,i){
 					d3.event.preventDefault();
 
-					console.log(d);
+					//console.log(d);
 					
 					d3.selectAll("#formContainer ul#colors li a").classed("selected",false);
 					d3.select(this).classed("selected",true)
@@ -303,7 +308,7 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 			.on("click",function(d,i){
 				d3.event.preventDefault();
 
-				console.log(d);
+				//console.log(d);
 				
 				d3.selectAll("#formContainer ul#initial li a").classed("selected",false);
 				d3.select(this).classed("selected",true)
@@ -329,7 +334,7 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 				.on("click",function(d,i){
 					d3.event.preventDefault();
 
-					console.log(d,this,this.parentNode);
+					//console.log(d,this,this.parentNode);
 
 					d3.selectAll("#formContainer ul#items li a").classed("selected",false);
 					d3.select(this).classed("selected",true);
