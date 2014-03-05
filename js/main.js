@@ -154,7 +154,7 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 		{
 			name:"Comb Sort",
 			file:"CombSort",
-			O:"O(n&sup2;)",
+			O:"&nbsp;",
 			active:false
 		},
 		{
@@ -178,7 +178,7 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 		{
 			name:"Radix Sort",
 			file:"RadixSort",
-			O:"O(kN)",
+			O:"Worst Case: O(kN)",
 			active:false
 		}
 	];

@@ -3,7 +3,7 @@ define(["../support"], function(support) {
 	addStep=support.addStep;
 	return {
 		"name":"RadixSort",
-		"complexity":"O(kN)",
+		"complexity":"Worst Case: O(kN)",
 		"wiki":"http://en.wikipedia.org/wiki/Radix_sort",
 	    "code":function() {
 			var steps=[];
