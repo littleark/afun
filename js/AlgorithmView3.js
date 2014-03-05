@@ -12,7 +12,7 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 		var name=options.name;
 
 		var RADIUS={
-			min:3,
+			min:0,
 			max:35
 		};
 
@@ -171,6 +171,8 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 						.range([RADIUS.min, Math.ceil(RADIUS.max/options.size_factor)])
 
 		var radius1=d3.scale.sqrt()
+						//.domain([0,9])
+						//.range([5,14])
 						.domain([0, max_value])
 						.range([RADIUS.min, Math.ceil(RADIUS.max/1.5)])
 
@@ -184,63 +186,63 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 						.enter()
 						.append("svg")
 							.attr("id","legend")
-							.attr("width",100)
+							.attr("width",110)
 							.attr("height",100)
 							.append("g")
-							.attr("transform","translate("+(radius1(9)+1)+",95)");
+							.attr("transform","translate("+(radius1(10)+1)+",95)");
 
 		howto.append("circle")
 				.attr("cx",0)
-				.attr("cy",-radius1(9))
-				.attr("r",radius1(9))
-				.style("fill",color(9))
+				.attr("cy",-radius1(10))
+				.attr("r",radius1(10))
+				.style("fill",color(10))
 		
 
 		howto.append("circle")
 				.attr("cx",0)
-				.attr("cy",-radius1(4.5))
-				.attr("r",radius1(4.5))
-				.style("fill",color(4.5))
+				.attr("cy",-radius1(5))
+				.attr("r",radius1(5))
+				.style("fill",color(5))
 
 		
 		howto.append("circle")
 				.attr("cx",0)
-				.attr("cy",-radius1(0))
-				.attr("r",radius1(0))
-				.style("fill",color(0))
+				.attr("cy",-radius1(1))
+				.attr("r",radius1(1))
+				.style("fill",color(1))
 
 		howto.append("text")
-				.attr("x",radius1(9)+50)
-				.attr("y",-radius1(9)*2-2)
+				.attr("x",radius1(10)+55)
+				.attr("y",-radius1(10)*2-2)
 				.text("last item")
 
 		howto.append("text")
-				.attr("x",radius1(9)+50)
-				.attr("y",-radius1(4.5)*2-2)
+				.attr("x",radius1(10)+55)
+				.attr("y",-radius1(5)*2-2)
 				.text("mid item")
 
 		howto.append("text")
-				.attr("x",radius1(9)+50)
-				.attr("y",-radius1(0)*2-2)
+				.attr("x",radius1(10)+55)
+				.attr("y",-radius1(1)*2-2)
 				.text("first item")
 
 		howto.append("line")
 				.attr("x1",0)
-				.attr("y1",-radius1(9)*2)
-				.attr("x2",radius1(9)+50)
-				.attr("y2",-radius1(9)*2)
+				.attr("y1",-radius1(10)*2)
+				.attr("x2",radius1(10)+55)
+				.attr("y2",-radius1(10)*2)
 
 		howto.append("line")
 				.attr("x1",0)
-				.attr("y1",-radius1(4.5)*2)
-				.attr("x2",radius1(9)+50)
-				.attr("y2",-radius1(4.5)*2)
+				.attr("y1",-radius1(5)*2)
+				.attr("x2",radius1(10)+55)
+				.attr("y2",-radius1(5)*2)
 
 		howto.append("line")
 				.attr("x1",0)
-				.attr("y1",-radius1(0)*2)
-				.attr("x2",radius1(9)+50)
-				.attr("y2",-radius1(0)*2)
+				.attr("y1",-radius1(1)*2)
+				.attr("x2",radius1(10)+55)
+				.attr("y2",-radius1(1)*2)
 		
 
 		function updateCircles() {
@@ -268,7 +270,7 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 						.attr("cx",0)
 						.attr("cy",0)
 						.attr("r",function(d){
-							return radius(d.value);
+							return radius(d.value+1);
 						})
 						.style("fill",function(d){
 							return color(d.value);
@@ -277,8 +279,9 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 			new_circles.append("text")
 						.attr("x",0)
 						.attr("y",function(d){
-							return 0+1+ radius(d.value)+10;
+							return radius(d.value+1)+1;
 						})
+						.attr("dy","1em")
 						.text(function(d){
 							return d.value;
 						})
@@ -513,7 +516,13 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 				})
 				.selectAll("circle")
 					.attr("r",function(d){
-						return radius(d.value);
+						return radius(d.value+1);
+					})
+
+			circles
+				.selectAll("text")
+					.attr("y",function(d){
+						return radius(d.value+1)+1;
 					})
 
 			indicator_container
@@ -538,7 +547,6 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 		}
 
 		
-		//console.log("MERDA",steps)
 		var indicator=indicator_container
 							.selectAll("g.indicator")
 							.data(steps.length>1?steps[1][0].cmp.index[0]:[{}],function(d,i){
@@ -609,6 +617,7 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 				.each("end",function(d,i){
 					if(i==indexes[index].length-1) {
 						index++;
+
 						if(index<indexes.length) {
 							slideIndicator(index,animate,back);
 						} else {
@@ -661,7 +670,7 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 						.attr("transform","translate("+xscale(tmp.pos)+","+0+")")
 			}
 
-			var r=radius(tmp.value);
+			var r=radius(tmp.value+1);
 			
 			temp_indicator
 				.select("circle")
@@ -673,7 +682,8 @@ define(["d3","./support","./DistanceChart"],function(d3,support,DistanceChart) {
 			
 			temp_indicator
 				.select("text")
-					.attr("y",-r*4-2)
+					.attr("y",-r*4)
+					.attr("dy","-1em")
 					.text(tmp.value)
 
 			//return;

@@ -212,7 +212,33 @@ define(["d3","./support"],function(d3,support,DistanceChart) {
 			    .attr("class", "xaxis")
 			    .attr("transform", "translate(0," + 0 + ")");
 
+		/*var w=width/steps.length;
 		
+		var ixd=chart.append("g")
+				.attr("id","ixd")
+				.attr("transform", "translate(0," + 0 + ")");
+
+		ixd.selectAll("g")
+			.data(operations.filter(function(d){
+				return d.t===1;
+			}))
+			.enter()
+			.append("g")
+				.attr("class","hover")
+				.attr("transform",function(d,i){
+					return "translate("+xscale(d.i)+","+0+")";
+				})
+				.on("click",function(d){
+
+				})
+				.append("rect")
+					.attr("x",-5)
+					.attr("y",-height)
+					.attr("width",2)
+					.attr("height",height)
+					.style({
+						fill:"#ff0000"
+					})*/
 
 		chart.append("text")
 					.attr("class","title")

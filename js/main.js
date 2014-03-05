@@ -122,13 +122,6 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 			active:false
 		},
 		{
-			name:"Radix Sort",
-			file:"RadixSort",
-			O:"O(kN)",
-			active:false
-		},
-		
-		{
 			name:"Merge Sort (in-place)",
 			file:"MergeSort",
 			O:"O(n&sup2;)",
@@ -180,6 +173,12 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 			name:"OddEven Sort",
 			file:"OddEvenSort",
 			O:"O(n&sup2;)",
+			active:false
+		},
+		{
+			name:"Radix Sort",
+			file:"RadixSort",
+			O:"O(kN)",
 			active:false
 		}
 	];
