@@ -306,7 +306,6 @@ define(["d3","./support"],function(d3,support,DistanceChart) {
 
 		zero_inversions_bar.append("text")
 					.attr("x",-2)
-					.attr("dy","-0.2em")
 					.text(0);
 		
 		xaxis
