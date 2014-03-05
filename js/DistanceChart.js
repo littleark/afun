@@ -332,6 +332,17 @@ define(["d3","./support"],function(d3,support,DistanceChart) {
 				.attr("y1",6);
 
 		current
+			.append("rect")
+				.attr("x",-7)
+				.attr("y",5)
+				.attr("width",15)
+				.attr("height",15)
+				.attr("rx",3)
+				.attr("ry",3)
+				.attr("fill","#333")
+				.attr("fill-opacity","0.75")
+
+		current
 			.append("text")
 			.attr("y",16);
 
