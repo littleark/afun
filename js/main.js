@@ -133,7 +133,19 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 		},
 		{
 			name:"Shell Sort",
-			file:"ShellSort",
+			file:"ShellSortShell",
+			O:"Shell, 1959",
+			active:false
+		},
+		{
+			name:"Shell Sort",
+			file:"ShellSortKnuth2",
+			O:"Knuth, 1973",
+			active:false
+		},
+		{
+			name:"Shell Sort",
+			file:"ShellSortCiura",
 			O:"Ciura, 2001",
 			active:false
 		},
