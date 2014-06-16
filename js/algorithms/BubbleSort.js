@@ -12,24 +12,23 @@ define(["../support"], function(support) {
  			var cmp=0;
 
 			function bubblesort(array) {
-			    var n = array.length - 1;
-			   
-			    for (var i = 0; i < n; i++) {
-			        for (var j = n; j > i; j--) {
-			        	
-			        	index.push([j,j-1]);
-			        	//console.log("j",j)
-			        	if(array[j-1].value > array[j].value) {
-			            	comparisons.push({
-			            		cmp:cmp,
-			            		index:support.cloneArray(index)
-			            	});
-			            	index=[];
-			                swap(steps,array,j-1,j,comparisons[comparisons.length-1]);
-			                //console.log("----------------");
-			                cmp++;
-			            }
+			    var i, j;
+
+			    var swapped = false;
+			    for(i=1; i<array.length; i++) {
+			      for(j=0; j<array.length - i; j++) {
+			        index.push([j,j+1]);
+			        if (array[j+1].value < array[j].value) {
+			          comparisons.push({
+						cmp:cmp,
+						index:support.cloneArray(index)
+					  });
+					  index=[];
+			          swap(steps,array,j,j+1,comparisons[comparisons.length-1]);
+			          swapped=true;
 			        }
+			      }
+			      if (!swapped) break;
 			    }
 			    return array;
 			}
