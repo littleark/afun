@@ -934,7 +934,7 @@ a.generate span i {
 	background-color: #000;
 }
 #header ul#layout li #social.visible {
-	height:120px;	
+	height:220px;	
 }
 #header ul#layout li #social a {
 	color: #000;
@@ -947,6 +947,14 @@ a.generate span i {
 	line-height: 28px;
 	-webkit-border-radius: 14px;
 	border-radius: 14px;
+	position: relative;
+}
+#header ul#layout li #social span.count {
+	color:#ccc;
+	font-size:10px;
+	display: block;
+	margin-bottom: 10px;
+	margin-top: -5px;
 }
 .no-touch #header ul#layout li #social a:hover {
 	background-color:gold;
@@ -1222,7 +1230,7 @@ div.algorithm:first-child .distance-chart svg text.title,
 	text-align: center;
 	font-size: 23px;
 	position: relative;
-	width: 120px;
+	width: 132px;
 	height: 23px;
 	margin: 10px auto;
 }
@@ -1238,7 +1246,13 @@ div.algorithm:first-child .distance-chart svg text.title,
 	line-height: 23px;
 	display: block;
 	float: left;
-	margin: 0 3px;
+	margin: 0 5px;
+}
+#footer .social a span.count {
+	color:#ccc;
+	font-size:10px;
+	display: block;
+	margin-top: -5px;
 }
 .no-touch #footer .social a:hover {
 	background-color:gold;

@@ -504,6 +504,10 @@ require(["d3","Sorting","support"], function(d3,Sorting,support) {
 		}
 	})
 
-
+	d3.json("http://carlo.im/support/sorting/getPlus.php",function(d){
+		d3.selectAll(".fb").text(d.fb);
+		d3.selectAll(".twt").text(d.t+d.t2);
+		d3.selectAll(".gp").text(d.gp);		
+	})
 
 });
