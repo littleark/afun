@@ -382,6 +382,9 @@ define(["d3","./support"],function(d3,support,DistanceChart) {
 
 			current
 				.attr("transform", function(d){
+					if(d==0) {
+						d={i:0};
+					}
 					return "translate("+xscale(d.i)+"," + 0 + ")"
 				})
 				.select("text")
