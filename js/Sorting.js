@@ -79,7 +79,7 @@ define(["d3","AlgorithmView3","support"],function(d3,AlgorithmView,support) {
 				
 				sorting.push({
 					fn:fn,
-					name:fn+"_"+sorting.length,
+					name:fn+"_"+(new Date().getTime()),//sorting.length,
 					wiki:algorithm.wiki
 				});
 				if(!functions[fn]) {
