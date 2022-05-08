@@ -1230,9 +1230,11 @@ div.algorithm:first-child .distance-chart svg text.title,
 	text-align: center;
 	font-size: 23px;
 	position: relative;
-	width: 132px;
 	height: 23px;
 	margin: 10px auto;
+	left: 50%;
+    	transform: translateX(-50%);
+    	display: inline-block;
 }
 #footer .social a {
 	text-decoration: none;
